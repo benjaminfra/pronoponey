@@ -29,7 +29,7 @@ const SidebarWithHeader = ({ children }: SidebarWithHeaderProps) => {
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      <MobileNav display={{ base: 'flex', md: 'none' }} onOpen={onOpen} />
+      <MobileNav onOpen={onOpen} />
       <Box ml={{ base: 0, md: 60 }} p="4">
         {children}
       </Box>

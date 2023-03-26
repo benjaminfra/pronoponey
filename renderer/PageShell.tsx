@@ -3,8 +3,7 @@ import { ChakraProvider } from '@chakra-ui/react'
 import theme from './theme'
 import { PageContextProvider } from './usePageContext'
 import type { PageContext } from './types'
-import './PageShell.css'
-import SidebarWithHeader from './navigation/SidebarWithHeader'
+import PageContent from './content/PageContent'
 import AuthProvider from './provider/AuthProvider'
 
 export { PageShell }
@@ -21,7 +20,7 @@ function PageShell({
       <PageContextProvider pageContext={pageContext}>
         <ChakraProvider theme={theme}>
           <AuthProvider>
-            <SidebarWithHeader children={children} />
+            <PageContent children={children} />
           </AuthProvider>
         </ChakraProvider>
       </PageContextProvider>

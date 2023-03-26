@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "ts-node ./server",
+    "dev": "ts-node  -r dotenv/config ./server",
     "prod": "npm run build && npm run server:prod",
     "build": "vite build",
     "server:prod": "npm run build && cross-env NODE_ENV=production ts-node ./server"
@@ -12,7 +12,9 @@
     "@chakra-ui/react": "^2.5.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@fastify/auth": "^4.2.0",
     "@fastify/compress": "^6.1.1",
+    "@fastify/cookie": "^8.3.0",
     "@fastify/middie": "^8.0.0",
     "@fastify/static": "^6.5.0",
     "@types/compression": "^1.7.2",
@@ -23,8 +25,10 @@
     "@vitejs/plugin-react": "^3.0.0",
     "bcryptjs": "^2.4.3",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
     "fastify": "^4.14.1",
     "framer-motion": "^10.2.3",
+    "jsonwebtoken": "^9.0.0",
     "luxon": "^3.3.0",
     "mongoose": "^7.0.1",
     "node-fetch": "^3.3.1",
@@ -39,6 +43,7 @@
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/connect": "^3.4.35",
+    "@types/jsonwebtoken": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",
     "eslint-config-airbnb": "^19.0.4",

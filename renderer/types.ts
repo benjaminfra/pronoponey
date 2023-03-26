@@ -1,5 +1,6 @@
 import type { PageContextBuiltIn } from 'vite-plugin-ssr'
 import type { PageContextBuiltInClient } from 'vite-plugin-ssr/client'
+import { ILoggedUser } from '../server/db/models/userModel'
 
 type Page = (pageProps: PageProps) => React.ReactElement
 
@@ -15,6 +16,8 @@ export type PageContextCustom = {
       description?: string
     }
   }
+  isLoggedUser?: boolean
+  redirectTo?: string
 }
 
 export type PageContextServer = PageContextBuiltIn<Page> & PageContextCustom

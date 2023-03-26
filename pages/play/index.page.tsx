@@ -4,8 +4,6 @@ import { Box } from '@chakra-ui/react'
 import { IWeek } from '../../server/db/models/weekModel'
 import { ITeam } from '../../server/db/models/teamModel'
 import GameContextProvider from './GameContextProvider'
-import { useContext } from 'react'
-import { AuthContext } from '../../renderer/provider/AuthProvider'
 
 interface PageProps {
   weeks: IWeek[]

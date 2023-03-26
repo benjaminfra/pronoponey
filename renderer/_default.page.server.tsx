@@ -8,6 +8,14 @@ export { render }
 export const passToClient = ['pageProps', 'urlPathname']
 
 async function render(pageContext: PageContextServer) {
+  const { redirectTo } = pageContext
+  if (redirectTo) {
+    return {
+      pageContext: {
+        redirectTo,
+      },
+    }
+  }
   const { Page, pageProps } = pageContext
   const pageHtml = ReactDOMServer.renderToString(
     <PageShell pageContext={pageContext}>
@@ -37,8 +45,6 @@ async function render(pageContext: PageContextServer) {
 
   return {
     documentHtml,
-    pageContext: {
-      // We can add some `pageContext` here, which is useful if we want to do page redirection https://vite-plugin-ssr.com/page-redirection
-    },
+    pageContext: {},
   }
 }

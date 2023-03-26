@@ -1,6 +1,14 @@
 import fetch from 'node-fetch'
+import { PageContext } from '../../renderer/types'
 
-export const onBeforeRender = async () => {
+export const onBeforeRender = async (pageContext: PageContext) => {
+  if (!pageContext.isLoggedUser) {
+    return {
+      pageContext: {
+        redirectTo: '/auth/login',
+      },
+    }
+  }
   const weeksResponse = await fetch('http://localhost:3000/weeks')
   const teamsResponse = await fetch('http://localhost:3000/teams')
 

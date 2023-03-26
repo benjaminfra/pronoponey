@@ -1,11 +1,17 @@
-import { Flex, FlexProps, IconButton, Text } from '@chakra-ui/react'
+import { Flex, FlexProps, IconButton, Text, HStack } from '@chakra-ui/react'
 import { FiMenu } from 'react-icons/fi'
+import { useContext } from 'react'
+import { AuthContext } from '../provider/AuthProvider'
+import LinkButton from '../../common/components/LinkButton'
+import HeaderMenu from './HeaderMenu'
 
 interface MobileProps extends FlexProps {
   onOpen: () => void
 }
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+  const { loggedUser, logout } = useContext(AuthContext)
+
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -34,6 +40,19 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       >
         Logo
       </Text>
+
+      <HStack spacing={{ base: '0', md: '6' }}>
+        <Flex alignItems={'center'}>
+          {loggedUser ? (
+            <HeaderMenu user={loggedUser} logout={logout} />
+          ) : (
+            <HStack spacing={5}>
+              <LinkButton href="/auth/signup" title="S'incrire" />
+              <LinkButton href="/auth/login" title="Se connecter" />
+            </HStack>
+          )}
+        </Flex>
+      </HStack>
     </Flex>
   )
 }
