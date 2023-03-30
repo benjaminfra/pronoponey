@@ -6,7 +6,6 @@ import fastifyCookie from '@fastify/cookie'
 import fastify from 'fastify'
 import path from 'path'
 import vite from 'vite'
-import { renderPage } from 'vite-plugin-ssr'
 import mongoose from 'mongoose'
 import { getWeeksHandler } from './controllers/weeksController'
 import { getGamesHandler } from './controllers/gamesController'
@@ -16,7 +15,9 @@ import {
   asyncVerifyUserAndPassword,
   registerHandler,
   loginHandler,
+  logoutHandler,
 } from './controllers/usersController'
+import { routeHandler } from './controllers/routeController'
 import { IUser } from './db/models/userModel'
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -59,28 +60,20 @@ async function startServer() {
   app.post<{ Body: IUser }>('/register', registerHandler)
   app.post(
     '/login',
-    { preHandler: app.auth([app.asyncVerifyUserAndPassword]) },
+    {
+      preHandler: app.auth([app.asyncVerifyUserAndPassword]),
+    },
     loginHandler
   )
+  app.post(
+    '/logout',
+    {
+      preHandler: app.auth([app.asyncVerifyJWTandLevel]),
+    },
+    logoutHandler
+  )
 
-  app.get('*', async (req, reply) => {
-    const pageContextInit = {
-      urlOriginal: req.url,
-      isLoggedUser: req.cookies.loggedUser,
-    }
-
-    const pageContext = await renderPage(pageContextInit)
-    const { httpResponse } = pageContext
-    if (pageContext.redirectTo) {
-      reply.redirect(307, pageContext.redirectTo)
-    } else if (!httpResponse) {
-      return reply.code(404).type('text/html').send('Not Found')
-    }
-
-    const { body, statusCode, contentType } = httpResponse
-
-    return reply.status(statusCode).type(contentType).send(body)
-  })
+  app.get('*', routeHandler)
 
   const port: number = process.env.PORT ? +process.env.PORT : 3000
 

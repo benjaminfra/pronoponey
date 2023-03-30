@@ -13,12 +13,12 @@ import {
 
 interface HeaderMenuProps {
   user: ILoggedUser
-  logout: () => void
+  logout: (user: ILoggedUser) => void
 }
 
 const HeaderMenu = ({ user, logout }: HeaderMenuProps) => {
   const onClickLogout = (_e: React.MouseEvent<HTMLButtonElement>) => {
-    logout()
+    logout(user)
   }
   return (
     <Menu>

@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { EMAIL_REGEX } from '../../../helpers/constants'
 import { ensure } from '../../../helpers/types.helpers'
-import { IUser, ILoggedUser, User } from '../models/userModel'
+import { IUser, ILoggedUser, User, Token } from '../models/userModel'
 import jwt, { Secret } from 'jsonwebtoken'
 import { Document } from 'mongoose'
 
@@ -100,7 +100,7 @@ export const findByToken = async (
   } catch (error) {
     throw new Error('Erreur lors de la vérification du token utilisateur')
   }
-  return await User.findOne({
+  return User.findOne({
     _id: decoded._id,
     'tokens.token': token,
   })
@@ -115,7 +115,19 @@ export const generateToken = async (
   if (!user.tokens) {
     user.tokens = []
   }
-  user.tokens = user.tokens.concat({ token })
+  user.tokens.push({ token })
   await user.save()
   return token
+}
+
+export const logout = async (
+  user: IUser & Document,
+  token: string
+): Promise<void> => {
+  if (!user.tokens) {
+    return
+  }
+
+  user.tokens = user.tokens.filter((userToken) => userToken.token !== token)
+  await user.save()
 }

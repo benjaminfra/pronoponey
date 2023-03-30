@@ -1,4 +1,5 @@
 import { ILoggedUser, IUser } from '../server/db/models/userModel'
+import { getAuthorizationHeader } from './helpers'
 
 export const signUp = (user: IUser): Promise<ILoggedUser> => {
   const requestOptions = {
@@ -21,9 +22,6 @@ export const signUp = (user: IUser): Promise<ILoggedUser> => {
 }
 
 export const login = (user: IUser): Promise<ILoggedUser> => {
-  const params = new URLSearchParams()
-  params.append('email', user.email)
-  params.append('password', user.password)
   const requestOptions = {
     method: 'POST',
     headers: {
@@ -35,6 +33,25 @@ export const login = (user: IUser): Promise<ILoggedUser> => {
     .then(async (response) => {
       if (response.ok) {
         return response.json() as Promise<ILoggedUser>
+      } else {
+        const error = await response.json()
+        throw error.message
+      }
+    })
+    .catch((error) => {
+      throw new Error(error)
+    })
+}
+
+export const logout = (user: ILoggedUser): Promise<void> => {
+  const requestOptions = {
+    method: 'POST',
+    headers: getAuthorizationHeader(user.tokens),
+  }
+  return fetch(`http://localhost:3000/logout`, requestOptions)
+    .then(async (response) => {
+      if (response.ok) {
+        return
       } else {
         const error = await response.json()
         throw error.message

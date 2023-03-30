@@ -5,29 +5,28 @@ import {
   findByToken,
   generateToken,
   login,
+  logout,
 } from '../db/services/userService'
 
-export function registerHandler(
+export async function registerHandler(
   req: FastifyRequest<{ Body: IUser }>,
   reply: FastifyReply
 ) {
-  createUser(req.body)
-    .then((data) => {
-      reply.setCookie('loggedUser', 'true').status(200).send(data)
-    })
-    .catch((error) => {
-      reply.status(400).type('text/html').send(error)
-    })
+  try {
+    const createdUser = await createUser(req.body)
+    await reply.setCookie('loggedUser', 'true').status(200).send(createdUser)
+  } catch (error) {
+    reply.status(400).type('text/html').send(error)
+  }
 }
 
-export function loginHandler(req: FastifyRequest, reply: FastifyReply) {
-  generateToken(req.user)
-    .then(() => {
-      reply.setCookie('loggedUser', 'true').status(200).send(req.user)
-    })
-    .catch((error) => {
-      reply.status(400).type('text/html').send(error)
-    })
+export async function loginHandler(req: FastifyRequest, reply: FastifyReply) {
+  try {
+    await generateToken(req.user)
+    await reply.setCookie('loggedUser', 'true').status(200).send(req.user)
+  } catch (error) {
+    reply.status(400).type('text/html').send(error)
+  }
 }
 
 export async function asyncVerifyJWTandLevel(
@@ -44,6 +43,7 @@ export async function asyncVerifyJWTandLevel(
       throw new Error('Authentication failed!')
     }
     request.user = user
+    request.token = token
   } catch (error) {
     reply.code(401).send(error)
   }
@@ -61,5 +61,17 @@ export async function asyncVerifyUserAndPassword(
     request.user = user
   } catch (error) {
     reply.code(400).send(error)
+  }
+}
+
+export async function logoutHandler(
+  request: FastifyRequest,
+  reply: FastifyReply
+) {
+  try {
+    await logout(request.user, request.token)
+    reply.clearCookie('loggedUser').status(200).send('Logout OK')
+  } catch (error) {
+    reply.code(500).send()
   }
 }

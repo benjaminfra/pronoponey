@@ -1,6 +1,6 @@
 import { Schema, Types, model } from 'mongoose'
 
-interface Token {
+export interface Token {
   token: string
 }
 

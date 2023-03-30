@@ -1,8 +1,7 @@
 import { useMemo, useCallback, createContext, useState, useEffect } from 'react'
 import { ILoggedUser, IUser } from '../../server/db/models/userModel'
-import { login, signUp } from '../../api/auth.api'
+import { login, signUp, logout } from '../../api/auth.api'
 import { useToast } from '@chakra-ui/react'
-import { PageContext } from '../types'
 
 interface IAuthProvider {
   children: React.ReactNode
@@ -12,7 +11,7 @@ interface IAuthContext {
   loggedUser: ILoggedUser | undefined
   signUp: (user: IUser) => Promise<void>
   login: (user: IUser) => Promise<void>
-  logout: () => Promise<void>
+  logout: (user: ILoggedUser) => Promise<void>
   isUserLoading: boolean
 }
 
@@ -21,12 +20,12 @@ export const AuthContext = createContext<IAuthContext>({
   signUp: async () => {},
   login: async () => {},
   logout: async () => {},
-  isUserLoading: true,
+  isUserLoading: false,
 })
 
 const AuthProvider = ({ children }: IAuthProvider) => {
   const [loggedUser, setLoggedUser] = useState<ILoggedUser>()
-  const [isUserLoading, setIsUserLoading] = useState<boolean>(true)
+  const [isUserLoading, setIsUserLoading] = useState<boolean>(false)
 
   const toast = useToast()
 
@@ -52,7 +51,6 @@ const AuthProvider = ({ children }: IAuthProvider) => {
         isClosable: true,
       })
     }
-    setIsUserLoading(false)
   }
 
   const loginUser = async (user: IUser) => {
@@ -61,6 +59,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
       const loggedUser = await login(user)
       setLoggedUser(loggedUser)
       sessionStorage.setItem('user', JSON.stringify(loggedUser))
+      window.location.reload()
       toast({
         title: 'Connexion réussie',
         description: "C'est le moment de tout donner",
@@ -77,32 +76,46 @@ const AuthProvider = ({ children }: IAuthProvider) => {
         isClosable: true,
       })
     }
-    setIsUserLoading(false)
   }
 
-  const logoutUser = async () => {
+  const logoutUser = async (user: ILoggedUser) => {
     setIsUserLoading(true)
-    setLoggedUser(undefined)
-    sessionStorage.removeItem('user')
-    setIsUserLoading(false)
+    try {
+      await logout(user)
+      sessionStorage.removeItem('user')
+      setLoggedUser(undefined)
+      window.location.reload()
+      toast({
+        title: 'Déconnexion réussie',
+        description: 'Reviens vite',
+        status: 'success',
+        duration: 9000,
+        isClosable: true,
+      })
+    } catch (error) {
+      toast({
+        title: 'Une erreur est survenue',
+        description: 'On a pas réussi à te déconnecter :/',
+        status: 'error',
+        duration: 9000,
+        isClosable: true,
+      })
+    }
   }
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem('user')
-    if (storedUser) {
-      if (!loggedUser) {
-        const jsonUser = JSON.parse(storedUser)
-        setIsUserLoading(true)
-        setLoggedUser({
-          username: jsonUser.username,
-          id: jsonUser.id,
-          tokens: jsonUser.tokens,
-        })
-      } else {
-        setIsUserLoading(false)
-      }
+    if (storedUser && !loggedUser) {
+      const jsonUser = JSON.parse(storedUser)
+      setIsUserLoading(true)
+      setLoggedUser({
+        username: jsonUser.username,
+        id: jsonUser.id,
+        tokens: jsonUser.tokens,
+      })
     }
-  }, [isUserLoading, loggedUser])
+    setIsUserLoading(false)
+  }, [])
   const memoizedSignUpUser = useCallback(async (user: IUser) => {
     await signUpUser(user)
   }, [])
@@ -111,8 +124,8 @@ const AuthProvider = ({ children }: IAuthProvider) => {
     await loginUser(user)
   }, [])
 
-  const memoizedLogoutUser = useCallback(async () => {
-    await logoutUser()
+  const memoizedLogoutUser = useCallback(async (user: ILoggedUser) => {
+    await logoutUser(user)
   }, [])
 
   const userCtx = useMemo(
