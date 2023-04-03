@@ -9,7 +9,6 @@ interface PageContentProps {
 
 const PageContent = ({ children }: PageContentProps) => {
   const { isUserLoading } = useContext(AuthContext)
-  console.log(isUserLoading)
   if (isUserLoading) {
     return (
       <Center>

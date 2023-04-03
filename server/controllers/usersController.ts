@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { IUser } from '../db/models/userModel'
+import { ILoggedUser, IUser } from '../db/models/userModel'
 import {
   createUser,
   findByToken,
@@ -7,6 +7,7 @@ import {
   login,
   logout,
 } from '../db/services/userService'
+import { ensure } from '../../helpers/types.helpers'
 
 export async function registerHandler(
   req: FastifyRequest<{ Body: IUser }>,
@@ -14,7 +15,10 @@ export async function registerHandler(
 ) {
   try {
     const createdUser = await createUser(req.body)
-    await reply.setCookie('loggedUser', 'true').status(200).send(createdUser)
+    await reply
+      .setCookie('loggedUser', JSON.stringify(createdUser))
+      .status(204)
+      .send()
   } catch (error) {
     reply.status(400).type('text/html').send(error)
   }
@@ -22,8 +26,17 @@ export async function registerHandler(
 
 export async function loginHandler(req: FastifyRequest, reply: FastifyReply) {
   try {
-    await generateToken(req.user)
-    await reply.setCookie('loggedUser', 'true').status(200).send(req.user)
+    const token = await generateToken(req.user)
+    const loggedUser: ILoggedUser = {
+      id: req.user.id,
+      tokens: [{ token }],
+      username: ensure(req.user.username),
+    }
+    console.log(JSON.stringify(loggedUser))
+    await reply
+      .setCookie('loggedUser', JSON.stringify(loggedUser))
+      .status(204)
+      .send()
   } catch (error) {
     reply.status(400).type('text/html').send(error)
   }
@@ -70,7 +83,7 @@ export async function logoutHandler(
 ) {
   try {
     await logout(request.user, request.token)
-    reply.clearCookie('loggedUser').status(200).send('Logout OK')
+    reply.clearCookie('loggedUser').status(204).send()
   } catch (error) {
     reply.code(500).send()
   }

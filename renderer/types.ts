@@ -4,7 +4,9 @@ import { ILoggedUser } from '../server/db/models/userModel'
 
 type Page = (pageProps: PageProps) => React.ReactElement
 
-export type PageProps = {}
+export type PageProps = {
+  loggedUser?: ILoggedUser
+}
 
 export type PageContextCustom = {
   Page: Page
@@ -16,7 +18,7 @@ export type PageContextCustom = {
       description?: string
     }
   }
-  isLoggedUser?: boolean
+  loggedUser?: ILoggedUser
   redirectTo?: string
 }
 

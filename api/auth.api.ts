@@ -1,7 +1,7 @@
 import { ILoggedUser, IUser } from '../server/db/models/userModel'
 import { getAuthorizationHeader } from './helpers'
 
-export const signUp = (user: IUser): Promise<ILoggedUser> => {
+export const signUp = (user: IUser): Promise<void> => {
   const requestOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -9,9 +9,7 @@ export const signUp = (user: IUser): Promise<ILoggedUser> => {
   }
   return fetch(`http://localhost:3000/register`, requestOptions)
     .then(async (response) => {
-      if (response.ok) {
-        return response.json() as Promise<ILoggedUser>
-      } else {
+      if (!response.ok) {
         const error = await response.json()
         throw error.message
       }
@@ -21,7 +19,7 @@ export const signUp = (user: IUser): Promise<ILoggedUser> => {
     })
 }
 
-export const login = (user: IUser): Promise<ILoggedUser> => {
+export const login = (user: IUser): Promise<void> => {
   const requestOptions = {
     method: 'POST',
     headers: {
@@ -31,9 +29,7 @@ export const login = (user: IUser): Promise<ILoggedUser> => {
   }
   return fetch(`http://localhost:3000/login`, requestOptions)
     .then(async (response) => {
-      if (response.ok) {
-        return response.json() as Promise<ILoggedUser>
-      } else {
+      if (!response.ok) {
         const error = await response.json()
         throw error.message
       }
@@ -50,9 +46,7 @@ export const logout = (user: ILoggedUser): Promise<void> => {
   }
   return fetch(`http://localhost:3000/logout`, requestOptions)
     .then(async (response) => {
-      if (response.ok) {
-        return
-      } else {
+      if (!response.ok) {
         const error = await response.json()
         throw error.message
       }

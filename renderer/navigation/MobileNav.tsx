@@ -4,13 +4,15 @@ import { useContext } from 'react'
 import { AuthContext } from '../provider/AuthProvider'
 import LinkButton from '../../common/components/LinkButton'
 import HeaderMenu from './HeaderMenu'
+import { usePageContext } from '../usePageContext'
 
 interface MobileProps extends FlexProps {
   onOpen: () => void
 }
 
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
-  const { loggedUser, logout } = useContext(AuthContext)
+  const { logout } = useContext(AuthContext)
+  const pageContext = usePageContext()
 
   return (
     <Flex
@@ -43,8 +45,11 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
       <HStack spacing={{ base: '0', md: '6' }}>
         <Flex alignItems={'center'}>
-          {loggedUser ? (
-            <HeaderMenu user={loggedUser} logout={logout} />
+          {pageContext.pageProps?.loggedUser ? (
+            <HeaderMenu
+              user={pageContext.pageProps?.loggedUser}
+              logout={logout}
+            />
           ) : (
             <HStack spacing={5}>
               <LinkButton href="/auth/signup" title="S'incrire" />

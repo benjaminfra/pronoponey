@@ -5,9 +5,12 @@ export const routeHandler = async (
   req: FastifyRequest,
   reply: FastifyReply
 ) => {
+  console.log(req.cookies.loggedUser)
   const pageContextInit = {
     urlOriginal: req.url,
-    isLoggedUser: req.cookies.loggedUser,
+    loggedUser: req.cookies.loggedUser
+      ? JSON.parse(req.cookies.loggedUser)
+      : undefined,
   }
 
   const pageContext = await renderPage(pageContextInit)

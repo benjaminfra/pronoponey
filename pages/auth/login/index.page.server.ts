@@ -1,7 +1,7 @@
 import { PageContext } from '../../../renderer/types'
 
 export const onBeforeRender = async (pageContext: PageContext) => {
-  if (pageContext.isLoggedUser) {
+  if (pageContext.loggedUser) {
     return {
       pageContext: {
         redirectTo: '/play',
