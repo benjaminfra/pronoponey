@@ -5,7 +5,6 @@ export const routeHandler = async (
   req: FastifyRequest,
   reply: FastifyReply
 ) => {
-  console.log(req.cookies.loggedUser)
   const pageContextInit = {
     urlOriginal: req.url,
     loggedUser: req.cookies.loggedUser

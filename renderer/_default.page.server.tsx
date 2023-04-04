@@ -16,7 +16,6 @@ async function render(pageContext: PageContextServer) {
       },
     }
   }
-  console.log(loggedUser)
   const { Page } = pageContext
   let pageProps: PageProps = pageContext.pageProps
     ? pageContext.pageProps

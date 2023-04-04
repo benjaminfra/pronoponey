@@ -32,7 +32,6 @@ export async function loginHandler(req: FastifyRequest, reply: FastifyReply) {
       tokens: [{ token }],
       username: ensure(req.user.username),
     }
-    console.log(JSON.stringify(loggedUser))
     await reply
       .setCookie('loggedUser', JSON.stringify(loggedUser))
       .status(204)
