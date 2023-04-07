@@ -21,6 +21,7 @@ import { routeHandler } from './controllers/routeController'
 import { IUser } from './db/models/userModel'
 import { postPronosticsHandler } from './controllers/pronosticsController'
 import { IPronostic } from './db/models/pronosticModel'
+import { PronosticProps } from '../pages/play/types'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const root = `${__dirname}/..`
@@ -74,7 +75,7 @@ async function startServer() {
     },
     logoutHandler
   )
-  app.post<{ Body: IPronostic }>(
+  app.post<{ Body: PronosticProps }>(
     '/pronostic',
     { preHandler: app.auth([app.asyncVerifyJWTandLevel]) },
     postPronosticsHandler

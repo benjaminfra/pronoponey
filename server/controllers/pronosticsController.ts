@@ -1,12 +1,19 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { IPronostic, Pronostic } from '../db/models/pronosticModel'
+import { PronosticProps } from '../../pages/play/types'
+import { Pronostic } from '../db/models/pronosticModel'
 import { savePronostic } from '../db/services/pronosticService'
 
 export const postPronosticsHandler = async (
-  req: FastifyRequest<{ Body: IPronostic }>,
+  req: FastifyRequest<{ Body: PronosticProps }>,
   reply: FastifyReply
 ) => {
-  const pronostic = new Pronostic(req.body)
+  const pronostic = new Pronostic({
+    awayScore: req.body.awayScore,
+    homeScore: req.body.homeScore,
+    gameId: req.body.gameId,
+    userId: req.user._id,
+    weekNumber: req.body.weekNumber,
+  })
   savePronostic(pronostic)
     .then(() => {
       reply.status(204).send()

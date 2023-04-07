@@ -1,6 +1,5 @@
 import TeamScore from './TeamScore'
 import { HStack, Box, Text } from '@chakra-ui/react'
-import { IGame } from '../../../../server/db/models/gameModel'
 import { ITeam } from '../../../../server/db/models/teamModel'
 import { DateTime } from 'luxon'
 
@@ -10,6 +9,7 @@ interface GameScoreProps {
   homeTeam: ITeam
   awayTeam: ITeam
   gameDate: DateTime
+  saveProno: Function
 }
 
 const GameScore = ({
@@ -18,12 +18,18 @@ const GameScore = ({
   homeTeam,
   awayTeam,
   gameDate,
+  saveProno,
 }: GameScoreProps) => {
   const isPlayable = gameDate > DateTime.now()
 
   return (
     <HStack justifyContent="center">
-      <TeamScore team={homeTeam} score={homeScore} isPlayable={isPlayable} />
+      <TeamScore
+        team={homeTeam}
+        score={homeScore}
+        isPlayable={isPlayable}
+        saveProno={saveProno}
+      />
       <Box>
         <Text>-</Text>
       </Box>
@@ -32,6 +38,7 @@ const GameScore = ({
         score={awayScore}
         isAwayTeam={true}
         isPlayable={isPlayable}
+        saveProno={saveProno}
       />
     </HStack>
   )

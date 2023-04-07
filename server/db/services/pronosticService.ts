@@ -5,7 +5,11 @@ export const savePronostic = async (pronostic: IPronostic & Document) => {
   try {
     const savedProno = await Pronostic.findOneAndUpdate(
       { gameId: pronostic.gameId, userId: pronostic.userId },
-      { homeScore: pronostic.homeScore, awayScore: pronostic.awayScore },
+      {
+        homeScore: pronostic.homeScore,
+        awayScore: pronostic.awayScore,
+        weekNumber: pronostic.weekNumber,
+      },
       { new: true, upsert: true }
     )
     console.log(

@@ -1,4 +1,5 @@
 import { DateTime } from 'luxon'
+import { Types } from 'mongoose'
 import { ITeam } from '../../server/db/models/teamModel'
 
 export type TeamProps = {
@@ -13,4 +14,14 @@ export type GameProps = {
   homeTeam: ITeam
   awayTeam: ITeam
   gameDate: DateTime
+  gameId: Types.ObjectId
+  weekNumber: number
+}
+
+export type PronosticProps = {
+  gameId: Types.ObjectId
+  weekNumber: number
+  homeScore: number
+  awayScore: number
+  points?: number
 }

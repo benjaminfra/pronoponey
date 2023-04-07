@@ -4,10 +4,21 @@ import Score from './Score'
 interface ScoreResultProps {
   score?: number
   isPlayable: boolean
+  saveProno: Function
+  isAwayTeam?: boolean
 }
 
-const ScoreResult = ({ score, isPlayable }: ScoreResultProps) => {
-  return isPlayable ? <SelectScore /> : <Score score={score} />
+const ScoreResult = ({
+  score,
+  isPlayable,
+  saveProno,
+  isAwayTeam,
+}: ScoreResultProps) => {
+  return isPlayable ? (
+    <SelectScore saveProno={saveProno} isAwayTeam={isAwayTeam} />
+  ) : (
+    <Score score={score} />
+  )
 }
 
 export default ScoreResult

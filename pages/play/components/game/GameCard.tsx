@@ -1,14 +1,15 @@
 import { Box } from '@chakra-ui/react'
 import GameScore from '../score/GameScore'
 import { GameProps } from '../../types'
+import { usePronostics } from '../../hooks/usePronostics'
 
-const GameCard = ({
-  homeScore,
-  awayScore,
-  gameDate,
-  homeTeam,
-  awayTeam,
-}: GameProps) => {
+interface GameCardProps {
+  game: GameProps
+}
+
+const GameCard = ({ game }: GameCardProps) => {
+  const { saveProno } = usePronostics(game.gameId, game.weekNumber, 0, 0)
+
   return (
     <Box
       border="1px"
@@ -18,11 +19,12 @@ const GameCard = ({
       padding="1em"
     >
       <GameScore
-        homeScore={homeScore}
-        awayScore={awayScore}
-        gameDate={gameDate}
-        homeTeam={homeTeam}
-        awayTeam={awayTeam}
+        homeScore={game.homeScore}
+        awayScore={game.awayScore}
+        gameDate={game.gameDate}
+        homeTeam={game.homeTeam}
+        awayTeam={game.awayTeam}
+        saveProno={saveProno}
       />
     </Box>
   )
