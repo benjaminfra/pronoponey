@@ -1,7 +1,15 @@
-import { useMemo, useCallback, createContext, useState, useEffect } from 'react'
+import {
+  useMemo,
+  useCallback,
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+} from 'react'
 import { ILoggedUser, IUser } from '../../server/db/models/userModel'
-import { login, signUp, logout } from '../../api/auth.api'
 import { useToast } from '@chakra-ui/react'
+import { ServiceContext } from './ServiceProvider'
+import { ensure } from '../../helpers/types.helpers'
 
 interface IAuthProvider {
   children: React.ReactNode
@@ -22,6 +30,7 @@ export const AuthContext = createContext<IAuthContext>({
 })
 
 const AuthProvider = ({ children }: IAuthProvider) => {
+  const { authService } = useContext(ServiceContext)
   const [isUserLoading, setIsUserLoading] = useState<boolean>(false)
 
   const toast = useToast()
@@ -29,7 +38,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
   const signUpUser = async (user: IUser) => {
     setIsUserLoading(true)
     try {
-      await signUp(user)
+      await authService.signUp(user)
       toast({
         title: 'Compte créé',
         description: 'Tu fais désormais parti de la team',
@@ -38,6 +47,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
         isClosable: true,
       })
     } catch (error: any) {
+      setIsUserLoading(false)
       toast({
         title: 'Une erreur est survenue',
         description: error.message,
@@ -51,7 +61,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
   const loginUser = async (user: IUser) => {
     setIsUserLoading(true)
     try {
-      await login(user)
+      await authService.login(user)
       window.location.reload()
       toast({
         title: 'Connexion réussie',
@@ -61,6 +71,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
         isClosable: true,
       })
     } catch (error: any) {
+      setIsUserLoading(false)
       toast({
         title: 'Une erreur est survenue',
         description: error.message,
@@ -74,7 +85,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
   const logoutUser = async (user: ILoggedUser) => {
     setIsUserLoading(true)
     try {
-      await logout(user)
+      await authService.logout()
       window.location.reload()
       toast({
         title: 'Déconnexion réussie',
@@ -84,6 +95,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
         isClosable: true,
       })
     } catch (error) {
+      setIsUserLoading(false)
       toast({
         title: 'Une erreur est survenue',
         description: 'On a pas réussi à te déconnecter :/',

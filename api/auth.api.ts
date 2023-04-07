@@ -1,57 +1,39 @@
-import { ILoggedUser, IUser } from '../server/db/models/userModel'
-import { getAuthorizationHeader } from './helpers'
+import { IUser } from '../server/db/models/userModel'
+import axios from 'axios'
 
-export const signUp = (user: IUser): Promise<void> => {
-  const requestOptions = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(user),
+class AuthService {
+  signUp = (user: IUser): Promise<void> => {
+    return axios
+      .post(`http://localhost:3000/register`, user)
+      .then(() => {
+        return
+      })
+      .catch((error) => {
+        throw new Error(error.response.data.message)
+      })
   }
-  return fetch(`http://localhost:3000/register`, requestOptions)
-    .then(async (response) => {
-      if (!response.ok) {
-        const error = await response.json()
-        throw error.message
-      }
-    })
-    .catch((error) => {
-      throw new Error(error)
-    })
+
+  login = (user: IUser): Promise<void> => {
+    return axios
+      .post(`http://localhost:3000/login`, user)
+      .then(async () => {
+        return
+      })
+      .catch((error) => {
+        throw new Error(error.response.data.message)
+      })
+  }
+
+  logout = (): Promise<void> => {
+    return axios
+      .post(`http://localhost:3000/logout`)
+      .then(async () => {
+        return
+      })
+      .catch((error) => {
+        throw new Error(error.response.data.message)
+      })
+  }
 }
 
-export const login = (user: IUser): Promise<void> => {
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(user),
-  }
-  return fetch(`http://localhost:3000/login`, requestOptions)
-    .then(async (response) => {
-      if (!response.ok) {
-        const error = await response.json()
-        throw error.message
-      }
-    })
-    .catch((error) => {
-      throw new Error(error)
-    })
-}
-
-export const logout = (user: ILoggedUser): Promise<void> => {
-  const requestOptions = {
-    method: 'POST',
-    headers: getAuthorizationHeader(user.tokens),
-  }
-  return fetch(`http://localhost:3000/logout`, requestOptions)
-    .then(async (response) => {
-      if (!response.ok) {
-        const error = await response.json()
-        throw error.message
-      }
-    })
-    .catch((error) => {
-      throw new Error(error)
-    })
-}
+export default AuthService

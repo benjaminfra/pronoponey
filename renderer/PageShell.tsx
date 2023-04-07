@@ -5,6 +5,7 @@ import { PageContextProvider } from './usePageContext'
 import type { PageContext } from './types'
 import PageContent from './content/PageContent'
 import AuthProvider from './provider/AuthProvider'
+import ServiceProvider from './provider/ServiceProvider'
 
 export { PageShell }
 
@@ -19,9 +20,11 @@ function PageShell({
     <React.StrictMode>
       <PageContextProvider pageContext={pageContext}>
         <ChakraProvider theme={theme}>
-          <AuthProvider>
-            <PageContent children={children} />
-          </AuthProvider>
+          <ServiceProvider>
+            <AuthProvider>
+              <PageContent children={children} />
+            </AuthProvider>
+          </ServiceProvider>
         </ChakraProvider>
       </PageContextProvider>
     </React.StrictMode>

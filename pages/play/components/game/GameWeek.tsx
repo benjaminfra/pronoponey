@@ -3,16 +3,15 @@ import { ensure } from '../../../../helpers/types.helpers'
 import { ITeam } from '../../../../server/db/models/teamModel'
 import GameCard from './GameCard'
 import { DateTime } from 'luxon'
-import { useContext } from 'react'
-import { GamesContext } from '../../GameContextProvider'
+import { IGame } from '../../../../server/db/models/gameModel'
 
 interface IGameWeek {
   teams: ITeam[]
+  games: IGame[]
+  isLoading: boolean
 }
 
-const GameWeek = ({ teams }: IGameWeek) => {
-  const { games, isGamesLoading } = useContext(GamesContext)
-
+const GameWeek = ({ teams, games, isLoading }: IGameWeek) => {
   const gamesWithTeams =
     games &&
     games.length &&
@@ -35,12 +34,12 @@ const GameWeek = ({ teams }: IGameWeek) => {
 
   return (
     <>
-      {isGamesLoading && (
+      {isLoading && (
         <Center mt="100px">
           <Spinner />
         </Center>
       )}
-      {!isGamesLoading && (
+      {!isLoading && (
         <VStack spacing="1em" display="block">
           {gamesWithTeams &&
             gamesWithTeams.map((game) => (
