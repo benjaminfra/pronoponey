@@ -4,15 +4,23 @@ import { ITeam } from '../../../../server/db/models/teamModel'
 import GameCard from './GameCard'
 import { DateTime } from 'luxon'
 import { IGame } from '../../../../server/db/models/gameModel'
-import { GameProps } from '../../types'
+import { GameProps, PronosticProps } from '../../types'
 
 interface IGameWeek {
   teams: ITeam[]
   games: IGame[]
+  pronostics: PronosticProps[]
+  saveProno: Function
   isLoading: boolean
 }
 
-const GameWeek = ({ teams, games, isLoading }: IGameWeek) => {
+const GameWeek = ({
+  teams,
+  games,
+  pronostics,
+  saveProno,
+  isLoading,
+}: IGameWeek) => {
   const gamesWithTeams: GameProps[] = Array.isArray(games)
     ? games.map((weekGame) => {
         const awayTeam = ensure(
@@ -21,6 +29,7 @@ const GameWeek = ({ teams, games, isLoading }: IGameWeek) => {
         const homeTeam = ensure(
           teams.find((team) => team._id === weekGame.homeTeam)
         )
+        const pronostic = pronostics.find((p) => p.gameId === weekGame._id)
         return {
           gameId: weekGame._id,
           gameDate: DateTime.fromISO(weekGame.date.toString()),
@@ -29,6 +38,7 @@ const GameWeek = ({ teams, games, isLoading }: IGameWeek) => {
           homeTeam,
           awayTeam,
           weekNumber: weekGame.weekNumber,
+          pronostic,
         }
       })
     : []
@@ -43,8 +53,12 @@ const GameWeek = ({ teams, games, isLoading }: IGameWeek) => {
       {!isLoading && (
         <VStack spacing="1em" display="block">
           {gamesWithTeams &&
-            gamesWithTeams.map((game, index) => (
-              <GameCard game={game} key={index} />
+            gamesWithTeams.map((game) => (
+              <GameCard
+                game={game}
+                key={game.gameId.toString()}
+                saveProno={saveProno}
+              />
             ))}
         </VStack>
       )}

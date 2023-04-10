@@ -1,7 +1,10 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { PronosticProps } from '../../pages/play/types'
 import { Pronostic } from '../db/models/pronosticModel'
-import { savePronostic } from '../db/services/pronosticService'
+import {
+  findPronosticByWeekNumber,
+  savePronostic,
+} from '../db/services/pronosticService'
 
 export const postPronosticsHandler = async (
   req: FastifyRequest<{ Body: PronosticProps }>,
@@ -17,6 +20,19 @@ export const postPronosticsHandler = async (
   savePronostic(pronostic)
     .then(() => {
       reply.status(204).send()
+    })
+    .catch((error) => {
+      reply.status(500).type('text/html').send(error)
+    })
+}
+
+export const getPronosticsByWeekNumberHandler = (
+  req: FastifyRequest<{ Querystring: { weekNumber: number } }>,
+  reply: FastifyReply
+) => {
+  findPronosticByWeekNumber(req.query.weekNumber, req.user._id)
+    .then((data) => {
+      reply.status(200).send(data)
     })
     .catch((error) => {
       reply.status(500).type('text/html').send(error)

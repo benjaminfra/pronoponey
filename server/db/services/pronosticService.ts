@@ -1,4 +1,4 @@
-import { Document } from 'mongoose'
+import { Document, Types } from 'mongoose'
 import { IPronostic, Pronostic } from '../models/pronosticModel'
 
 export const savePronostic = async (pronostic: IPronostic & Document) => {
@@ -19,5 +19,19 @@ export const savePronostic = async (pronostic: IPronostic & Document) => {
     console.log(
       `Une erreur est survenue lors de la sauvegarde du pronostic ${error}`
     )
+  }
+}
+
+export const findPronosticByWeekNumber = async (
+  weekNumber: number,
+  userId: Types.ObjectId
+) => {
+  console.log(
+    `Recherche des pronostics pour l'utilisateur ${userId} et la journée ${weekNumber}`
+  )
+  try {
+    return Pronostic.find({ weekNumber, userId }).lean()
+  } catch (error) {
+    throw new Error('An error occured when trying to get pronostics')
   }
 }

@@ -1,53 +1,35 @@
-import { Select } from '@chakra-ui/react'
-
-const options = [
-  {
-    value: '0',
-    label: '0',
-  },
-  {
-    value: '1',
-    label: '1',
-  },
-  {
-    value: '2',
-    label: '2',
-  },
-  {
-    value: '3',
-    label: '3',
-  },
-  {
-    value: '4',
-    label: '4',
-  },
-  {
-    value: '5',
-    label: '5',
-  },
-  {
-    value: '+',
-    label: '+',
-  },
-]
+import { NumberInput, NumberInputField } from '@chakra-ui/react'
+import { useState } from 'react'
 
 interface SelectStoreProps {
-  saveProno: Function
-  isAwayTeam?: boolean
+  saveProno: (value: number) => void
+  pronosticScore?: number
 }
 
-const SelectScore = ({ saveProno, isAwayTeam }: SelectStoreProps) => {
+const SelectScore = ({ saveProno, pronosticScore }: SelectStoreProps) => {
+  const [score, setScore] = useState<number | undefined>(pronosticScore)
+
+  const setPronostic = (value: number) => {
+    setScore(value)
+    saveProno(value)
+  }
+
   return (
-    <Select
-      textAlign="center"
-      onChange={(e) => saveProno(e.target.value, isAwayTeam)}
+    <NumberInput
+      min={0}
+      max={9}
+      defaultValue={score}
+      borderColor={score === undefined || score === null ? 'red' : ''}
+      onChange={(_v, value) => setPronostic(value)}
     >
-      {options.map((option) => (
-        <option value={option.value} key={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </Select>
+      <NumberInputField
+        placeholder={
+          pronosticScore === undefined || pronosticScore === null ? '...' : ''
+        }
+        textAlign="center"
+        padding="0"
+      />
+    </NumberInput>
   )
 }
 

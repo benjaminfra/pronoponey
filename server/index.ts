@@ -19,8 +19,10 @@ import {
 } from './controllers/usersController'
 import { routeHandler } from './controllers/routeController'
 import { IUser } from './db/models/userModel'
-import { postPronosticsHandler } from './controllers/pronosticsController'
-import { IPronostic } from './db/models/pronosticModel'
+import {
+  getPronosticsByWeekNumberHandler,
+  postPronosticsHandler,
+} from './controllers/pronosticsController'
 import { PronosticProps } from '../pages/play/types'
 
 const isProduction = process.env.NODE_ENV === 'production'
@@ -79,6 +81,12 @@ async function startServer() {
     '/pronostic',
     { preHandler: app.auth([app.asyncVerifyJWTandLevel]) },
     postPronosticsHandler
+  )
+
+  app.get<{ Querystring: { weekNumber: number } }>(
+    '/pronostic',
+    { preHandler: app.auth([app.asyncVerifyJWTandLevel]) },
+    getPronosticsByWeekNumberHandler
   )
 
   app.get('*', routeHandler)

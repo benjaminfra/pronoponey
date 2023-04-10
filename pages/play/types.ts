@@ -16,6 +16,7 @@ export type GameProps = {
   gameDate: DateTime
   gameId: Types.ObjectId
   weekNumber: number
+  pronostic?: PronosticProps
 }
 
 export type PronosticProps = {

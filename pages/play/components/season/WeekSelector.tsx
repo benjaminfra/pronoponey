@@ -8,6 +8,7 @@ import { ensure } from '../../../../helpers/types.helpers'
 interface WeekSelectorProps {
   weeks: IWeek[]
   getGames: Function
+  getPronostics: Function
 }
 
 const findCurrentWeek = (weeks: IWeek[]): IWeek => {
@@ -28,13 +29,18 @@ const findCurrentWeek = (weeks: IWeek[]): IWeek => {
   return currentWeek
 }
 
-const WeekSelector = ({ weeks, getGames }: WeekSelectorProps) => {
+const WeekSelector = ({
+  weeks,
+  getGames,
+  getPronostics,
+}: WeekSelectorProps) => {
   const [selectedOption, setSelectedOption] = useState<IWeek>(
     findCurrentWeek(weeks)
   )
 
   useEffect(() => {
     getGames(selectedOption.weekNumber)
+    getPronostics(selectedOption.weekNumber)
   }, [selectedOption.weekNumber])
 
   const onSelect = (value: string): void => {

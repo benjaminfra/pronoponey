@@ -9,6 +9,7 @@ interface TeamScoreProps {
   isAwayTeam?: boolean
   isPlayable: boolean
   saveProno: Function
+  pronosticScore?: number
 }
 
 const TeamScore = ({
@@ -17,6 +18,7 @@ const TeamScore = ({
   isAwayTeam,
   isPlayable,
   saveProno,
+  pronosticScore,
 }: TeamScoreProps) => {
   const scoreBox = (
     <Box width="10%">
@@ -25,6 +27,7 @@ const TeamScore = ({
         isPlayable={isPlayable}
         saveProno={saveProno}
         isAwayTeam={isAwayTeam}
+        pronosticScore={pronosticScore}
       />
     </Box>
   )

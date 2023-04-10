@@ -3,19 +3,19 @@ import Score from './Score'
 
 interface ScoreResultProps {
   score?: number
+  pronosticScore?: number
   isPlayable: boolean
-  saveProno: Function
-  isAwayTeam?: boolean
+  saveProno: (value: number) => void
 }
 
 const ScoreResult = ({
   score,
   isPlayable,
   saveProno,
-  isAwayTeam,
+  pronosticScore,
 }: ScoreResultProps) => {
   return isPlayable ? (
-    <SelectScore saveProno={saveProno} isAwayTeam={isAwayTeam} />
+    <SelectScore saveProno={saveProno} pronosticScore={pronosticScore} />
   ) : (
     <Score score={score} />
   )

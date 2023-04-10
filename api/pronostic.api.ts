@@ -13,6 +13,17 @@ class PronosticService {
         throw new Error(error.response.data.message)
       })
   }
+
+  findPronosticsByWeekNumber = (weekNumber: number): Promise<IPronostic[]> => {
+    return axios
+      .get(`http://localhost:3000/pronostic?weekNumber=${weekNumber}`)
+      .then((response) => {
+        return response.data
+      })
+      .catch((error) => {
+        throw new Error(error.response.data.message)
+      })
+  }
 }
 
 export default PronosticService

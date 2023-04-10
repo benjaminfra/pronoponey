@@ -5,14 +5,14 @@ import { IGame } from '../../../server/db/models/gameModel'
 export const useGames = () => {
   const { gamesService } = useContext(ServiceContext)
   const [games, setGames] = useState<IGame[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isGamesLoading, setIsGamesLoading] = useState<boolean>(false)
 
   const getGames = async (weekNumber: number) => {
-    setIsLoading(true)
+    setIsGamesLoading(true)
     const games = await gamesService.getGamesByWeekNumber(weekNumber)
     setGames(games)
-    setIsLoading(false)
+    setIsGamesLoading(false)
   }
 
-  return { games, getGames, isLoading }
+  return { games, getGames, isGamesLoading }
 }

@@ -1,12 +1,8 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { findGamesByWeeknumber } from '../db/services/gameService'
 
-interface IQueryString {
-  weekNumber: number
-}
-
 export function getGamesHandler(
-  req: FastifyRequest<{ Querystring: IQueryString }>,
+  req: FastifyRequest<{ Querystring: { weekNumber: number } }>,
   reply: FastifyReply
 ) {
   const { weekNumber } = req.query

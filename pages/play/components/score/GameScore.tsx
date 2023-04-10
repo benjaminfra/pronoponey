@@ -2,43 +2,43 @@ import TeamScore from './TeamScore'
 import { HStack, Box, Text } from '@chakra-ui/react'
 import { ITeam } from '../../../../server/db/models/teamModel'
 import { DateTime } from 'luxon'
+import { GameProps, PronosticProps } from '../../types'
 
 interface GameScoreProps {
-  homeScore?: number
-  awayScore?: number
-  homeTeam: ITeam
-  awayTeam: ITeam
-  gameDate: DateTime
+  game: GameProps
   saveProno: Function
 }
 
-const GameScore = ({
-  homeScore,
-  awayScore,
-  homeTeam,
-  awayTeam,
-  gameDate,
-  saveProno,
-}: GameScoreProps) => {
-  const isPlayable = gameDate > DateTime.now()
+const GameScore = ({ game, saveProno }: GameScoreProps) => {
+  const isPlayable = game.gameDate > DateTime.now()
+
+  const saveHomeProno = (value: number) => {
+    saveProno(game.gameId, game.weekNumber, value, false)
+  }
+
+  const saveAwayProno = (value: number) => {
+    saveProno(game.gameId, game.weekNumber, value, true)
+  }
 
   return (
     <HStack justifyContent="center">
       <TeamScore
-        team={homeTeam}
-        score={homeScore}
+        team={game.homeTeam}
+        score={game.homeScore}
         isPlayable={isPlayable}
-        saveProno={saveProno}
+        saveProno={saveHomeProno}
+        pronosticScore={game.pronostic?.homeScore}
       />
       <Box>
         <Text>-</Text>
       </Box>
       <TeamScore
-        team={awayTeam}
-        score={awayScore}
+        team={game.awayTeam}
+        score={game.awayScore}
         isAwayTeam={true}
         isPlayable={isPlayable}
-        saveProno={saveProno}
+        saveProno={saveAwayProno}
+        pronosticScore={game.pronostic?.awayScore}
       />
     </HStack>
   )
