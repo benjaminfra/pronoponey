@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react'
 import GameScore from '../score/GameScore'
 import { GameProps } from '../../types'
+import PronosticCard from '../pronostic/PronosticCard'
 
 interface GameCardProps {
   game: GameProps
@@ -17,6 +18,7 @@ const GameCard = ({ game, saveProno }: GameCardProps) => {
       padding="1em"
     >
       <GameScore game={game} saveProno={saveProno} />
+      <PronosticCard pronostic={game.pronostic} />
     </Box>
   )
 }

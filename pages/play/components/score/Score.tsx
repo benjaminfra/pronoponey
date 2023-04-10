@@ -1,4 +1,5 @@
 import { Box, Text } from '@chakra-ui/react'
+import BigText from '../../../../common/components/BigText'
 
 interface ScoreProps {
   score?: number
@@ -7,14 +8,7 @@ interface ScoreProps {
 const Score = ({ score }: ScoreProps) => {
   return (
     <Box>
-      <Text
-        fontSize="2xl"
-        fontFamily="monospace"
-        fontWeight="bold"
-        textAlign="center"
-      >
-        {score || score === 0 ? score : 'N/A'}
-      </Text>
+      <BigText text={score || score === 0 ? score : 'N/A'} />
     </Box>
   )
 }
