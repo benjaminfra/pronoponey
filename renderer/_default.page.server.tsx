@@ -3,6 +3,7 @@ import { PageShell } from './PageShell'
 import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr'
 import logoUrl from './logo.svg'
 import type { PageContextServer, PageProps } from './types'
+import { Roles } from '../server/db/models/userModel'
 
 export { render }
 export const passToClient = ['pageProps', 'urlPathname']

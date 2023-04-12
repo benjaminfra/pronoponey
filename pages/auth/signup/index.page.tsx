@@ -28,10 +28,6 @@ export const Page = () => {
   const isUsernameValid: boolean = username.length > 5
   const isPasswordValid: boolean = password.length > 7
 
-  console.log('username: ', username)
-  console.log('isUsernameValid : ', isUsernameValid)
-  console.log('isPasswordValid : ', isPasswordValid)
-
   return (
     <AuthForm
       formTitle="Rejoins le box"

@@ -5,8 +5,8 @@ export interface Token {
 }
 
 export enum Roles {
-  Admin,
-  User,
+  Admin = '2',
+  User = '1',
 }
 
 export interface IUser {
