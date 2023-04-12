@@ -1,20 +1,15 @@
 import { useState, useContext } from 'react'
 import { AuthContext } from '../../../renderer/provider/AuthProvider'
-import EmailFormInput from '../components/EmailFormInput'
 import PasswordFormInput from '../components/PasswordFormInput'
 import UsernameFormInput from '../components/UsernameFormInput'
 import AuthForm from '../components/AuthForm'
-import { EMAIL_REGEX } from '../../../helpers/constants'
+import { Roles } from '../../../server/db/models/userModel'
 
 export const Page = () => {
-  const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [username, setUsername] = useState<string>('')
 
   const { signUp } = useContext(AuthContext)
-
-  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setEmail(e.target.value)
 
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) =>
     setPassword(e.target.value)
@@ -24,28 +19,26 @@ export const Page = () => {
 
   const onSubmit = (_e: React.MouseEvent<HTMLButtonElement>) => {
     signUp({
-      email,
       password,
       username,
+      role: Roles.User,
     })
   }
 
-  const isUsernameValid: boolean = username.length > 0
+  const isUsernameValid: boolean = username.length > 5
   const isPasswordValid: boolean = password.length > 7
-  const isEmailValid: boolean = !!email.match(EMAIL_REGEX)
+
+  console.log('username: ', username)
+  console.log('isUsernameValid : ', isUsernameValid)
+  console.log('isPasswordValid : ', isPasswordValid)
 
   return (
     <AuthForm
       formTitle="Rejoins le box"
       submitTitle="S'inscrire"
       onSubmit={onSubmit}
-      disabled={!isUsernameValid || !isPasswordValid || !isEmailValid}
+      disabled={!isUsernameValid || !isPasswordValid}
     >
-      <EmailFormInput
-        email={email}
-        onChange={onChangeEmail}
-        isValid={email === '' || isEmailValid}
-      />
       <UsernameFormInput
         username={username}
         onChange={onChangeUsername}

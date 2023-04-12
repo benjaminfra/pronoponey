@@ -6,7 +6,7 @@ import {
   FormHelperText,
 } from '@chakra-ui/react'
 
-interface EmailFormInputProps {
+interface UsernameFormInputProps {
   username: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   isValid?: boolean
@@ -16,7 +16,7 @@ const UsernameFormInput = ({
   username,
   onChange,
   isValid,
-}: EmailFormInputProps) => {
+}: UsernameFormInputProps) => {
   return (
     <FormControl isInvalid={isValid === false} id="username" isRequired>
       <FormLabel>Nom d'utilisateur</FormLabel>
@@ -27,8 +27,7 @@ const UsernameFormInput = ({
       />
       <FormErrorMessage>Le nom d'utilisateur est obligatoire</FormErrorMessage>
       <FormHelperText fontSize={12} opacity="66%">
-        C'est le nom que tout le monde verra, mais tu peux le changer quand tu
-        veux
+        C'est le nom que tout le monde verra, soit créatif, et souviens-t-en
       </FormHelperText>
     </FormControl>
   )

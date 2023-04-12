@@ -9,7 +9,6 @@ import {
 import { ILoggedUser, IUser } from '../../server/db/models/userModel'
 import { useToast } from '@chakra-ui/react'
 import { ServiceContext } from './ServiceProvider'
-import { ensure } from '../../helpers/types.helpers'
 
 interface IAuthProvider {
   children: React.ReactNode
@@ -82,7 +81,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
     }
   }
 
-  const logoutUser = async (user: ILoggedUser) => {
+  const logoutUser = async () => {
     setIsUserLoading(true)
     try {
       await authService.logout()
@@ -117,8 +116,8 @@ const AuthProvider = ({ children }: IAuthProvider) => {
     await loginUser(user)
   }, [])
 
-  const memoizedLogoutUser = useCallback(async (user: ILoggedUser) => {
-    await logoutUser(user)
+  const memoizedLogoutUser = useCallback(async () => {
+    await logoutUser()
   }, [])
 
   const userCtx = useMemo(

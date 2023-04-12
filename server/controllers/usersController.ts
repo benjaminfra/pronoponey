@@ -30,7 +30,8 @@ export async function loginHandler(req: FastifyRequest, reply: FastifyReply) {
     const loggedUser: ILoggedUser = {
       id: req.user.id,
       tokens: [{ token }],
-      username: ensure(req.user.username),
+      username: req.user.username,
+      role: ensure(req.user.role),
     }
     await reply
       .setCookie('loggedUser', JSON.stringify(loggedUser))
@@ -67,7 +68,7 @@ export async function asyncVerifyUserAndPassword(
 ) {
   try {
     if (!request.body) {
-      throw new Error('Email et mot de passe requis')
+      throw new Error("Nom d'utilisateur et mot de passe requis")
     }
     const user = await login(request.body)
     request.user = user

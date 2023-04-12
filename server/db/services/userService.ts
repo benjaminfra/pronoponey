@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs'
-import { EMAIL_REGEX } from '../../../helpers/constants'
 import { ensure } from '../../../helpers/types.helpers'
-import { IUser, ILoggedUser, User, Token } from '../models/userModel'
+import { IUser, ILoggedUser, User, Roles } from '../models/userModel'
 import jwt, { Secret } from 'jsonwebtoken'
 import { Document } from 'mongoose'
 
@@ -11,19 +10,16 @@ export const createUser = async (user: IUser): Promise<ILoggedUser> => {
   if (!user.password || user.password.length < 8) {
     throw new Error('Le mot de passe ne respecte pas les règles en place')
   }
-  if (!user.email || !user.email.match(EMAIL_REGEX)) {
-    throw new Error("L'email n'est pas correct")
-  }
-  if (!user.username) {
-    throw new Error("Le nom d'utilisateur est obligatoire")
+  if (!user.username || user.username.length < 6) {
+    throw new Error("Le nom d'utilisateur n'est pas correct")
   }
   try {
     const encryptPassword = await bcrypt.hash(user.password, 10)
 
     const userToSave = new User({
-      email: user.email,
       password: encryptPassword,
       username: user.username,
+      role: Roles.User,
     })
 
     let savedUser = await userToSave.save()
@@ -32,34 +28,36 @@ export const createUser = async (user: IUser): Promise<ILoggedUser> => {
       username: ensure(savedUser.username),
       id: savedUser._id,
       tokens: ensure(savedUser.tokens),
+      role: ensure(savedUser.role),
     }
   } catch (error: any) {
     if (error.code === 11000) {
-      console.log(`Utilisateur ${user.email} déjà existant`)
+      console.log(`Utilisateur ${user.username} déjà existant`)
       throw new Error('Erreur lors de la création du compte')
     } else {
       console.log(
-        `Erreur lors de la création de l'utilisateur ${user.email} : ${error}`
+        `Erreur lors de la création de l'utilisateur ${user.username} : ${error}`
       )
       throw new Error('Erreur lors de la création du compte')
     }
   }
 }
 
-const INVALID_CREDENTIALS_ERROR_MESSAGE = 'Mot de passe et/ou email incorrect'
+const INVALID_CREDENTIALS_ERROR_MESSAGE =
+  "Mot de passe et/ou nom d'utilisateur incorrect"
 
 const verifyPassword = async (password: string, hashedPassword: string) => {
   return await bcrypt.compare(password, hashedPassword)
 }
 
-const findUserByEmail = async (
-  email: string
+const findUserByUsername = async (
+  username: string
 ): Promise<(IUser & Document) | null> => {
   try {
-    return User.findOne({ email })
+    return User.findOne({ username })
   } catch (error) {
     console.log(
-      `Une Erreur est survenue lors de la récupération de l'utilisateur ${email} : ${error}`
+      `Une Erreur est survenue lors de la récupération de l'utilisateur ${username} : ${error}`
     )
     throw new Error('Une erreur lors de la connexion')
   }
@@ -67,7 +65,7 @@ const findUserByEmail = async (
 
 export const login = async (user: IUser): Promise<IUser & Document> => {
   try {
-    const searchedUser = await findUserByEmail(user.email)
+    const searchedUser = await findUserByUsername(user.username)
     if (!searchedUser) {
       throw new Error(INVALID_CREDENTIALS_ERROR_MESSAGE)
     }
@@ -82,7 +80,7 @@ export const login = async (user: IUser): Promise<IUser & Document> => {
     }
   } catch (error) {
     console.log(
-      `Une Erreur est survenue lors de la récupération de l'utilisateur ${user.email} : ${error}`
+      `Une Erreur est survenue lors de la récupération de l'utilisateur ${user.username} : ${error}`
     )
     throw new Error(INVALID_CREDENTIALS_ERROR_MESSAGE)
   }

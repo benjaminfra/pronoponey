@@ -1,30 +1,30 @@
 import { useState, useContext } from 'react'
 import { AuthContext } from '../../../renderer/provider/AuthProvider'
-import EmailFormInput from '../components/EmailFormInput'
 import PasswordFormInput from '../components/PasswordFormInput'
 import AuthForm from '../components/AuthForm'
-import { EMAIL_REGEX } from '../../../helpers/constants'
+import UsernameFormInput from '../components/UsernameFormInput'
+import { Roles } from '../../../server/db/models/userModel'
 
 export const Page = () => {
-  const [email, setEmail] = useState<string>('')
+  const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
   const { login } = useContext(AuthContext)
 
-  const onChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setEmail(e.target.value)
+  const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setUsername(e.target.value)
 
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) =>
     setPassword(e.target.value)
 
   const onSubmit = (_e: React.MouseEvent<HTMLButtonElement>) => {
     login({
-      email,
+      username,
       password,
     })
   }
 
-  const isEmailValid: boolean = !!email.match(EMAIL_REGEX)
+  const isUsernameValid: boolean = username.length > 5
   const isPasswordValid: boolean = password.length > 0
 
   return (
@@ -32,12 +32,12 @@ export const Page = () => {
       formTitle="Connecte-toi"
       submitTitle="Se connecter"
       onSubmit={onSubmit}
-      disabled={!isEmailValid || !isPasswordValid}
+      disabled={!isUsernameValid || !isPasswordValid}
     >
-      <EmailFormInput
-        email={email}
-        onChange={onChangeEmail}
-        isValid={email === '' || isEmailValid}
+      <UsernameFormInput
+        username={username}
+        onChange={onChangeUsername}
+        isValid={username === '' || isUsernameValid}
       />
       <PasswordFormInput password={password} onChange={onChangePassword} />
     </AuthForm>
