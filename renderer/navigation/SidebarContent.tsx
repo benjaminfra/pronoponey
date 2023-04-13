@@ -1,7 +1,9 @@
 import { Box, BoxProps, CloseButton, Flex, Text } from '@chakra-ui/react'
 import NavItem from './NavItem'
 import { IconType } from 'react-icons'
-import { FiHome, FiDribbble, FiLogIn } from 'react-icons/fi'
+import { FiHome, FiDribbble, FiLogIn, FiTool } from 'react-icons/fi'
+import { Roles } from '../../server/db/models/userModel'
+import { usePageContext } from '../usePageContext'
 
 interface SidebarProps extends BoxProps {
   onClose: () => void
@@ -13,13 +15,26 @@ interface LinkItemProps {
   href: string
 }
 
-const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome, href: '/' },
-  { name: 'Play', icon: FiDribbble, href: '/play' },
-  { name: 'Login', icon: FiLogIn, href: '/auth/login' },
-]
-
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const pageContext = usePageContext()
+
+  let LinkItems: Array<LinkItemProps> = [
+    { name: 'Home', icon: FiHome, href: '/' },
+  ]
+
+  const loggedUser = pageContext.loggedUser
+
+  if (loggedUser) {
+    LinkItems.push({ name: 'Play', icon: FiDribbble, href: '/play' })
+    if (loggedUser.role === Roles.Admin) {
+      LinkItems.push({
+        name: 'Admin',
+        icon: FiTool,
+        href: '/admin',
+      })
+    }
+  }
+
   return (
     <Box
       transition="3s ease"

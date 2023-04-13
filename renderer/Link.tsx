@@ -7,9 +7,11 @@ function Link(props: {
   children: React.ReactNode
 }) {
   const pageContext = usePageContext()
+
   const className = [
     props.className,
     pageContext.urlPathname === props.href && 'is-active',
+    props.href && pageContext.urlPathname === props.href && 'is-active',
   ]
     .filter(Boolean)
     .join(' ')

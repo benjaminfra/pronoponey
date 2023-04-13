@@ -45,11 +45,8 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
 
       <HStack spacing={{ base: '0', md: '6' }}>
         <Flex alignItems={'center'}>
-          {pageContext.pageProps?.loggedUser ? (
-            <HeaderMenu
-              user={pageContext.pageProps?.loggedUser}
-              logout={logout}
-            />
+          {pageContext.loggedUser ? (
+            <HeaderMenu user={pageContext.loggedUser} logout={logout} />
           ) : (
             <HStack spacing={5}>
               <LinkButton href="/auth/signup" title="S'incrire" />
