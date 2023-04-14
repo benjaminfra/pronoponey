@@ -1,5 +1,5 @@
-import { PageContext } from '../../renderer/types'
-import { Roles } from '../../server/db/models/userModel'
+import { PageContext } from '../../../renderer/types'
+import { Roles } from '../../../server/db/models/userModel'
 
 export const onBeforeRender = async (pageContext: PageContext) => {
   if (!pageContext.loggedUser) {

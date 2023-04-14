@@ -3,7 +3,6 @@ import { AuthContext } from '../../../renderer/provider/AuthProvider'
 import PasswordFormInput from '../components/PasswordFormInput'
 import AuthForm from '../components/AuthForm'
 import UsernameFormInput from '../components/UsernameFormInput'
-import { Roles } from '../../../server/db/models/userModel'
 
 export const Page = () => {
   const [username, setUsername] = useState<string>('')

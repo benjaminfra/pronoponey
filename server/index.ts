@@ -9,7 +9,7 @@ import vite from 'vite'
 import mongoose from 'mongoose'
 import { getWeeksHandler } from './controllers/weeksController'
 import { getGamesHandler } from './controllers/gamesController'
-import { getTeamsHandler } from './controllers/teamsController'
+import { getTeamsHandler, postTeams } from './controllers/teamsController'
 import {
   asyncVerifyJWTandLevel,
   asyncVerifyUserAndPassword,
@@ -24,6 +24,7 @@ import {
   postPronosticsHandler,
 } from './controllers/pronosticsController'
 import { PronosticProps } from '../pages/play/types'
+import { ITeam } from './db/models/teamModel'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const root = `${__dirname}/..`
@@ -87,6 +88,11 @@ async function startServer() {
     '/pronostic',
     { preHandler: app.auth([app.asyncVerifyJWTandLevel]) },
     getPronosticsByWeekNumberHandler
+  )
+  app.post<{ Body: ITeam }>(
+    '/teams',
+    { preHandler: app.auth([app.asyncVerifyJWTandLevel]) },
+    postTeams
   )
 
   app.get('*', routeHandler)

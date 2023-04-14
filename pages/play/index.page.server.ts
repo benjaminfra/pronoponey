@@ -9,6 +9,7 @@ export const onBeforeRender = async (pageContext: PageContext) => {
       },
     }
   }
+
   const weeksResponse = await fetch('http://localhost:3000/weeks')
   const teamsResponse = await fetch('http://localhost:3000/teams')
 
