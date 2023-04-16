@@ -2,11 +2,9 @@ import { ITeam } from '../server/db/models/teamModel'
 import axios from 'axios'
 
 class TeamsService {
-  createTeam = (team: ITeam): Promise<ITeam> => {
+  createTeam = (form: FormData): Promise<ITeam> => {
     return axios
-      .post('http://localhost:3000/teams', {
-        team,
-      })
+      .post('http://localhost:3000/teams', form)
       .then((response) => {
         return response.data
       })

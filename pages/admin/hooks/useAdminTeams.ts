@@ -15,8 +15,8 @@ export const useAdminTeams = () => {
     fetchData()
   }, [])
 
-  const createNewTeam = async (team: ITeam) => {
-    const savedTeam = await teamsService.createTeam(team)
+  const createNewTeam = async (form: FormData) => {
+    const savedTeam = await teamsService.createTeam(form)
     setTeams([...teams, savedTeam])
   }
 

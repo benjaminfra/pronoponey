@@ -10,31 +10,41 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useDisclosure,
   VStack,
 } from '@chakra-ui/react'
 import { FileInput } from '../../../../common/InputFile'
 import { useState } from 'react'
 
 interface AddTeamModalProps {
-  onSave: Function
+  onSave: (form: FormData) => void
+  onClose: () => void
+  onOpen: () => void
+  isOpen: boolean
 }
 
-const AddTeamModal = ({ onSave }: AddTeamModalProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
-
+const AddTeamModal = ({
+  onSave,
+  onClose,
+  onOpen,
+  isOpen,
+}: AddTeamModalProps) => {
   const [name, setName] = useState<string>()
   const [shortname, setShortname] = useState<string>()
   const [selectedFile, setSelectedFile] = useState<File>()
 
   const onCloseModal = () => {
-    console.log(selectedFile)
+    const formData = new FormData()
+    if (name && shortname && selectedFile) {
+      formData.append('name', name)
+      formData.append('shortname', shortname)
+      formData.append('file', selectedFile)
+      onSave(formData)
+      onClose()
+    }
   }
 
   return (
     <>
-      <Button onClick={onOpen}>Ajouter une équipe</Button>
-
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>

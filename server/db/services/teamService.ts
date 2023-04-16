@@ -11,14 +11,19 @@ export const findAllTeams = async (): Promise<ITeam[]> => {
   }
 }
 
-export const createTeam = async (team: ITeam): Promise<ITeam> => {
+export const createTeam = async (
+  name: string,
+  shortname: string,
+  logoURI: string
+): Promise<ITeam> => {
   try {
-    const teamToSave = new Team(team)
+    const teamToSave = new Team({ name, shortname, logoURI })
     await teamToSave.save()
+    console.log(`Sauvegarde de l'équipe ${name}`)
     return teamToSave
   } catch (error) {
     console.log(
-      `Une erreur est survenue lors de la création de l'équipe ${team.name}, ${team.shortname}, ${team.logoURI}`
+      `Une erreur est survenue lors de la création de l'équipe ${name}, ${shortname}, ${logoURI}`
     )
   }
   throw new Error("Une erreur est survenue lors de la création de l'équipe")

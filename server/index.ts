@@ -3,6 +3,7 @@ import middie from '@fastify/middie'
 import fastifyStatic from '@fastify/static'
 import fastifyAuth from '@fastify/auth'
 import fastifyCookie from '@fastify/cookie'
+import fastifyMultipart from '@fastify/multipart'
 import fastify from 'fastify'
 import path from 'path'
 import vite from 'vite'
@@ -24,7 +25,6 @@ import {
   postPronosticsHandler,
 } from './controllers/pronosticsController'
 import { PronosticProps } from '../pages/play/types'
-import { ITeam } from './db/models/teamModel'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const root = `${__dirname}/..`
@@ -36,6 +36,7 @@ async function startServer() {
 
   await app.register(middie)
   await app.register(compress)
+  await app.register(fastifyMultipart)
   await app
     .decorate('asyncVerifyJWTandLevel', asyncVerifyJWTandLevel)
     .decorate('asyncVerifyUserAndPassword', asyncVerifyUserAndPassword)
@@ -56,6 +57,10 @@ async function startServer() {
     const viteServer = await vite.createServer({
       root,
       server: { middlewareMode: true },
+    })
+    app.register(fastifyStatic, {
+      root: path.join(__dirname, 'public'),
+      prefix: '/assets/',
     })
     await app.use(viteServer.middlewares)
   }
@@ -89,7 +94,7 @@ async function startServer() {
     { preHandler: app.auth([app.asyncVerifyJWTandLevel]) },
     getPronosticsByWeekNumberHandler
   )
-  app.post<{ Body: ITeam }>(
+  app.post(
     '/teams',
     { preHandler: app.auth([app.asyncVerifyJWTandLevel]) },
     postTeams
