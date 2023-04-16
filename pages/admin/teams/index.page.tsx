@@ -1,7 +1,16 @@
-import { Wrap, WrapItem, Box, useDisclosure, Button } from '@chakra-ui/react'
-import AddTeamModal from '../components/addTeamModal/AddTeamModal'
+import {
+  Wrap,
+  WrapItem,
+  Box,
+  useDisclosure,
+  Button,
+  Icon,
+  VStack,
+} from '@chakra-ui/react'
+import AddTeamModal from '../components/teams/AddTeamModal'
 import { useAdminTeams } from '../hooks/useAdminTeams'
-import TeamCard from '../components/teamCard/TeamCard'
+import TeamCard from '../components/teams/TeamCard'
+import { FiPlus } from 'react-icons/fi'
 
 export const Page = () => {
   const { teams, createNewTeam } = useAdminTeams()
@@ -16,17 +25,20 @@ export const Page = () => {
             bg="white"
             rounded={'lg'}
             backgroundColor="white"
-            padding={8}
             width="100%"
             boxShadow={'lg'}
             height="100%"
           >
-            <Button w="100%" h="100%" onClick={onOpen}>
-              Ajouter une équipe
+            <Button w="100%" h="100%" onClick={onOpen} backgroundColor="white">
+              <VStack spacing={2}>
+                <Box>
+                  <Icon as={FiPlus} w={10} h={10} />
+                </Box>
+                <Box>Ajouter une équipe</Box>
+              </VStack>
             </Button>
             <AddTeamModal
               onSave={createNewTeam}
-              onOpen={onOpen}
               onClose={onClose}
               isOpen={isOpen}
             />
