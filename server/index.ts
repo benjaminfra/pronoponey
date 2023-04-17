@@ -106,7 +106,7 @@ async function startServer() {
     postTeams
   )
 
-  app.delete<{ Params: { id: Types.ObjectId } }>(
+  app.delete<{ Params: { id: string } }>(
     '/teams/:id',
     { preHandler: app.auth([app.asyncVerifyAdminJWT]) },
     deleteTeams

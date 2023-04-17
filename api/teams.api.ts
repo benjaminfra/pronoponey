@@ -27,7 +27,7 @@ class TeamsService {
 
   deleteTeam = (id: Types.ObjectId): Promise<void> => {
     return axios
-      .delete(`http://localhost:3000/teams/${id}`)
+      .delete(`http://localhost:3000/teams/${id.toString()}`)
       .then((response) => {
         return response.data
       })

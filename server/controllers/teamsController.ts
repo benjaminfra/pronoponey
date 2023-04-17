@@ -7,7 +7,7 @@ import {
 } from '../db/services/teamService'
 import { deleteFile, uploadFile } from '../upload/uploadService'
 import { MultipartValue } from '@fastify/multipart'
-import { Types } from 'mongoose'
+import { ObjectId } from '@fastify/mongodb'
 
 export function getTeamsHandler(_req: any, reply: FastifyReply) {
   findAllTeams()
@@ -44,14 +44,16 @@ export const postTeams = async (req: FastifyRequest, reply: FastifyReply) => {
 }
 
 export const deleteTeams = async (
-  req: FastifyRequest<{ Params: { id: Types.ObjectId } }>,
+  req: FastifyRequest<{ Params: { id: string } }>,
   reply: FastifyReply
 ) => {
   try {
+    if (!ObjectId.isValid(req.params.id)) {
+      return reply.status(400).send('ID de ressource invalide')
+    }
     const deletedTeam = await deleteTeam(req.params.id)
     if (!deletedTeam) {
-      reply.status(404).send('Aucune équipe correspondant à la requête')
-      return
+      return reply.status(404).send('Aucune équipe correspondant à la requête')
     }
     await deleteFile(deletedTeam.logoURI)
     reply.status(204).send()

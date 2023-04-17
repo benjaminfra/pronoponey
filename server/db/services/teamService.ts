@@ -30,9 +30,9 @@ export const createTeam = async (
   throw new Error("Une erreur est survenue lors de la création de l'équipe")
 }
 
-export const deleteTeam = async (id: Types.ObjectId): Promise<ITeam | null> => {
+export const deleteTeam = async (id: string): Promise<ITeam | null> => {
   try {
-    return Team.findOneAndDelete({ _id: id })
+    return Team.findOneAndDelete({ _id: new Types.ObjectId(id) })
   } catch (error) {
     console.error(
       `Une erreur est survenue lors de la suppression de l'équipe ${id} : ${error}`
