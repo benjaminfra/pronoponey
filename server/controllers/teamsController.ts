@@ -1,4 +1,4 @@
-import { FastifyReply, FastifyRequest } from 'fastify'
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
 import { ensure } from '../../helpers/types.helpers'
 import {
   findAllTeams,
@@ -9,7 +9,7 @@ import { deleteFile, uploadFile } from '../upload/uploadService'
 import { MultipartValue } from '@fastify/multipart'
 import { ObjectId } from '@fastify/mongodb'
 
-export function getTeamsHandler(_req: any, reply: FastifyReply) {
+function getTeamsHandler(_req: any, reply: FastifyReply) {
   findAllTeams()
     .then((data) => {
       reply.status(200).send(data)
@@ -19,7 +19,7 @@ export function getTeamsHandler(_req: any, reply: FastifyReply) {
     })
 }
 
-export const postTeams = async (req: FastifyRequest, reply: FastifyReply) => {
+const postTeams = async (req: FastifyRequest, reply: FastifyReply) => {
   try {
     const data = await req.file()
     if (!data) {
@@ -43,7 +43,7 @@ export const postTeams = async (req: FastifyRequest, reply: FastifyReply) => {
   }
 }
 
-export const deleteTeams = async (
+const deleteTeams = async (
   req: FastifyRequest<{ Params: { id: string } }>,
   reply: FastifyReply
 ) => {
@@ -62,4 +62,18 @@ export const deleteTeams = async (
       .status(500)
       .send("Une erreur s'est produite lors de la suppresison de l'équipe")
   }
+}
+
+export const registerTeamController = (app: FastifyInstance): void => {
+  app.post(
+    '/teams',
+    { preHandler: app.auth([app.asyncVerifyAdminJWT]) },
+    postTeams
+  )
+  app.delete<{ Params: { id: string } }>(
+    '/teams/:id',
+    { preHandler: app.auth([app.asyncVerifyAdminJWT]) },
+    deleteTeams
+  )
+  app.get('/teams', getTeamsHandler)
 }

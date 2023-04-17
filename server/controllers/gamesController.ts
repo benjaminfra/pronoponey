@@ -1,7 +1,7 @@
-import { FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { findGamesByWeeknumber } from '../db/services/gameService'
 
-export function getGamesHandler(
+function getGamesHandler(
   req: FastifyRequest<{ Querystring: { weekNumber: number } }>,
   reply: FastifyReply
 ) {
@@ -13,4 +13,8 @@ export function getGamesHandler(
     .catch((error) => {
       reply.status(500).type('text/html').send(error)
     })
+}
+
+export const registerGamesController = (app: FastifyInstance): void => {
+  app.get<{ Querystring: { weekNumber: number } }>('/games', getGamesHandler)
 }

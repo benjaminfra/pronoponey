@@ -1,7 +1,7 @@
-import { FastifyReply } from 'fastify'
+import { FastifyInstance, FastifyReply } from 'fastify'
 import { findAllWeeksAndSortByWeekNumber } from '../db/services/weekService'
 
-export function getWeeksHandler(_req: any, reply: FastifyReply) {
+function getWeeksHandler(_req: any, reply: FastifyReply) {
   findAllWeeksAndSortByWeekNumber()
     .then((data) => {
       reply.status(200).send(data)
@@ -9,4 +9,8 @@ export function getWeeksHandler(_req: any, reply: FastifyReply) {
     .catch((error) => {
       reply.status(500).type('text/html').send(error)
     })
+}
+
+export const registerWeeksController = (app: FastifyInstance) => {
+  app.get('/weeks', getWeeksHandler)
 }

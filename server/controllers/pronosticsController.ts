@@ -1,4 +1,4 @@
-import { FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { PronosticProps } from '../../pages/play/types'
 import { Pronostic } from '../db/models/pronosticModel'
 import {
@@ -6,7 +6,7 @@ import {
   savePronostic,
 } from '../db/services/pronosticService'
 
-export const postPronosticsHandler = async (
+const postPronosticsHandler = async (
   req: FastifyRequest<{ Body: PronosticProps }>,
   reply: FastifyReply
 ) => {
@@ -26,7 +26,7 @@ export const postPronosticsHandler = async (
     })
 }
 
-export const getPronosticsByWeekNumberHandler = (
+const getPronosticsByWeekNumberHandler = (
   req: FastifyRequest<{ Querystring: { weekNumber: number } }>,
   reply: FastifyReply
 ) => {
@@ -37,4 +37,18 @@ export const getPronosticsByWeekNumberHandler = (
     .catch((error) => {
       reply.status(500).type('text/html').send(error)
     })
+}
+
+export const registerPronosticController = (app: FastifyInstance) => {
+  app.post<{ Body: PronosticProps }>(
+    '/pronostic',
+    { preHandler: app.auth([app.asyncVerifyJWTandLevel]) },
+    postPronosticsHandler
+  )
+
+  app.get<{ Querystring: { weekNumber: number } }>(
+    '/pronostic',
+    { preHandler: app.auth([app.asyncVerifyJWTandLevel]) },
+    getPronosticsByWeekNumberHandler
+  )
 }

@@ -35,6 +35,17 @@ class TeamsService {
         throw new Error(error.response.data.message)
       })
   }
+
+  modifyTeam = (form: FormData): Promise<void> => {
+    return axios
+      .put('http://localhost:3000/teams', form)
+      .then((response) => {
+        return response.data
+      })
+      .catch((error) => {
+        throw new Error(error.response.data.message)
+      })
+  }
 }
 
 export default TeamsService

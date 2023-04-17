@@ -1,4 +1,4 @@
-import { FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
 import { ILoggedUser, IUser, Roles } from '../db/models/userModel'
 import {
   createUser,
@@ -9,7 +9,7 @@ import {
 } from '../db/services/userService'
 import { ensure } from '../../helpers/types.helpers'
 
-export async function registerHandler(
+async function registerHandler(
   req: FastifyRequest<{ Body: IUser }>,
   reply: FastifyReply
 ) {
@@ -24,7 +24,7 @@ export async function registerHandler(
   }
 }
 
-export async function loginHandler(req: FastifyRequest, reply: FastifyReply) {
+async function loginHandler(req: FastifyRequest, reply: FastifyReply) {
   try {
     const token = await generateToken(req.user)
     const loggedUser: ILoggedUser = {
@@ -90,14 +90,29 @@ export async function asyncVerifyUserAndPassword(
   }
 }
 
-export async function logoutHandler(
-  request: FastifyRequest,
-  reply: FastifyReply
-) {
+async function logoutHandler(request: FastifyRequest, reply: FastifyReply) {
   try {
     await logout(request.user, request.token)
     reply.clearCookie('loggedUser').status(204).send()
   } catch (error) {
     reply.code(500).send()
   }
+}
+
+export const registerUserController = (app: FastifyInstance): void => {
+  app.post(
+    '/login',
+    {
+      preHandler: app.auth([app.asyncVerifyUserAndPassword]),
+    },
+    loginHandler
+  )
+  app.post(
+    '/logout',
+    {
+      preHandler: app.auth([app.asyncVerifyJWTandLevel]),
+    },
+    logoutHandler
+  )
+  app.post<{ Body: IUser }>('/register', registerHandler)
 }

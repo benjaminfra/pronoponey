@@ -7,29 +7,18 @@ import fastifyMultipart from '@fastify/multipart'
 import fastify from 'fastify'
 import path from 'path'
 import vite from 'vite'
-import mongoose, { Types } from 'mongoose'
-import { getWeeksHandler } from './controllers/weeksController'
-import { getGamesHandler } from './controllers/gamesController'
-import {
-  deleteTeams,
-  getTeamsHandler,
-  postTeams,
-} from './controllers/teamsController'
+import mongoose from 'mongoose'
+import { registerWeeksController } from './controllers/weeksController'
+import { registerGamesController } from './controllers/gamesController'
+import { registerTeamController } from './controllers/teamsController'
 import {
   asyncVerifyJWTandLevel,
   asyncVerifyUserAndPassword,
   asyncVerifyAdminJWT,
-  registerHandler,
-  loginHandler,
-  logoutHandler,
+  registerUserController,
 } from './controllers/usersController'
 import { routeHandler } from './controllers/routeController'
-import { IUser } from './db/models/userModel'
-import {
-  getPronosticsByWeekNumberHandler,
-  postPronosticsHandler,
-} from './controllers/pronosticsController'
-import { PronosticProps } from '../pages/play/types'
+import { registerPronosticController } from './controllers/pronosticsController'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const root = `${__dirname}/..`
@@ -71,46 +60,11 @@ async function startServer() {
     await app.use(viteServer.middlewares)
   }
 
-  app.get('/weeks', getWeeksHandler)
-  app.get<{ Querystring: { weekNumber: number } }>('/games', getGamesHandler)
-  app.get('/teams', getTeamsHandler)
-  app.post<{ Body: IUser }>('/register', registerHandler)
-  app.post(
-    '/login',
-    {
-      preHandler: app.auth([app.asyncVerifyUserAndPassword]),
-    },
-    loginHandler
-  )
-  app.post(
-    '/logout',
-    {
-      preHandler: app.auth([app.asyncVerifyJWTandLevel]),
-    },
-    logoutHandler
-  )
-  app.post<{ Body: PronosticProps }>(
-    '/pronostic',
-    { preHandler: app.auth([app.asyncVerifyJWTandLevel]) },
-    postPronosticsHandler
-  )
-
-  app.get<{ Querystring: { weekNumber: number } }>(
-    '/pronostic',
-    { preHandler: app.auth([app.asyncVerifyJWTandLevel]) },
-    getPronosticsByWeekNumberHandler
-  )
-  app.post(
-    '/teams',
-    { preHandler: app.auth([app.asyncVerifyAdminJWT]) },
-    postTeams
-  )
-
-  app.delete<{ Params: { id: string } }>(
-    '/teams/:id',
-    { preHandler: app.auth([app.asyncVerifyAdminJWT]) },
-    deleteTeams
-  )
+  registerTeamController(app)
+  registerUserController(app)
+  registerGamesController(app)
+  registerPronosticController(app)
+  registerWeeksController(app)
 
   app.get('*', routeHandler)
 
