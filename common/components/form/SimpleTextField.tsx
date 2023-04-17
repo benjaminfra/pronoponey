@@ -5,7 +5,7 @@ import {
   FormErrorMessage,
 } from '@chakra-ui/react'
 
-interface SimpleTextField {
+interface SimpleTextFieldProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   name: string
   label: string
@@ -19,7 +19,7 @@ const SimpleTextField = ({
   label,
   value,
   isRequired = false,
-}: SimpleTextField) => {
+}: SimpleTextFieldProps) => {
   const isInvalid: boolean = isRequired && value === ''
 
   return (

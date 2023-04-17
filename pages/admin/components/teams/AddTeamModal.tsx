@@ -38,8 +38,6 @@ const AddTeamModal = ({ onSave, onClose, isOpen }: AddTeamModalProps) => {
     formFields.shortname === '' ||
     !formFields.file
 
-  console.log(isDisable)
-
   const onCloseModal = () => {
     if (isDisable) {
       setHasError(true)

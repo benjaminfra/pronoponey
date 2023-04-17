@@ -1,3 +1,4 @@
+import { Types } from 'mongoose'
 import { ITeam, Team } from '../models/teamModel'
 
 export const findAllTeams = async (): Promise<ITeam[]> => {
@@ -27,4 +28,17 @@ export const createTeam = async (
     )
   }
   throw new Error("Une erreur est survenue lors de la création de l'équipe")
+}
+
+export const deleteTeam = async (id: Types.ObjectId): Promise<ITeam | null> => {
+  try {
+    return Team.findOneAndDelete({ _id: id })
+  } catch (error) {
+    console.error(
+      `Une erreur est survenue lors de la suppression de l'équipe ${id} : ${error}`
+    )
+    throw new Error(
+      "Une erreur est survenue lors de la suppression de l'équipe"
+    )
+  }
 }

@@ -15,5 +15,9 @@ declare module 'fastify' {
       request: FastifyRequest,
       reply: FastifyReply
     ) => Promise<void>
+    asyncVerifyAdminJWT: (
+      request: FastifyRequest,
+      reply: FastifyReply
+    ) => Promise<void>
   }
 }

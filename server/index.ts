@@ -7,13 +7,18 @@ import fastifyMultipart from '@fastify/multipart'
 import fastify from 'fastify'
 import path from 'path'
 import vite from 'vite'
-import mongoose from 'mongoose'
+import mongoose, { Types } from 'mongoose'
 import { getWeeksHandler } from './controllers/weeksController'
 import { getGamesHandler } from './controllers/gamesController'
-import { getTeamsHandler, postTeams } from './controllers/teamsController'
+import {
+  deleteTeams,
+  getTeamsHandler,
+  postTeams,
+} from './controllers/teamsController'
 import {
   asyncVerifyJWTandLevel,
   asyncVerifyUserAndPassword,
+  asyncVerifyAdminJWT,
   registerHandler,
   loginHandler,
   logoutHandler,
@@ -40,6 +45,7 @@ async function startServer() {
   await app
     .decorate('asyncVerifyJWTandLevel', asyncVerifyJWTandLevel)
     .decorate('asyncVerifyUserAndPassword', asyncVerifyUserAndPassword)
+    .decorate('asyncVerifyAdminJWT', asyncVerifyAdminJWT)
     .register(fastifyAuth)
   await app.register(fastifyCookie)
 
@@ -96,8 +102,14 @@ async function startServer() {
   )
   app.post(
     '/teams',
-    { preHandler: app.auth([app.asyncVerifyJWTandLevel]) },
+    { preHandler: app.auth([app.asyncVerifyAdminJWT]) },
     postTeams
+  )
+
+  app.delete<{ Params: { id: Types.ObjectId } }>(
+    '/teams/:id',
+    { preHandler: app.auth([app.asyncVerifyAdminJWT]) },
+    deleteTeams
   )
 
   app.get('*', routeHandler)

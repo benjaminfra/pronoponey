@@ -1,5 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { ILoggedUser, IUser } from '../db/models/userModel'
+import { ILoggedUser, IUser, Roles } from '../db/models/userModel'
 import {
   createUser,
   findByToken,
@@ -48,17 +48,30 @@ export async function asyncVerifyJWTandLevel(
 ) {
   try {
     if (!request.headers.authorization) {
+      reply.status(403).send('Forbidden')
       throw new Error('No token was sent')
     }
     const token = request.headers.authorization.replace('Bearer ', '')
     const user = await findByToken(token)
     if (!user) {
+      reply.status(403).send('Forbidden')
       throw new Error('Authentication failed!')
     }
     request.user = user
     request.token = token
   } catch (error) {
     reply.code(401).send(error)
+  }
+}
+
+export async function asyncVerifyAdminJWT(
+  request: FastifyRequest,
+  reply: FastifyReply
+) {
+  await asyncVerifyJWTandLevel(request, reply)
+  if (request.user.role !== Roles.Admin) {
+    reply.status(403).send('Forbidden')
+    throw new Error('Forbidden')
   }
 }
 
