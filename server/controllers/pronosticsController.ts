@@ -3,7 +3,7 @@ import { PronosticProps } from '../../pages/play/types'
 import { Pronostic } from '../db/models/pronosticModel'
 import {
   findPronosticByWeekNumber,
-  savePronostic,
+  savePronostic
 } from '../db/services/pronosticService'
 
 const postPronosticsHandler = async (
@@ -15,7 +15,7 @@ const postPronosticsHandler = async (
     homeScore: req.body.homeScore,
     gameId: req.body.gameId,
     userId: req.user._id,
-    weekNumber: req.body.weekNumber,
+    weekNumber: req.body.weekNumber
   })
   savePronostic(pronostic)
     .then(() => {
@@ -39,7 +39,7 @@ const getPronosticsByWeekNumberHandler = (
     })
 }
 
-export const registerPronosticController = (app: FastifyInstance) => {
+const registerPronosticController = (app: FastifyInstance) => {
   app.post<{ Body: PronosticProps }>(
     '/pronostic',
     { preHandler: app.auth([app.asyncVerifyJWTandLevel]) },
@@ -52,3 +52,5 @@ export const registerPronosticController = (app: FastifyInstance) => {
     getPronosticsByWeekNumberHandler
   )
 }
+
+export default registerPronosticController

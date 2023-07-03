@@ -15,6 +15,8 @@ function getGamesHandler(
     })
 }
 
-export const registerGamesController = (app: FastifyInstance): void => {
+const registerGamesController = (app: FastifyInstance): void => {
   app.get<{ Querystring: { weekNumber: number } }>('/games', getGamesHandler)
 }
+
+export default registerGamesController

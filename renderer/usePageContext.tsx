@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import type { PageContext } from './types'
 
-interface PageContextProviderProps {
+type PageContextProviderProps = {
   pageContext: PageContext
   children: React.ReactNode
 }
@@ -12,10 +12,10 @@ const Context = React.createContext<PageContext>(undefined as any)
  * Permet d'ajouter un contexte sur les pages React et ses enfants.
  *
  */
-export const PageContextProvider = ({
+export function PageContextProvider({
   pageContext,
-  children,
-}: PageContextProviderProps) => {
+  children
+}: PageContextProviderProps) {
   return <Context.Provider value={pageContext}>{children}</Context.Provider>
 }
 

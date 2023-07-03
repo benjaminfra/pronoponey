@@ -11,6 +11,8 @@ function getWeeksHandler(_req: any, reply: FastifyReply) {
     })
 }
 
-export const registerWeeksController = (app: FastifyInstance) => {
+const registerWeeksController = (app: FastifyInstance) => {
   app.get('/weeks', getWeeksHandler)
 }
+
+export default registerWeeksController

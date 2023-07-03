@@ -5,7 +5,7 @@ import {
   findByToken,
   generateToken,
   login,
-  logout,
+  logout
 } from '../db/services/userService'
 import { ensure } from '../../helpers/types.helpers'
 
@@ -31,7 +31,7 @@ async function loginHandler(req: FastifyRequest, reply: FastifyReply) {
       id: req.user.id,
       tokens: [{ token }],
       username: req.user.username,
-      role: ensure(req.user.role),
+      role: ensure(req.user.role)
     }
     await reply
       .setCookie('loggedUser', JSON.stringify(loggedUser))
@@ -99,20 +99,22 @@ async function logoutHandler(request: FastifyRequest, reply: FastifyReply) {
   }
 }
 
-export const registerUserController = (app: FastifyInstance): void => {
+const registerUserController = (app: FastifyInstance): void => {
   app.post(
     '/login',
     {
-      preHandler: app.auth([app.asyncVerifyUserAndPassword]),
+      preHandler: app.auth([app.asyncVerifyUserAndPassword])
     },
     loginHandler
   )
   app.post(
     '/logout',
     {
-      preHandler: app.auth([app.asyncVerifyJWTandLevel]),
+      preHandler: app.auth([app.asyncVerifyJWTandLevel])
     },
     logoutHandler
   )
   app.post<{ Body: IUser }>('/register', registerHandler)
 }
+
+export default registerUserController

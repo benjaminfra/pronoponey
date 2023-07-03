@@ -8,22 +8,19 @@ import fastify from 'fastify'
 import path from 'path'
 import vite from 'vite'
 import mongoose from 'mongoose'
-import { registerWeeksController } from './controllers/weeksController'
-import { registerGamesController } from './controllers/gamesController'
-import { registerTeamController } from './controllers/teamsController'
-import {
+import registerWeeksController from './controllers/weeksController'
+import registerGamesController from './controllers/gamesController'
+import registerTeamController from './controllers/teamsController'
+import registerUserController, {
   asyncVerifyJWTandLevel,
   asyncVerifyUserAndPassword,
-  asyncVerifyAdminJWT,
-  registerUserController,
+  asyncVerifyAdminJWT
 } from './controllers/usersController'
-import { routeHandler } from './controllers/routeController'
-import { registerPronosticController } from './controllers/pronosticsController'
+import routeHandler from './controllers/routeController'
+import registerPronosticController from './controllers/pronosticsController'
 
 const isProduction = process.env.NODE_ENV === 'production'
 const root = `${__dirname}/..`
-
-startServer()
 
 async function startServer() {
   const app = fastify()
@@ -46,16 +43,16 @@ async function startServer() {
     const distPath = path.join(root, '/dist/client/assets')
     app.register(fastifyStatic, {
       root: distPath,
-      prefix: '/assets/',
+      prefix: '/assets/'
     })
   } else {
     const viteServer = await vite.createServer({
       root,
-      server: { middlewareMode: true },
+      server: { middlewareMode: true }
     })
     app.register(fastifyStatic, {
       root: path.join(__dirname, 'public'),
-      prefix: '/assets/',
+      prefix: '/assets/'
     })
     await app.use(viteServer.middlewares)
   }
@@ -74,3 +71,5 @@ async function startServer() {
 
   console.log(`Server running at http://localhost:${port}`)
 }
+
+startServer()

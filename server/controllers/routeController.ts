@@ -1,10 +1,7 @@
 import { renderPage } from 'vite-plugin-ssr/server'
 import { FastifyRequest, FastifyReply } from 'fastify'
 
-export const routeHandler = async (
-  req: FastifyRequest,
-  reply: FastifyReply
-) => {
+const routeHandler = async (req: FastifyRequest, reply: FastifyReply) => {
   const pageContextInit = {
     urlOriginal: req.url,
     loggedUser: req.cookies.loggedUser
@@ -24,3 +21,5 @@ export const routeHandler = async (
 
   return reply.status(statusCode).type(contentType).send(body)
 }
+
+export default routeHandler

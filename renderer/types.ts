@@ -1,9 +1,12 @@
-import type { PageContextBuiltIn, PageContextBuiltInClientWithServerRouting } from 'vite-plugin-ssr/types'
+import type {
+  PageContextBuiltIn,
+  PageContextBuiltInClientWithServerRouting
+} from 'vite-plugin-ssr/types'
 import { ILoggedUser } from '../server/db/models/userModel'
 
 type Page = (pageProps: PageProps) => React.ReactElement
 
-export type PageProps = {}
+export type PageProps = object
 
 export type PageContextCustom = {
   Page: Page
@@ -20,7 +23,7 @@ export type PageContextCustom = {
 }
 
 export type PageContextServer = PageContextBuiltIn<Page> & PageContextCustom
-export type PageContextClient = PageContextBuiltInClientWithServerRouting<Page> &
-  PageContextCustom
+export type PageContextClient =
+  PageContextBuiltInClientWithServerRouting<Page> & PageContextCustom
 
 export type PageContext = PageContextClient | PageContextServer

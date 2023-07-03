@@ -1,12 +1,12 @@
 import { Document } from 'mongoose'
-import { IUser, Token } from './db/models/userModel'
+import { IUser } from './db/models/userModel'
 
 declare module 'fastify' {
-  export interface FastifyRequest {
+  export type FastifyRequest = {
     user: IUser & Document
     token: string
   }
-  export interface FastifyInstance {
+  export type FastifyInstance = {
     asyncVerifyUserAndPassword: (
       request: FastifyRequest,
       reply: FastifyReply
