@@ -1,3 +1,5 @@
+/* eslint-disable import/prefer-default-export */
+import { FiPlus } from 'react-icons/fi'
 import {
   Wrap,
   WrapItem,
@@ -10,9 +12,8 @@ import {
 import AddTeamModal from '../components/teams/AddTeamModal'
 import useAdminTeams from '../hooks/useAdminTeams'
 import TeamCard from '../components/teams/TeamCard'
-import { FiPlus } from 'react-icons/fi'
 
-export const Page = () => {
+export function Page() {
   const { teams, createNewTeam } = useAdminTeams()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -23,10 +24,10 @@ export const Page = () => {
         <WrapItem width="300px">
           <Box
             bg="white"
-            rounded={'lg'}
+            rounded="lg"
             backgroundColor="white"
             width="100%"
-            boxShadow={'lg'}
+            boxShadow="lg"
             height="100%"
           >
             <Button w="100%" h="100%" onClick={onOpen} backgroundColor="white">
