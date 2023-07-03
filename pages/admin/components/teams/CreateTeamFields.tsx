@@ -1,24 +1,19 @@
-import {
-  FormControl,
-  FormLabel,
-  Input,
-  FormErrorMessage,
-} from '@chakra-ui/react'
+import { FormControl, FormLabel } from '@chakra-ui/react'
 import SimpleTextField from '../../../../common/components/form/SimpleTextField'
 import FileInput from '../../../../common/components/form/InputFile'
 
-interface CreateTeamFieldsProps {
+type CreateTeamFieldsProps = {
   fields: ICreateTeamFields
-  setFormFields: Function
+  setFormFields: (value: ICreateTeamFields) => void
 }
 
-export interface ICreateTeamFields {
+export type ICreateTeamFields = {
   name: string | undefined
   shortname: string | undefined
   file: File | undefined
 }
 
-const CreateTeamFields = ({ fields, setFormFields }: CreateTeamFieldsProps) => {
+function CreateTeamFields({ fields, setFormFields }: CreateTeamFieldsProps) {
   return (
     <>
       <SimpleTextField
@@ -26,7 +21,7 @@ const CreateTeamFields = ({ fields, setFormFields }: CreateTeamFieldsProps) => {
         value={fields.name}
         label="Nom d'équipe"
         onChange={(e) => setFormFields({ ...fields, name: e.target.value })}
-        isRequired={true}
+        isRequired
       />
       <SimpleTextField
         name="shortname"
@@ -35,7 +30,7 @@ const CreateTeamFields = ({ fields, setFormFields }: CreateTeamFieldsProps) => {
         onChange={(e) =>
           setFormFields({ ...fields, shortname: e.target.value })
         }
-        isRequired={true}
+        isRequired
       />
       <FormControl id="logo_URI">
         <FormLabel>Logo</FormLabel>

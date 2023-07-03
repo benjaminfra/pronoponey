@@ -3,11 +3,11 @@ import { ReactNode } from 'react'
 import MobileNav from './MobileNav'
 import SidebarContent from './SidebarContent'
 
-interface SidebarWithHeaderProps {
+type SidebarWithHeaderProps = {
   children: ReactNode
 }
 
-const SidebarWithHeader = ({ children }: SidebarWithHeaderProps) => {
+function SidebarWithHeader({ children }: SidebarWithHeaderProps) {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (

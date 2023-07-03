@@ -1,19 +1,18 @@
 import ReactDOMServer from 'react-dom/server'
+import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr/server'
 import { PageShell } from './PageShell'
-import { escapeInject, dangerouslySkipEscape } from 'vite-plugin-ssr'
 import logoUrl from './logo.svg'
 import type { PageContextServer } from './types'
 
-export { render }
 export const passToClient = ['pageProps', 'urlPathname', 'loggedUser']
 
-async function render(pageContext: PageContextServer) {
+export async function render(pageContext: PageContextServer) {
   const { redirectTo, loggedUser } = pageContext
   if (redirectTo) {
     return {
       pageContext: {
-        redirectTo,
-      },
+        redirectTo
+      }
     }
   }
   const { Page, pageProps } = pageContext
@@ -47,7 +46,7 @@ async function render(pageContext: PageContextServer) {
   return {
     documentHtml,
     pageContext: {
-      loggedUser,
-    },
+      loggedUser
+    }
   }
 }

@@ -2,10 +2,10 @@ import {
   FormControl,
   FormLabel,
   Input,
-  FormErrorMessage,
+  FormErrorMessage
 } from '@chakra-ui/react'
 
-interface SimpleTextFieldProps {
+type SimpleTextFieldProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   name: string
   label: string
@@ -13,19 +13,19 @@ interface SimpleTextFieldProps {
   isRequired?: boolean
 }
 
-const SimpleTextField = ({
+function SimpleTextField({
   onChange,
   name,
   label,
   value,
-  isRequired = false,
-}: SimpleTextFieldProps) => {
+  isRequired = false
+}: SimpleTextFieldProps) {
   const isInvalid: boolean = isRequired && value === ''
 
   return (
     <FormControl id={name} isInvalid={isInvalid}>
       <FormLabel>{label}</FormLabel>
-      <Input type="text" onChange={onChange}></Input>
+      <Input type="text" onChange={onChange} />
       {isInvalid && (
         <FormErrorMessage>Ce champ est obligatoire</FormErrorMessage>
       )}

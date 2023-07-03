@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import fetch from 'node-fetch'
 import { PageContext } from '../../renderer/types'
 
@@ -5,8 +6,8 @@ export const onBeforeRender = async (pageContext: PageContext) => {
   if (!pageContext.loggedUser) {
     return {
       pageContext: {
-        redirectTo: '/auth/login',
-      },
+        redirectTo: '/auth/login'
+      }
     }
   }
 
@@ -19,7 +20,7 @@ export const onBeforeRender = async (pageContext: PageContext) => {
   const pageProps = { weeks, teams }
   return {
     pageContext: {
-      pageProps,
-    },
+      pageProps
+    }
   }
 }

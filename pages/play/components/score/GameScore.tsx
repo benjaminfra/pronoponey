@@ -1,15 +1,14 @@
-import TeamScore from './TeamScore'
 import { HStack, Box, Text } from '@chakra-ui/react'
-import { ITeam } from '../../../../server/db/models/teamModel'
 import { DateTime } from 'luxon'
-import { GameProps, PronosticProps } from '../../types'
+import TeamScore from './TeamScore'
+import { GameProps, SavePronoFunction } from '../../types'
 
-interface GameScoreProps {
+type GameScoreProps = {
   game: GameProps
-  saveProno: Function
+  saveProno: SavePronoFunction
 }
 
-const GameScore = ({ game, saveProno }: GameScoreProps) => {
+function GameScore({ game, saveProno }: GameScoreProps) {
   const isPlayable = game.gameDate > DateTime.now()
 
   const saveHomeProno = (value: number) => {
@@ -35,7 +34,7 @@ const GameScore = ({ game, saveProno }: GameScoreProps) => {
       <TeamScore
         team={game.awayTeam}
         score={game.awayScore}
-        isAwayTeam={true}
+        isAwayTeam
         isPlayable={isPlayable}
         saveProno={saveAwayProno}
         pronosticScore={game.pronostic?.awayScore}

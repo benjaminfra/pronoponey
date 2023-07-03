@@ -1,11 +1,11 @@
-import { Box, Text } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
 import BigText from '../../../../common/components/BigText'
 
-interface ScoreProps {
+type ScoreProps = {
   score?: number
 }
 
-const Score = ({ score }: ScoreProps) => {
+function Score({ score }: ScoreProps) {
   return (
     <Box>
       <BigText text={score || score === 0 ? score : 'N/A'} />

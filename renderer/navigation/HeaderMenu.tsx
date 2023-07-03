@@ -1,4 +1,3 @@
-import { ILoggedUser } from '../../server/db/models/userModel'
 import {
   Menu,
   MenuButton,
@@ -8,16 +7,17 @@ import {
   Text,
   MenuList,
   MenuDivider,
-  MenuItem,
+  MenuItem
 } from '@chakra-ui/react'
+import { ILoggedUser } from '../../server/db/models/userModel'
 
-interface HeaderMenuProps {
+type HeaderMenuProps = {
   user: ILoggedUser
   logout: (user: ILoggedUser) => void
 }
 
-const HeaderMenu = ({ user, logout }: HeaderMenuProps) => {
-  const onClickLogout = (_e: React.MouseEvent<HTMLButtonElement>) => {
+function HeaderMenu({ user, logout }: HeaderMenuProps) {
+  const onClickLogout = () => {
     logout(user)
   }
   return (
@@ -25,7 +25,7 @@ const HeaderMenu = ({ user, logout }: HeaderMenuProps) => {
       <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
         <HStack>
           <>
-            <Avatar size={'sm'} name={user.username} />
+            <Avatar size="sm" name={user.username} />
             <VStack
               display={{ base: 'none', md: 'flex' }}
               alignItems="flex-start"
@@ -37,7 +37,7 @@ const HeaderMenu = ({ user, logout }: HeaderMenuProps) => {
           </>
         </HStack>
       </MenuButton>
-      <MenuList bg={'white'} boxShadow={'lg'}>
+      <MenuList bg="white" boxShadow="lg">
         <MenuItem>Profil</MenuItem>
         <MenuDivider />
         <MenuItem onClick={onClickLogout}>Se déconnecter</MenuItem>

@@ -1,9 +1,9 @@
-import Team from '../team/Team'
 import { Box } from '@chakra-ui/react'
+import Team from '../team/Team'
 import ScoreResult from './ScoreResult'
 import { ITeam } from '../../../../server/db/models/teamModel'
 
-interface TeamScoreProps {
+type TeamScoreProps = {
   team: ITeam
   score?: number
   isAwayTeam?: boolean
@@ -12,14 +12,14 @@ interface TeamScoreProps {
   pronosticScore?: number
 }
 
-const TeamScore = ({
+function TeamScore({
   team,
   score,
   isAwayTeam,
   isPlayable,
   saveProno,
-  pronosticScore,
-}: TeamScoreProps) => {
+  pronosticScore
+}: TeamScoreProps) {
   const scoreBox = (
     <Box width="10%">
       <ScoreResult

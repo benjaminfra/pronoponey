@@ -1,12 +1,12 @@
 import { VStack, Box, Image, Text } from '@chakra-ui/react'
 
-interface TeamProps {
+type TeamProps = {
   name: string
   logoUri: string
   shortname: string
 }
 
-const Team = ({ name, logoUri, shortname, ...rest }: TeamProps) => {
+function Team({ name, logoUri, shortname }: TeamProps) {
   return (
     <VStack>
       <Box>

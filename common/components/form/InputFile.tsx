@@ -1,6 +1,6 @@
 import { Input, InputProps, useMultiStyleConfig } from '@chakra-ui/react'
 
-const FileInput = (props: InputProps) => {
+function FileInput(props: InputProps) {
   const styles = useMultiStyleConfig('Button', { variant: 'outline' })
 
   return (
@@ -11,8 +11,8 @@ const FileInput = (props: InputProps) => {
           border: 'none',
           outline: 'none',
           mr: 2,
-          ...styles,
-        },
+          ...styles
+        }
       }}
       {...props}
     />

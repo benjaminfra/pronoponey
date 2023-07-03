@@ -1,10 +1,11 @@
+/* eslint-disable import/prefer-default-export */
 import { useState, useContext } from 'react'
 import { AuthContext } from '../../../renderer/provider/AuthProvider'
 import PasswordFormInput from '../components/PasswordFormInput'
 import AuthForm from '../components/AuthForm'
 import UsernameFormInput from '../components/UsernameFormInput'
 
-export const Page = () => {
+export function Page() {
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
@@ -16,10 +17,10 @@ export const Page = () => {
   const onChangePassword = (e: React.ChangeEvent<HTMLInputElement>) =>
     setPassword(e.target.value)
 
-  const onSubmit = (_e: React.MouseEvent<HTMLButtonElement>) => {
+  const onSubmit = () => {
     login({
       username,
-      password,
+      password
     })
   }
 

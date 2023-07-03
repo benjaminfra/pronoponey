@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   Button,
   Modal,
@@ -11,23 +12,22 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
-  AlertDescription,
+  AlertDescription
 } from '@chakra-ui/react'
 import CreateTeamFields, { ICreateTeamFields } from './CreateTeamFields'
-import { useState } from 'react'
 import { ensure } from '../../../../helpers/types.helpers'
 
-interface AddTeamModalProps {
+type AddTeamModalProps = {
   onSave: (form: FormData) => void
   onClose: () => void
   isOpen: boolean
 }
 
-const AddTeamModal = ({ onSave, onClose, isOpen }: AddTeamModalProps) => {
+function AddTeamModal({ onSave, onClose, isOpen }: AddTeamModalProps) {
   const [formFields, setFormFields] = useState<ICreateTeamFields>({
     name: undefined,
     shortname: undefined,
-    file: undefined,
+    file: undefined
   })
   const [hasError, setHasError] = useState<boolean>()
 
@@ -54,46 +54,44 @@ const AddTeamModal = ({ onSave, onClose, isOpen }: AddTeamModalProps) => {
   }
 
   return (
-    <>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Ajouter une équipe</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <VStack spacing={4}>
-              {hasError && (
-                <Alert status="error">
-                  <AlertIcon />
-                  <AlertTitle>Attention !</AlertTitle>
-                  <AlertDescription>
-                    Tous les champs sont obligatoires
-                  </AlertDescription>
-                </Alert>
-              )}
-              <CreateTeamFields
-                fields={formFields}
-                setFormFields={setFormFields}
-              />
-            </VStack>
-          </ModalBody>
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Ajouter une équipe</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <VStack spacing={4}>
+            {hasError && (
+              <Alert status="error">
+                <AlertIcon />
+                <AlertTitle>Attention !</AlertTitle>
+                <AlertDescription>
+                  Tous les champs sont obligatoires
+                </AlertDescription>
+              </Alert>
+            )}
+            <CreateTeamFields
+              fields={formFields}
+              setFormFields={setFormFields}
+            />
+          </VStack>
+        </ModalBody>
 
-          <ModalFooter>
-            <Button
-              bg={'blue.400'}
-              color={'white'}
-              _hover={{
-                bg: 'blue.500',
-              }}
-              onClick={onCloseModal}
-              disabled={isDisable}
-            >
-              Ajouter
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
+        <ModalFooter>
+          <Button
+            bg="blue.400"
+            color="white"
+            _hover={{
+              bg: 'blue.500'
+            }}
+            onClick={onCloseModal}
+            disabled={isDisable}
+          >
+            Ajouter
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   )
 }
 

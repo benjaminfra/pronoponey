@@ -6,11 +6,11 @@ import LinkButton from '../../common/components/LinkButton'
 import HeaderMenu from './HeaderMenu'
 import { usePageContext } from '../usePageContext'
 
-interface MobileProps extends FlexProps {
+type MobileProps = {
   onOpen: () => void
-}
+} & FlexProps
 
-const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+function MobileNav({ onOpen, ...rest }: MobileProps) {
   const { logout } = useContext(AuthContext)
   const pageContext = usePageContext()
 
@@ -44,7 +44,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       </Text>
 
       <HStack spacing={{ base: '0', md: '6' }}>
-        <Flex alignItems={'center'}>
+        <Flex alignItems="center">
           {pageContext.loggedUser ? (
             <HeaderMenu user={pageContext.loggedUser} logout={logout} />
           ) : (

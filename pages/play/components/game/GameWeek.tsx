@@ -1,26 +1,26 @@
+import { DateTime } from 'luxon'
 import { Center, Spinner, VStack } from '@chakra-ui/react'
 import { ensure } from '../../../../helpers/types.helpers'
 import { ITeam } from '../../../../server/db/models/teamModel'
 import GameCard from './GameCard'
-import { DateTime } from 'luxon'
 import { IGame } from '../../../../server/db/models/gameModel'
-import { GameProps, PronosticProps } from '../../types'
+import { GameProps, PronosticProps, SavePronoFunction } from '../../types'
 
-interface IGameWeek {
+type IGameWeek = {
   teams: ITeam[]
   games: IGame[]
   pronostics: PronosticProps[]
-  saveProno: Function
+  saveProno: SavePronoFunction
   isLoading: boolean
 }
 
-const GameWeek = ({
+function GameWeek({
   teams,
   games,
   pronostics,
   saveProno,
-  isLoading,
-}: IGameWeek) => {
+  isLoading
+}: IGameWeek) {
   const gamesWithTeams: GameProps[] = Array.isArray(games)
     ? games.map((weekGame) => {
         const awayTeam = ensure(
@@ -38,7 +38,7 @@ const GameWeek = ({
           homeTeam,
           awayTeam,
           weekNumber: weekGame.weekNumber,
-          pronostic,
+          pronostic
         }
       })
     : []

@@ -1,35 +1,30 @@
-import { IUser } from '../server/db/models/userModel'
+/* eslint-disable class-methods-use-this */
 import axios from 'axios'
+import { IUser } from '../server/db/models/userModel'
 
 class AuthService {
-  signUp = (user: IUser): Promise<void> => {
+  signUp(user: IUser): Promise<void> {
     return axios
-      .post(`http://localhost:3000/register`, user)
-      .then(() => {
-        return
-      })
+      .post('http://localhost:3000/register', user)
+      .then(() => {})
       .catch((error) => {
         throw new Error(error.response.data.message)
       })
   }
 
-  login = (user: IUser): Promise<void> => {
+  login(user: IUser): Promise<void> {
     return axios
-      .post(`http://localhost:3000/login`, user)
-      .then(async () => {
-        return
-      })
+      .post('http://localhost:3000/login', user)
+      .then(async () => {})
       .catch((error) => {
         throw new Error(error.response.data.message)
       })
   }
 
-  logout = (): Promise<void> => {
+  logout(): Promise<void> {
     return axios
-      .post(`http://localhost:3000/logout`)
-      .then(async () => {
-        return
-      })
+      .post('http://localhost:3000/logout')
+      .then(async () => {})
       .catch((error) => {
         throw new Error(error.response.data.message)
       })

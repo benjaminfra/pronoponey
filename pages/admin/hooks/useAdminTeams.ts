@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from 'react'
 import { ServiceContext } from '../../../renderer/provider/ServiceProvider'
 import { ITeam } from '../../../server/db/models/teamModel'
 
-export const useAdminTeams = () => {
+const useAdminTeams = () => {
   const [teams, setTeams] = useState<ITeam[]>([])
 
   const { teamsService } = useContext(ServiceContext)
@@ -22,3 +22,5 @@ export const useAdminTeams = () => {
 
   return { teams, createNewTeam }
 }
+
+export default useAdminTeams

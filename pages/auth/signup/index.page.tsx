@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { useState, useContext } from 'react'
 import { AuthContext } from '../../../renderer/provider/AuthProvider'
 import PasswordFormInput from '../components/PasswordFormInput'
@@ -5,7 +6,7 @@ import UsernameFormInput from '../components/UsernameFormInput'
 import AuthForm from '../components/AuthForm'
 import { Roles } from '../../../server/db/models/userModel'
 
-export const Page = () => {
+export function Page() {
   const [password, setPassword] = useState<string>('')
   const [username, setUsername] = useState<string>('')
 
@@ -17,11 +18,11 @@ export const Page = () => {
   const onChangeUsername = (e: React.ChangeEvent<HTMLInputElement>) =>
     setUsername(e.target.value)
 
-  const onSubmit = (_e: React.MouseEvent<HTMLButtonElement>) => {
+  const onSubmit = () => {
     signUp({
       password,
       username,
-      role: Roles.User,
+      role: Roles.User
     })
   }
 

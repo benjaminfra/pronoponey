@@ -1,12 +1,12 @@
-import { PronosticProps } from '../../types'
 import { Box } from '@chakra-ui/react'
+import { PronosticProps } from '../../types'
 import PronosticScore from './PronosticScore'
 
-interface PronosticCardProps {
+type PronosticCardProps = {
   pronostic?: PronosticProps
 }
 
-const PronosticCard = ({ pronostic }: PronosticCardProps) => {
+function PronosticCard({ pronostic }: PronosticCardProps) {
   return (
     <Box
       borderRadius="10px"

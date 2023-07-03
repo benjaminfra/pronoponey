@@ -1,20 +1,20 @@
+import { useToast } from '@chakra-ui/react'
 import {
   useMemo,
   useCallback,
   createContext,
   useState,
   useEffect,
-  useContext,
+  useContext
 } from 'react'
 import { ILoggedUser, IUser } from '../../server/db/models/userModel'
-import { useToast } from '@chakra-ui/react'
 import { ServiceContext } from './ServiceProvider'
 
-interface IAuthProvider {
+type IAuthProvider = {
   children: React.ReactNode
 }
 
-interface IAuthContext {
+type IAuthContext = {
   signUp: (user: IUser) => Promise<void>
   login: (user: IUser) => Promise<void>
   logout: (user: ILoggedUser) => Promise<void>
@@ -25,10 +25,10 @@ export const AuthContext = createContext<IAuthContext>({
   signUp: async () => {},
   login: async () => {},
   logout: async () => {},
-  isUserLoading: false,
+  isUserLoading: false
 })
 
-const AuthProvider = ({ children }: IAuthProvider) => {
+function AuthProvider({ children }: IAuthProvider) {
   const { authService } = useContext(ServiceContext)
   const [isUserLoading, setIsUserLoading] = useState<boolean>(false)
 
@@ -43,7 +43,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
         description: 'Tu fais désormais parti de la team',
         status: 'success',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       })
     } catch (error: any) {
       setIsUserLoading(false)
@@ -52,7 +52,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
         description: error.message,
         status: 'error',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       })
     }
   }
@@ -67,7 +67,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
         description: "C'est le moment de tout donner",
         status: 'success',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       })
     } catch (error: any) {
       setIsUserLoading(false)
@@ -76,7 +76,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
         description: error.message,
         status: 'error',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       })
     }
   }
@@ -91,7 +91,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
         description: 'Reviens vite',
         status: 'success',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       })
     } catch (error) {
       setIsUserLoading(false)
@@ -100,7 +100,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
         description: 'On a pas réussi à te déconnecter :/',
         status: 'error',
         duration: 9000,
-        isClosable: true,
+        isClosable: true
       })
     }
   }
@@ -125,7 +125,7 @@ const AuthProvider = ({ children }: IAuthProvider) => {
       signUp: memoizedSignUpUser,
       login: memoizedLoginUser,
       logout: memoizedLogoutUser,
-      isUserLoading,
+      isUserLoading
     }),
     [memoizedSignUpUser, memoizedLoginUser, memoizedLogoutUser, isUserLoading]
   )

@@ -1,14 +1,14 @@
+import { DateTime } from 'luxon'
 import { Select, Button, HStack, Box } from '@chakra-ui/react'
 import { FiArrowLeft, FiArrowRight } from 'react-icons/fi'
 import { useState, useEffect } from 'react'
 import { IWeek } from '../../../../server/db/models/weekModel'
-import { DateTime } from 'luxon'
 import { ensure } from '../../../../helpers/types.helpers'
 
-interface WeekSelectorProps {
+type WeekSelectorProps = {
   weeks: IWeek[]
-  getGames: Function
-  getPronostics: Function
+  getGames: (n: number) => void
+  getPronostics: (n: number) => void
 }
 
 const findCurrentWeek = (weeks: IWeek[]): IWeek => {
@@ -29,11 +29,7 @@ const findCurrentWeek = (weeks: IWeek[]): IWeek => {
   return currentWeek
 }
 
-const WeekSelector = ({
-  weeks,
-  getGames,
-  getPronostics,
-}: WeekSelectorProps) => {
+function WeekSelector({ weeks, getGames, getPronostics }: WeekSelectorProps) {
   const [selectedOption, setSelectedOption] = useState<IWeek>(
     findCurrentWeek(weeks)
   )

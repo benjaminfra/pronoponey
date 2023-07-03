@@ -5,10 +5,10 @@ import {
   useDisclosure,
   Button,
   Icon,
-  VStack,
+  VStack
 } from '@chakra-ui/react'
 import AddTeamModal from '../components/teams/AddTeamModal'
-import { useAdminTeams } from '../hooks/useAdminTeams'
+import useAdminTeams from '../hooks/useAdminTeams'
 import TeamCard from '../components/teams/TeamCard'
 import { FiPlus } from 'react-icons/fi'
 

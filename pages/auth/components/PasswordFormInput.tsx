@@ -5,21 +5,21 @@ import {
   FormErrorMessage,
   InputGroup,
   InputRightElement,
-  Button,
+  Button
 } from '@chakra-ui/react'
 import { useState } from 'react'
 
-interface PasswordFormInputProps {
+type PasswordFormInputProps = {
   password: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   isValid?: boolean
 }
 
-const PasswordFormInput = ({
+function PasswordFormInput({
   password,
   onChange,
-  isValid,
-}: PasswordFormInputProps) => {
+  isValid
+}: PasswordFormInputProps) {
   const [show, setShow] = useState<boolean>(false)
 
   const showPassword = () => setShow(!show)

@@ -1,16 +1,16 @@
+import { createContext, useMemo } from 'react'
+import axios from 'axios'
 import AuthService from '../../api/auth.api'
 import GamesService from '../../api/games.api'
 import PronosticService from '../../api/pronostic.api'
 import TeamsService from '../../api/teams.api'
-import { createContext, useMemo } from 'react'
-import axios from 'axios'
 import WeeksService from '../../api/weeks.api'
 
-interface IServiceProvider {
+type IServiceProvider = {
   children: React.ReactNode
 }
 
-interface IServiceContext {
+type IServiceContext = {
   authService: AuthService
   gamesService: GamesService
   pronosticsService: PronosticService
@@ -23,23 +23,23 @@ export const ServiceContext = createContext<IServiceContext>({
   gamesService: new GamesService(),
   pronosticsService: new PronosticService(),
   teamsService: new TeamsService(),
-  weeksService: new WeeksService(),
+  weeksService: new WeeksService()
 })
 
-const ServiceProvider = ({ children }: IServiceProvider) => {
+function ServiceProvider({ children }: IServiceProvider) {
   const serviceContext = useMemo(
     () => ({
       authService: new AuthService(),
       gamesService: new GamesService(),
       pronosticsService: new PronosticService(),
       teamsService: new TeamsService(),
-      weeksService: new WeeksService(),
+      weeksService: new WeeksService()
     }),
     []
   )
 
   if (typeof window !== 'undefined') {
-    axios.defaults.headers.common['Authorization'] = document.cookie
+    axios.defaults.headers.common.Authorization = document.cookie
       ? JSON.parse(decodeURIComponent(document.cookie.split('=')[1])).tokens[0]
           .token
       : ''

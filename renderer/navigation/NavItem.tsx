@@ -2,13 +2,13 @@ import { FlexProps, Flex, Icon } from '@chakra-ui/react'
 import { IconType } from 'react-icons'
 import Link from '../Link'
 
-interface NavItemProps extends FlexProps {
+type NavItemProps = {
   icon: IconType
   label: string
   href: string
-}
+} & FlexProps
 
-const NavItem = ({ icon, label, href }: NavItemProps) => {
+function NavItem({ icon, label, href }: NavItemProps) {
   return (
     <Link href={href}>
       <Flex
@@ -20,7 +20,7 @@ const NavItem = ({ icon, label, href }: NavItemProps) => {
         cursor="pointer"
         _hover={{
           bg: 'darkGrey.100',
-          color: 'white',
+          color: 'white'
         }}
       >
         {icon && (
@@ -28,7 +28,7 @@ const NavItem = ({ icon, label, href }: NavItemProps) => {
             mr="4"
             fontSize="16"
             _groupHover={{
-              color: 'white',
+              color: 'white'
             }}
             as={icon}
           />

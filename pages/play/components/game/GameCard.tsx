@@ -1,14 +1,14 @@
 import { Box } from '@chakra-ui/react'
 import GameScore from '../score/GameScore'
-import { GameProps } from '../../types'
+import { GameProps, SavePronoFunction } from '../../types'
 import PronosticCard from '../pronostic/PronosticCard'
 
-interface GameCardProps {
+type GameCardProps = {
   game: GameProps
-  saveProno: Function
+  saveProno: SavePronoFunction
 }
 
-const GameCard = ({ game, saveProno }: GameCardProps) => {
+function GameCard({ game, saveProno }: GameCardProps) {
   return (
     <Box
       border="1px"

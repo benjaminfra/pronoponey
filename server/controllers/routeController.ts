@@ -1,4 +1,4 @@
-import { renderPage } from 'vite-plugin-ssr'
+import { renderPage } from 'vite-plugin-ssr/server'
 import { FastifyRequest, FastifyReply } from 'fastify'
 
 export const routeHandler = async (
@@ -9,7 +9,7 @@ export const routeHandler = async (
     urlOriginal: req.url,
     loggedUser: req.cookies.loggedUser
       ? JSON.parse(req.cookies.loggedUser)
-      : undefined,
+      : undefined
   }
 
   const pageContext = await renderPage(pageContextInit)

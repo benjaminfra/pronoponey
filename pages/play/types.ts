@@ -26,3 +26,10 @@ export type PronosticProps = {
   awayScore: number
   points?: number
 }
+
+export type SavePronoFunction = (
+  gameId: Types.ObjectId,
+  weekNumber: number,
+  score: number,
+  isAwayTeam?: boolean
+) => void

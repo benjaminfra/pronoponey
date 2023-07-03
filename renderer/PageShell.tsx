@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import React from 'react'
 import { ChakraProvider } from '@chakra-ui/react'
 import theme from './theme'
@@ -7,11 +8,9 @@ import PageContent from './content/PageContent'
 import AuthProvider from './provider/AuthProvider'
 import ServiceProvider from './provider/ServiceProvider'
 
-export { PageShell }
-
-function PageShell({
+export function PageShell({
   children,
-  pageContext,
+  pageContext
 }: {
   children: React.ReactNode
   pageContext: PageContext
@@ -22,7 +21,7 @@ function PageShell({
         <ChakraProvider theme={theme}>
           <ServiceProvider>
             <AuthProvider>
-              <PageContent children={children} />
+              <PageContent>{children}</PageContent>
             </AuthProvider>
           </ServiceProvider>
         </ChakraProvider>

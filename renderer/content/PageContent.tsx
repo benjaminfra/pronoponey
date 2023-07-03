@@ -1,13 +1,13 @@
 import { useContext } from 'react'
-import { AuthContext } from '../provider/AuthProvider'
 import { Center, Spinner } from '@chakra-ui/react'
+import { AuthContext } from '../provider/AuthProvider'
 import SidebarWithHeader from '../navigation/SidebarWithHeader'
 
-interface PageContentProps {
+type PageContentProps = {
   children: React.ReactNode
 }
 
-const PageContent = ({ children }: PageContentProps) => {
+function PageContent({ children }: PageContentProps) {
   const { isUserLoading } = useContext(AuthContext)
   if (isUserLoading) {
     return (
@@ -15,9 +15,9 @@ const PageContent = ({ children }: PageContentProps) => {
         <Spinner />
       </Center>
     )
-  } else {
-    return <SidebarWithHeader children={children} />
   }
+  return <SidebarWithHeader>{children}</SidebarWithHeader>
+  
 }
 
 export default PageContent

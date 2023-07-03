@@ -1,14 +1,13 @@
 import { Box, HStack } from '@chakra-ui/react'
 import BigText from '../../../../common/components/BigText'
-import Score from '../score/Score'
+import Score from './Score'
 
-interface FullScoreProps {
+type FullScoreProps = {
   homeScore?: number
   awayScore?: number
-  isSuccess: boolean
 }
 
-const FullyScore = ({ homeScore, awayScore, isSuccess }: FullScoreProps) => {
+function FullyScore({ homeScore, awayScore }: FullScoreProps) {
   return (
     <HStack>
       <Score score={homeScore} />

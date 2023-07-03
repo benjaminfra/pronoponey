@@ -1,12 +1,12 @@
 import { NumberInput, NumberInputField } from '@chakra-ui/react'
 import { useState } from 'react'
 
-interface SelectStoreProps {
+type SelectStoreProps = {
   saveProno: (value: number) => void
   pronosticScore?: number
 }
 
-const SelectScore = ({ saveProno, pronosticScore }: SelectStoreProps) => {
+function SelectScore({ saveProno, pronosticScore }: SelectStoreProps) {
   const [score, setScore] = useState<number | undefined>(pronosticScore)
 
   const setPronostic = (value: number) => {

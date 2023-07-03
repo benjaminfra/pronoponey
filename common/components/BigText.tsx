@@ -1,10 +1,10 @@
 import { Text, TextProps } from '@chakra-ui/react'
 
-interface BigTextProps {
+type BigTextProps = {
   text: string | number | undefined
 }
 
-const BigText = ({ text, ...rest }: BigTextProps & TextProps) => {
+function BigText({ text, ...rest }: BigTextProps & TextProps) {
   return (
     <Text
       fontSize="2xl"

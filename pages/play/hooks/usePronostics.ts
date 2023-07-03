@@ -1,14 +1,15 @@
+/* eslint-disable import/prefer-default-export */
 import { Types } from 'mongoose'
 import { useContext, useState } from 'react'
 import { ServiceContext } from '../../../renderer/provider/ServiceProvider'
-import { PronosticProps } from '../types'
+import { PronosticProps, SavePronoFunction } from '../types'
 
-export const usePronostics = () => {
+const usePronostics = () => {
   const [pronostics, setPronostics] = useState<PronosticProps[]>([])
   const [isPronosticsLoading, setIsPronosticsLoading] = useState<boolean>(false)
   const { pronosticsService } = useContext(ServiceContext)
 
-  const saveProno = (
+  const saveProno: SavePronoFunction = (
     gameId: Types.ObjectId,
     weekNumber: number,
     score: number,
@@ -20,33 +21,33 @@ export const usePronostics = () => {
         gameId,
         weekNumber,
         awayScore: isAwayTeam ? score : 0,
-        homeScore: !isAwayTeam ? score : 0,
+        homeScore: !isAwayTeam ? score : 0
       }
+    } else if (isAwayTeam) {
+      pronosticToSave.awayScore = score
     } else {
-      if (isAwayTeam) {
-        pronosticToSave.awayScore = score
-      } else {
-        pronosticToSave.homeScore = score
-      }
+      pronosticToSave.homeScore = score
     }
     setPronostics([...pronostics, pronosticToSave])
     pronosticsService.savePronostic(pronosticToSave)
   }
 
-  const findPronosticsByWeekNumber = async (weekNumber: number) => {
+  const findPronosticsByWeekNumber = async (
+    weekNumber: number
+  ): Promise<void> => {
     setIsPronosticsLoading(true)
-    const pronostics = await pronosticsService.findPronosticsByWeekNumber(
+    const weekPronostics = await pronosticsService.findPronosticsByWeekNumber(
       weekNumber
     )
 
     setPronostics(
-      Array.isArray(pronostics)
-        ? pronostics.map((p) => ({
+      Array.isArray(weekPronostics)
+        ? weekPronostics.map((p) => ({
             gameId: p.gameId,
             weekNumber,
             homeScore: p.homeScore,
             awayScore: p.awayScore,
-            points: p.points,
+            points: p.points
           }))
         : []
     )
@@ -57,6 +58,8 @@ export const usePronostics = () => {
     saveProno,
     pronostics,
     findPronosticsByWeekNumber,
-    isPronosticsLoading,
+    isPronosticsLoading
   }
 }
+
+export default usePronostics

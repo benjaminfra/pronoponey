@@ -1,28 +1,28 @@
 import { Box, BoxProps, CloseButton, Flex, Text } from '@chakra-ui/react'
-import NavItem from './NavItem'
 import { IconType } from 'react-icons'
-import { FiHome, FiDribbble, FiLogIn, FiTool } from 'react-icons/fi'
+import { FiHome, FiDribbble, FiTool } from 'react-icons/fi'
+import NavItem from './NavItem'
 import { Roles } from '../../server/db/models/userModel'
 import { usePageContext } from '../usePageContext'
 
-interface SidebarProps extends BoxProps {
+type SidebarProps = {
   onClose: () => void
-}
+} & BoxProps
 
-interface LinkItemProps {
+type LinkItemProps = {
   name: string
   icon: IconType
   href: string
 }
 
-const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+function SidebarContent({ onClose, ...rest }: SidebarProps) {
   const pageContext = usePageContext()
 
-  let LinkItems: Array<LinkItemProps> = [
-    { name: 'Home', icon: FiHome, href: '/' },
+  const LinkItems: Array<LinkItemProps> = [
+    { name: 'Home', icon: FiHome, href: '/' }
   ]
 
-  const loggedUser = pageContext.loggedUser
+  const { loggedUser } = pageContext
 
   if (loggedUser) {
     LinkItems.push({ name: 'Play', icon: FiDribbble, href: '/play' })
@@ -30,7 +30,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
       LinkItems.push({
         name: 'Admin',
         icon: FiTool,
-        href: '/admin',
+        href: '/admin'
       })
     }
   }

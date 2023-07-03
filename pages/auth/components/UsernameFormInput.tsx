@@ -3,31 +3,34 @@ import {
   FormLabel,
   Input,
   FormErrorMessage,
-  FormHelperText,
+  FormHelperText
 } from '@chakra-ui/react'
 
-interface UsernameFormInputProps {
+type UsernameFormInputProps = {
   username: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   isValid?: boolean
 }
 
-const UsernameFormInput = ({
+function UsernameFormInput({
   username,
   onChange,
-  isValid,
-}: UsernameFormInputProps) => {
+  isValid
+}: UsernameFormInputProps) {
   return (
     <FormControl isInvalid={isValid === false} id="username" isRequired>
-      <FormLabel>Nom d'utilisateur</FormLabel>
+      <FormLabel>Nom d&apos;utilisateur</FormLabel>
       <Input
         onChange={onChange}
         placeholder="Nom d'utilisateur"
         value={username}
       />
-      <FormErrorMessage>Le nom d'utilisateur est obligatoire</FormErrorMessage>
+      <FormErrorMessage>
+        Le nom d&apos;utilisateur est obligatoire
+      </FormErrorMessage>
       <FormHelperText fontSize={12} opacity="66%">
-        C'est le nom que tout le monde verra, soit créatif, et souviens-t-en
+        C&apos;est le nom que tout le monde verra, soit créatif, et
+        souviens-t-en
       </FormHelperText>
     </FormControl>
   )

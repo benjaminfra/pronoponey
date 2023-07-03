@@ -1,11 +1,11 @@
 import { Link, Button, ButtonProps } from '@chakra-ui/react'
 
-interface LinkButtonProps extends ButtonProps {
+type LinkButtonProps = {
   href: string
   title: string
-}
+} & ButtonProps
 
-const LinkButton = ({ href, title, ...rest }: LinkButtonProps) => {
+function LinkButton({ href, title, ...rest }: LinkButtonProps) {
   return (
     <Link href={href}>
       <Button {...rest}>{title}</Button>

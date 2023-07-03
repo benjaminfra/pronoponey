@@ -1,9 +1,8 @@
+/* eslint-disable import/prefer-default-export */
 import React from 'react'
-import { Counter } from './Counter'
+import Counter from './Counter'
 
-export { Page }
-
-function Page() {
+export function Page() {
   return (
     <>
       <h1>Welcome</h1>
