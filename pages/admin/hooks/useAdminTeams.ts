@@ -1,4 +1,5 @@
 import { useContext, useState, useEffect } from 'react'
+import { Types } from 'mongoose'
 import { ServiceContext } from '../../../renderer/provider/ServiceProvider'
 import { ITeam } from '../../../server/db/models/teamModel'
 
@@ -20,7 +21,12 @@ const useAdminTeams = () => {
     setTeams([...teams, savedTeam])
   }
 
-  return { teams, createNewTeam }
+  const deleteTeam = async (id: Types.ObjectId) => {
+    await teamsService.deleteTeam(id)
+    setTeams(teams.filter((team) => team._id !== id))
+  }
+
+  return { teams, createNewTeam, deleteTeam }
 }
 
 export default useAdminTeams

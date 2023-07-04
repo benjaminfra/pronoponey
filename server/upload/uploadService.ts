@@ -13,7 +13,7 @@ export const uploadFile = async (data: MultipartFile): Promise<void> => {
 
 export const deleteFile = async (path: string): Promise<void> => {
   try {
-    await fs.promises.unlink(`/assets/${path}`)
+    await fs.promises.unlink(`./assets/${path}`)
   } catch (error) {
     console.error(
       `Une erreur est survenue lors de la suppression du fichier ${path} : ${error}`

@@ -14,7 +14,7 @@ import useAdminTeams from '../hooks/useAdminTeams'
 import TeamCard from '../components/teams/TeamCard'
 
 export function Page() {
-  const { teams, createNewTeam } = useAdminTeams()
+  const { teams, createNewTeam, deleteTeam } = useAdminTeams()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -47,7 +47,7 @@ export function Page() {
         </WrapItem>
         {teams.map((team) => (
           <WrapItem key={team._id.toString()} width="300px">
-            <TeamCard team={team} />
+            <TeamCard team={team} deleteTeam={deleteTeam} />
           </WrapItem>
         ))}
       </Wrap>

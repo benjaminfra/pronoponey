@@ -1,11 +1,14 @@
-import { Box, VStack, Image } from '@chakra-ui/react'
+import { Box, VStack, Image, IconButton } from '@chakra-ui/react'
+import { Types } from 'mongoose'
+import { FiXCircle } from 'react-icons/fi'
 import { ITeam } from '../../../../server/db/models/teamModel'
 
 type TeamCardProps = {
   team: ITeam
+  deleteTeam: (teamId: Types.ObjectId) => void
 }
 
-function TeamCard({ team }: TeamCardProps) {
+function TeamCard({ team, deleteTeam }: TeamCardProps) {
   return (
     <Box
       bg="white"
@@ -15,6 +18,16 @@ function TeamCard({ team }: TeamCardProps) {
       width="100%"
       boxShadow="lg"
     >
+      <Box>
+        <IconButton
+          fontSize={30}
+          icon={<FiXCircle />}
+          aria-label="delete team"
+          bg="white"
+          color="red.500"
+          onClick={() => deleteTeam(team._id)}
+        />
+      </Box>
       <VStack spacing={4}>
         <Image
           src={`/assets/${team.logoURI}`}
