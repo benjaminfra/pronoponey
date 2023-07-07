@@ -5,7 +5,8 @@ import { ensure } from '../../helpers/types.helpers'
 import {
   findAllTeams,
   createTeam,
-  deleteTeam
+  deleteTeam,
+  updateTeam
 } from '../db/services/teamService'
 import { deleteFile, uploadFile } from '../upload/uploadService'
 
@@ -36,6 +37,36 @@ const postTeams = async (req: FastifyRequest, reply: FastifyReply) => {
     )
 
     reply.status(200).send(createdTeam)
+  } catch (error) {
+    reply
+      .status(500)
+      .send("Une erreur s'est produite lors du téléchargement du fichier.")
+  }
+}
+
+const putTeams = async (
+  req: FastifyRequest<{ Params: { id: string } }>,
+  reply: FastifyReply
+) => {
+  try {
+    const data = await req.file()
+    if (!data) {
+      reply.status(500).send('Aucune modification envoyée')
+      return
+    }
+    if (data.file) {
+      await uploadFile(data)
+    }
+    const name = ensure(data.fields.name) as MultipartValue<string>
+    const shortname = ensure(data.fields.shortname) as MultipartValue<string>
+    const updatedTeam = await updateTeam(
+      req.params.id,
+      name.value,
+      shortname.value,
+      data.filename
+    )
+
+    reply.status(200).send(updatedTeam)
   } catch (error) {
     reply
       .status(500)
@@ -78,6 +109,11 @@ const registerTeamController = (app: FastifyInstance): void => {
     deleteTeams
   )
   app.get('/teams', getTeamsHandler)
+  app.put<{ Params: { id: string } }>(
+    '/teams/:id',
+    { preHandler: app.auth([app.asyncVerifyAdminJWT]) },
+    putTeams
+  )
 }
 
 export default registerTeamController

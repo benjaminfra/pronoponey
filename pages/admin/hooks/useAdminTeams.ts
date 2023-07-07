@@ -26,7 +26,19 @@ const useAdminTeams = () => {
     setTeams(teams.filter((team) => team._id !== id))
   }
 
-  return { teams, createNewTeam, deleteTeam }
+  const updateTeam = async (
+    form: FormData,
+    id: Types.ObjectId
+  ): Promise<void> => {
+    const updatedTeam = await teamsService.modifyTeam(form, id)
+    const index = teams.findIndex((team) => team._id === updatedTeam._id)
+    if (index !== -1) {
+      teams[index] = updatedTeam
+      setTeams([...teams])
+    }
+  }
+
+  return { teams, createNewTeam, deleteTeam, updateTeam }
 }
 
 export default useAdminTeams

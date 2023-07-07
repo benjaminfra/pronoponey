@@ -9,12 +9,12 @@ import {
   Icon,
   VStack
 } from '@chakra-ui/react'
-import AddTeamModal from '../components/teams/AddTeamModal'
+import AddTeamModal from '../components/teams/modal/AddTeamModal'
 import useAdminTeams from '../hooks/useAdminTeams'
 import TeamCard from '../components/teams/TeamCard'
 
 export function Page() {
-  const { teams, createNewTeam, deleteTeam } = useAdminTeams()
+  const { teams, createNewTeam, deleteTeam, updateTeam } = useAdminTeams()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -47,7 +47,11 @@ export function Page() {
         </WrapItem>
         {teams.map((team) => (
           <WrapItem key={team._id.toString()} width="300px">
-            <TeamCard team={team} deleteTeam={deleteTeam} />
+            <TeamCard
+              team={team}
+              deleteTeam={deleteTeam}
+              updateTeam={updateTeam}
+            />
           </WrapItem>
         ))}
       </Wrap>

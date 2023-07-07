@@ -14,29 +14,37 @@ import {
   AlertTitle,
   AlertDescription
 } from '@chakra-ui/react'
-import CreateTeamFields, { ICreateTeamFields } from './CreateTeamFields'
-import { ensure } from '../../../../helpers/types.helpers'
+import { Types } from 'mongoose'
+import FormTeamFields, { IFormTeamFields } from '../FormTeamFields'
+import { ensure } from '../../../../../helpers/types.helpers'
+import { ITeam } from '../../../../../server/db/models/teamModel'
 
-type AddTeamModalProps = {
-  onSave: (form: FormData) => void
+type UpdateTeamModalProps = {
+  onSave: (form: FormData, teamId: Types.ObjectId) => void
   onClose: () => void
   isOpen: boolean
+  team: ITeam
 }
 
-function AddTeamModal({ onSave, onClose, isOpen }: AddTeamModalProps) {
-  const [formFields, setFormFields] = useState<ICreateTeamFields>({
-    name: undefined,
-    shortname: undefined,
+function UpdateTeamModal({
+  onSave,
+  onClose,
+  isOpen,
+  team
+}: UpdateTeamModalProps) {
+  const [formFields, setFormFields] = useState<IFormTeamFields>({
+    name: team.name,
+    shortname: team.shortname,
     file: undefined
   })
+
   const [hasError, setHasError] = useState<boolean>()
 
   const isDisable =
     !formFields.name ||
     formFields.name === '' ||
     !formFields.shortname ||
-    formFields.shortname === '' ||
-    !formFields.file
+    formFields.shortname === ''
 
   const onCloseModal = () => {
     if (isDisable) {
@@ -46,8 +54,10 @@ function AddTeamModal({ onSave, onClose, isOpen }: AddTeamModalProps) {
     const formData = new FormData()
     formData.append('name', ensure(formFields.name))
     formData.append('shortname', ensure(formFields.shortname))
-    formData.append('file', ensure(formFields.file))
-    onSave(formData)
+    if (formFields.file) {
+      formData.append('file', formFields.file)
+    }
+    onSave(formData, team._id)
     onClose()
     setFormFields({ name: undefined, shortname: undefined, file: undefined })
     setHasError(false)
@@ -57,7 +67,7 @@ function AddTeamModal({ onSave, onClose, isOpen }: AddTeamModalProps) {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Ajouter une équipe</ModalHeader>
+        <ModalHeader>Modifier une équipe</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <VStack spacing={4}>
@@ -66,14 +76,11 @@ function AddTeamModal({ onSave, onClose, isOpen }: AddTeamModalProps) {
                 <AlertIcon />
                 <AlertTitle>Attention !</AlertTitle>
                 <AlertDescription>
-                  Tous les champs sont obligatoires
+                  Le nom et le nom court est obligatoire
                 </AlertDescription>
               </Alert>
             )}
-            <CreateTeamFields
-              fields={formFields}
-              setFormFields={setFormFields}
-            />
+            <FormTeamFields fields={formFields} setFormFields={setFormFields} />
           </VStack>
         </ModalBody>
 
@@ -87,7 +94,7 @@ function AddTeamModal({ onSave, onClose, isOpen }: AddTeamModalProps) {
             onClick={onCloseModal}
             disabled={isDisable}
           >
-            Ajouter
+            Modifier
           </Button>
         </ModalFooter>
       </ModalContent>
@@ -95,4 +102,4 @@ function AddTeamModal({ onSave, onClose, isOpen }: AddTeamModalProps) {
   )
 }
 
-export default AddTeamModal
+export default UpdateTeamModal

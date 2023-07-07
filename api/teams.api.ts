@@ -31,9 +31,9 @@ class TeamsService {
       })
   }
 
-  modifyTeam(form: FormData): Promise<void> {
+  modifyTeam(form: FormData, id: Types.ObjectId): Promise<ITeam> {
     return axios
-      .put('http://localhost:3000/teams', form)
+      .put(`http://localhost:3000/teams/${id.toString()}`, form)
       .then((response) => response.data)
       .catch((error) => {
         throw new Error(error.response.data.message)

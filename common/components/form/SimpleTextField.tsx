@@ -25,7 +25,7 @@ function SimpleTextField({
   return (
     <FormControl id={name} isInvalid={isInvalid}>
       <FormLabel>{label}</FormLabel>
-      <Input type="text" onChange={onChange} />
+      <Input type="text" onChange={onChange} value={value} />
       {isInvalid && (
         <FormErrorMessage>Ce champ est obligatoire</FormErrorMessage>
       )}

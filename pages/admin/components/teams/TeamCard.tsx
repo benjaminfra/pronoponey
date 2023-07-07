@@ -1,14 +1,18 @@
-import { Box, VStack, Image, IconButton } from '@chakra-ui/react'
+import { Box, VStack, Image, IconButton, useDisclosure } from '@chakra-ui/react'
 import { Types } from 'mongoose'
-import { FiXCircle } from 'react-icons/fi'
+import { FiXCircle, FiEdit2 } from 'react-icons/fi'
 import { ITeam } from '../../../../server/db/models/teamModel'
+import UpdateTeamModal from './modal/UpdateTeamModal'
 
 type TeamCardProps = {
   team: ITeam
   deleteTeam: (teamId: Types.ObjectId) => void
+  updateTeam: (form: FormData, teamId: Types.ObjectId) => void
 }
 
-function TeamCard({ team, deleteTeam }: TeamCardProps) {
+function TeamCard({ team, deleteTeam, updateTeam }: TeamCardProps) {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
   return (
     <Box
       bg="white"
@@ -19,6 +23,19 @@ function TeamCard({ team, deleteTeam }: TeamCardProps) {
       boxShadow="lg"
     >
       <Box>
+        <IconButton
+          fontSize={30}
+          icon={<FiEdit2 />}
+          aria-label="edit team"
+          bg="white"
+          onClick={onOpen}
+        />
+        <UpdateTeamModal
+          onSave={updateTeam}
+          onClose={onClose}
+          isOpen={isOpen}
+          team={team}
+        />
         <IconButton
           fontSize={30}
           icon={<FiXCircle />}

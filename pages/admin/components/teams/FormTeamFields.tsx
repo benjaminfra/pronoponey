@@ -2,18 +2,18 @@ import { FormControl, FormLabel } from '@chakra-ui/react'
 import SimpleTextField from '../../../../common/components/form/SimpleTextField'
 import FileInput from '../../../../common/components/form/InputFile'
 
-type CreateTeamFieldsProps = {
-  fields: ICreateTeamFields
-  setFormFields: (value: ICreateTeamFields) => void
+type FormTeamFieldsProps = {
+  fields: IFormTeamFields
+  setFormFields: (value: IFormTeamFields) => void
 }
 
-export type ICreateTeamFields = {
+export type IFormTeamFields = {
   name: string | undefined
   shortname: string | undefined
   file: File | undefined
 }
 
-function CreateTeamFields({ fields, setFormFields }: CreateTeamFieldsProps) {
+function FormTeamFields({ fields, setFormFields }: FormTeamFieldsProps) {
   return (
     <>
       <SimpleTextField
@@ -47,4 +47,4 @@ function CreateTeamFields({ fields, setFormFields }: CreateTeamFieldsProps) {
   )
 }
 
-export default CreateTeamFields
+export default FormTeamFields
