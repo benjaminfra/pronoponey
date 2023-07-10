@@ -59,7 +59,6 @@ function UpdateTeamModal({
     }
     onSave(formData, team._id)
     onClose()
-    setFormFields({ name: undefined, shortname: undefined, file: undefined })
     setHasError(false)
   }
 

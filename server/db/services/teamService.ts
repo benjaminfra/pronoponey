@@ -32,9 +32,9 @@ export const createTeam = async (
 
 export const updateTeam = async (
   id: string,
-  name: string,
-  shortname: string,
-  logoURI: string
+  name: string | undefined,
+  shortname: string | undefined,
+  logoURI: string | undefined
 ): Promise<ITeam | null> => {
   try {
     const updateParams = {

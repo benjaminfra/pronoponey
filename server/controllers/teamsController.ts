@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
-import { MultipartValue } from '@fastify/multipart'
+import { MultipartFile, MultipartValue } from '@fastify/multipart'
 import { ObjectId } from '@fastify/mongodb'
 import { ensure } from '../../helpers/types.helpers'
 import {
@@ -44,26 +44,47 @@ const postTeams = async (req: FastifyRequest, reply: FastifyReply) => {
   }
 }
 
+const getParts = async (req: FastifyRequest) => {
+  let name: string | undefined
+  let shortname: string | undefined
+  let filePart: MultipartFile | undefined
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const part of req.parts()) {
+    if (part.fields && part.fields.name) {
+      const namePart = ensure(part.fields.name) as MultipartValue<string>
+      name = namePart.value
+    }
+    if (part.fields && part.fields.shortname) {
+      const shortnamePart = ensure(
+        part.fields.shortname
+      ) as MultipartValue<string>
+      shortname = shortnamePart.value
+    }
+    if (part.type === 'file') {
+      filePart = part
+    }
+  }
+  return { name, shortname, filePart }
+}
+
 const putTeams = async (
   req: FastifyRequest<{ Params: { id: string } }>,
   reply: FastifyReply
 ) => {
   try {
-    const data = await req.file()
-    if (!data) {
+    const parts = await getParts(req)
+    if (!parts.name && !parts.shortname && !parts.filePart) {
       reply.status(500).send('Aucune modification envoyée')
       return
     }
-    if (data.file) {
-      await uploadFile(data)
+    if (parts.filePart) {
+      await uploadFile(parts.filePart)
     }
-    const name = ensure(data.fields.name) as MultipartValue<string>
-    const shortname = ensure(data.fields.shortname) as MultipartValue<string>
     const updatedTeam = await updateTeam(
       req.params.id,
-      name.value,
-      shortname.value,
-      data.filename
+      parts.name,
+      parts.shortname,
+      parts.filePart ? parts.filePart.filename : undefined
     )
 
     reply.status(200).send(updatedTeam)
