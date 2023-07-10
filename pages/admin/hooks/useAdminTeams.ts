@@ -6,6 +6,7 @@ import { ITeam } from '../../../server/db/models/teamModel'
 
 const useAdminTeams = () => {
   const [teams, setTeams] = useState<ITeam[]>([])
+  const [isTeamsLoading, setIsTeamsLoading] = useState<boolean>(true)
   const toast = useToast()
 
   const { teamsService } = useContext(ServiceContext)
@@ -16,6 +17,7 @@ const useAdminTeams = () => {
       setTeams(data)
     }
     fetchData()
+    setIsTeamsLoading(false)
   }, [])
 
   const createNewTeam = async (form: FormData) => {
@@ -70,7 +72,7 @@ const useAdminTeams = () => {
     }
   }
 
-  return { teams, createNewTeam, deleteTeam, updateTeam }
+  return { teams, createNewTeam, deleteTeam, updateTeam, isTeamsLoading }
 }
 
 export default useAdminTeams
