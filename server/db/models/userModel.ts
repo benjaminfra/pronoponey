@@ -1,15 +1,15 @@
 import { Schema, Types, model, models } from 'mongoose'
 
-export interface Token {
+export type Token = {
   token: string
 }
 
 export enum Roles {
   Admin = '2',
-  User = '1',
+  User = '1'
 }
 
-export interface IUser {
+export type IUser = {
   _id?: Types.ObjectId
   password: string
   role?: Roles
@@ -17,7 +17,7 @@ export interface IUser {
   tokens?: Token[]
 }
 
-export interface ILoggedUser {
+export type ILoggedUser = {
   id: Types.ObjectId
   username: string
   role: Roles
@@ -31,22 +31,22 @@ const UserSchema = new Schema<IUser>(
       type: String,
       enum: Roles,
       default: Roles.User,
-      required: true,
+      required: true
     },
     username: { type: String, required: true, unique: true },
     tokens: [
       {
         token: {
           type: String,
-          required: true,
-        },
-      },
-    ],
+          required: true
+        }
+      }
+    ]
   },
   { timestamps: true }
 )
 
 export const User =
-  models && models['users']
+  models && models.users
     ? model<IUser>('users')
     : model<IUser>('users', UserSchema)

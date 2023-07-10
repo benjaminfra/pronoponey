@@ -1,6 +1,6 @@
 import { Schema, Types, model } from 'mongoose'
 
-export interface IPronostic {
+export type IPronostic = {
   _id: Types.ObjectId
   userId: Types.ObjectId
   gameId: Types.ObjectId
@@ -17,7 +17,7 @@ const PronosticSchema = new Schema<IPronostic>(
     weekNumber: { type: Number, required: true },
     homeScore: { type: Number, required: true },
     awayScore: { type: Number, required: true },
-    points: { type: Number },
+    points: { type: Number }
   },
   { timestamps: true }
 )

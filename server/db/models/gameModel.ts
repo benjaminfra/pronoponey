@@ -1,6 +1,6 @@
 import { Schema, Types, model } from 'mongoose'
 
-export interface IGame {
+export type IGame = {
   _id: Types.ObjectId
   date: Date
   homeTeam: Types.ObjectId
@@ -16,7 +16,7 @@ const GameSchema = new Schema<IGame>({
   awayTeam: { type: Schema.Types.ObjectId, ref: 'Teams', required: true },
   weekNumber: { type: Number, required: true },
   homeScore: { type: Number },
-  awayScore: { type: Number },
+  awayScore: { type: Number }
 })
 
 GameSchema.index({ homeTeam: 1, awayTeam: 1, weekNumber: 1 }, { unique: true })
