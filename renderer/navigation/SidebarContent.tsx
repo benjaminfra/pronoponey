@@ -1,6 +1,6 @@
 import { Box, BoxProps, CloseButton, Flex, Text } from '@chakra-ui/react'
 import { IconType } from 'react-icons'
-import { FiHome, FiDribbble, FiTool } from 'react-icons/fi'
+import { FiHome, FiDribbble, FiUsers, FiCalendar } from 'react-icons/fi'
 import NavItem from './NavItem'
 import { Roles } from '../../server/db/models/userModel'
 import { usePageContext } from '../usePageContext'
@@ -28,9 +28,14 @@ function SidebarContent({ onClose, ...rest }: SidebarProps) {
     LinkItems.push({ name: 'Play', icon: FiDribbble, href: '/play' })
     if (loggedUser.role === Roles.Admin) {
       LinkItems.push({
-        name: 'Admin',
-        icon: FiTool,
-        href: '/admin'
+        name: 'Equipes',
+        icon: FiUsers,
+        href: '/admin/teams'
+      })
+      LinkItems.push({
+        name: 'Journées',
+        icon: FiCalendar,
+        href: '/admin/weeks'
       })
     }
   }
