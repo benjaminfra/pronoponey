@@ -21,8 +21,6 @@ export function Page() {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
-  console.log(isTeamsLoading)
-
   return (
     <>
       {isTeamsLoading && (
