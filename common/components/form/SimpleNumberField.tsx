@@ -5,27 +5,27 @@ import {
   FormErrorMessage
 } from '@chakra-ui/react'
 
-type SimpleTextFieldProps = {
+type SimpleNumberFieldProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   name: string
   label: string
-  value?: string | undefined
+  value?: number | undefined
   isRequired?: boolean
 }
 
-function SimpleTextField({
+function SimpleNumberField({
   onChange,
   name,
   label,
   value,
   isRequired = false
-}: SimpleTextFieldProps) {
-  const isInvalid: boolean = isRequired && value === ''
+}: SimpleNumberFieldProps) {
+  const isInvalid: boolean = isRequired && !value
 
   return (
     <FormControl id={name} isInvalid={isInvalid}>
       <FormLabel>{label}</FormLabel>
-      <Input type="text" onChange={onChange} value={value} />
+      <Input type="number" onChange={onChange} value={value} />
       {isInvalid && (
         <FormErrorMessage>Ce champ est obligatoire</FormErrorMessage>
       )}
@@ -33,4 +33,4 @@ function SimpleTextField({
   )
 }
 
-export default SimpleTextField
+export default SimpleNumberField

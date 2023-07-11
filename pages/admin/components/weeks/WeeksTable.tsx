@@ -1,51 +1,37 @@
+import { DateTime } from 'luxon'
 import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer
 } from '@chakra-ui/react'
+import { IWeek } from '../../../../server/db/models/weekModel'
 
-function WeeksTable() {
+type WeeksTableProps = {
+  weeks: IWeek[]
+}
+
+function WeeksTable({ weeks }: WeeksTableProps) {
   return (
-    <TableContainer>
+    <TableContainer bg="white" rounded="lg">
       <Table variant="simple">
-        <TableCaption>Imperial to metric conversion factors</TableCaption>
         <Thead>
           <Tr>
-            <Th>To convert</Th>
-            <Th>into</Th>
-            <Th isNumeric>multiply by</Th>
+            <Th>Journée</Th>
+            <Th>Date</Th>
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td>inches</Td>
-            <Td>millimetres (mm)</Td>
-            <Td isNumeric>25.4</Td>
-          </Tr>
-          <Tr>
-            <Td>feet</Td>
-            <Td>centimetres (cm)</Td>
-            <Td isNumeric>30.48</Td>
-          </Tr>
-          <Tr>
-            <Td>yards</Td>
-            <Td>metres (m)</Td>
-            <Td isNumeric>0.91444</Td>
-          </Tr>
+          {weeks.map((week) => (
+            <Tr key={week.weekNumber}>
+              <Td>{week.weekNumber}</Td>
+              <Td>{DateTime.fromISO(week.date.toString()).toLocaleString()}</Td>
+            </Tr>
+          ))}
         </Tbody>
-        <Tfoot>
-          <Tr>
-            <Th>To convert</Th>
-            <Th>into</Th>
-            <Th isNumeric>multiply by</Th>
-          </Tr>
-        </Tfoot>
       </Table>
     </TableContainer>
   )

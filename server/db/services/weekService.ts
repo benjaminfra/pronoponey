@@ -20,10 +20,15 @@ export const createWeek = async (week: IWeek): Promise<IWeek> => {
     const savedWeek = await weekToSave.save()
     console.log(`Sauvegarde de la journée ${week.weekNumber}`)
     return savedWeek
-  } catch (error) {
-    console.log(
-      `Une erreur est survenue lors de la création de la journée ${week.weekNumber}`
-    )
+  } catch (error: any) {
+    if (error.code === 11000) {
+      console.log(`La journée ${week.weekNumber} existe déjà`)
+      throw new Error(`La journée ${week.weekNumber} existe déjà`)
+    } else {
+      console.log(
+        `Une erreur est survenue lors de la création de la journée ${week.weekNumber}`
+      )
+    }
   }
   throw new Error("Une erreur est survenue lors de la création de l'équipe")
 }

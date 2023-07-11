@@ -22,10 +22,14 @@ async function postWeeksHandler(
   try {
     const savedWeek = await createWeek(req.body)
     reply.status(200).send(savedWeek)
-  } catch (error) {
-    reply
-      .status(500)
-      .send("Une erreur s'est produite lors de la création de la journée")
+  } catch (error: any) {
+    if (error.code === 11000) {
+      reply.status(400).type('text/html').send(error)
+    } else {
+      reply
+        .status(500)
+        .send("Une erreur s'est produite lors de la création de la journée")
+    }
   }
 }
 
