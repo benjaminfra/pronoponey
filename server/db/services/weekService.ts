@@ -1,3 +1,4 @@
+import { Types } from 'mongoose'
 import { IWeek, Week } from '../models/weekModel'
 
 export const findAllWeeksAndSortByWeekNumber = async (): Promise<IWeek[]> => {
@@ -31,4 +32,19 @@ export const createWeek = async (week: IWeek): Promise<IWeek> => {
     }
   }
   throw new Error("Une erreur est survenue lors de la création de l'équipe")
+}
+
+export const getWeek = async (
+  id: Types.ObjectId
+): Promise<IWeek | undefined | null> => {
+  try {
+    return await Week.findById(id).lean()
+  } catch (error: any) {
+    console.log(
+      `Une erreur est survenue lors de la récupération de la journée ${id}`
+    )
+    throw new Error(
+      `Une erreur est survenue lors de la récupération de la journée ${id}`
+    )
+  }
 }

@@ -1,7 +1,9 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
+import { Types } from 'mongoose'
 import {
   findAllWeeksAndSortByWeekNumber,
-  createWeek
+  createWeek,
+  getWeek
 } from '../db/services/weekService'
 import { IWeek } from '../db/models/weekModel'
 
@@ -13,6 +15,23 @@ function getWeeksHandler(_req: FastifyRequest, reply: FastifyReply) {
     .catch((error) => {
       reply.status(500).type('text/html').send(error)
     })
+}
+
+async function getWeekHandler(
+  req: FastifyRequest<{ Params: { id: string } }>,
+  reply: FastifyReply
+) {
+  try {
+    const { id } = req.params
+    const week = await getWeek(new Types.ObjectId(id))
+    if (!week) {
+      reply.status(404).send('Week not found')
+      return
+    }
+    reply.status(200).send(week)
+  } catch (error: any) {
+    reply.status(500).type('text/html').send(error)
+  }
 }
 
 async function postWeeksHandler(
@@ -40,6 +59,7 @@ const registerWeeksController = (app: FastifyInstance) => {
     { preHandler: app.auth([app.asyncVerifyAdminJWT]) },
     postWeeksHandler
   )
+  app.get<{ Params: { id: string } }>('/weeks/:id', getWeekHandler)
 }
 
 export default registerWeeksController
