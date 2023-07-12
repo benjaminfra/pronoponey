@@ -11,6 +11,7 @@ class GamesService {
         throw new Error(error.response.data.message)
       })
   }
+  createGame()
 }
 
 export default GamesService

@@ -5,8 +5,8 @@ export type IGame = {
   date: Date
   homeTeam: Types.ObjectId
   awayTeam: Types.ObjectId
-  homeScore: number
-  awayScore: number
+  homeScore?: number
+  awayScore?: number
   weekNumber: number
 }
 
