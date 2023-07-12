@@ -13,7 +13,7 @@ export function Page() {
       {!isMobile && (
         <HStack p="5" width="100%" spacing={15} alignItems="flex-center">
           <Box width="50%" top="0">
-            <WeeksTable weeks={weeks} />
+            <WeeksTable weeks={weeks} loading={isWeeksLoading} />
           </Box>
           <Box width="50%">
             <WeeksForm onSubmit={createNewWeek} />
@@ -22,7 +22,7 @@ export function Page() {
       )}
       {isMobile && (
         <Box width="100%" top="0">
-          <WeeksTable weeks={weeks} />
+          <WeeksTable weeks={weeks} loading={isWeeksLoading} />
         </Box>
       )}
     </>
