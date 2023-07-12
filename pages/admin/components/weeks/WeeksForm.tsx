@@ -1,20 +1,14 @@
 import { useState } from 'react'
 import { VStack, Text, Box, Button } from '@chakra-ui/react'
 import { DateTime } from 'luxon'
-import SimpleNumberField from '../../../../common/components/form/SimpleNumberField'
-import InputDate from '../../../../common/components/form/InputDate'
+import WeeksFormFields, { WeeksFormFieldsType } from './WeeksFormFields'
 
 type WeeksFormProps = {
   onSubmit: (weekNumber: number, date: Date) => void
 }
 
-type WeeksFormFields = {
-  weekNumber: number
-  date: Date
-}
-
 function WeeksForm({ onSubmit }: WeeksFormProps) {
-  const [formFields, setFormFields] = useState<WeeksFormFields>({
+  const [formFields, setFormFields] = useState<WeeksFormFieldsType>({
     weekNumber: 1,
     date: DateTime.now().toJSDate()
   })
@@ -28,26 +22,9 @@ function WeeksForm({ onSubmit }: WeeksFormProps) {
         <Text fontSize="2xl">Ajouter une journée</Text>
       </Box>
       <Box w="100%" p="10">
-        <SimpleNumberField
-          label="Numéro de la journée"
-          name="weekNumber"
-          isRequired
-          value={formFields.weekNumber}
-          onChange={(e) =>
-            setFormFields({
-              ...formFields,
-              weekNumber: Number.parseInt(e.target.value, 10)
-            })
-          }
-        />
-        <InputDate
-          label="Date de début de la journée"
-          name="date"
-          onChange={(e) =>
-            setFormFields({ ...formFields, date: new Date(e.target.value) })
-          }
-          value={formFields.date}
-          isRequired
+        <WeeksFormFields
+          formFields={formFields}
+          setFormFields={setFormFields}
         />
       </Box>
       <Box w="100%" p="10" textAlign="right">
