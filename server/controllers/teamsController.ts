@@ -36,7 +36,7 @@ const postTeams = async (req: FastifyRequest, reply: FastifyReply) => {
       data.filename
     )
 
-    reply.status(200).send(createdTeam)
+    reply.status(201).header('Location', createdTeam._id).send(createdTeam)
   } catch (error) {
     reply
       .status(500)

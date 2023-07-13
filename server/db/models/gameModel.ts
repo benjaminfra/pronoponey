@@ -10,6 +10,10 @@ export type IGame = {
   weekNumber: number
 }
 
+export type NewGame = Omit<IGame, '_id'> & {
+  _id?: Types.ObjectId
+}
+
 const GameSchema = new Schema<IGame>({
   date: { type: Date, required: true },
   homeTeam: { type: Schema.Types.ObjectId, ref: 'Teams', required: true },

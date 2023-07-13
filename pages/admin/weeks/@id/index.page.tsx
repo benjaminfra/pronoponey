@@ -5,6 +5,7 @@ import { ITeam } from '../../../../server/db/models/teamModel'
 import { IWeek } from '../../../../server/db/models/weekModel'
 import WeekGameSelector from '../../components/games/WeekGameSelector'
 import useAdminWeekGames from '../../hooks/useAdminWeekGames'
+import AdminGameForm from '../../components/games/AdminGameForm'
 
 type PageProps = {
   week: IWeek
@@ -12,7 +13,9 @@ type PageProps = {
 }
 
 export function Page({ week, teams }: PageProps) {
-  const { weekGames, isWeekGamesLoading } = useAdminWeekGames(week.weekNumber)
+  const { weekGames, handleCreateGame, isWeekGamesLoading } = useAdminWeekGames(
+    week.weekNumber
+  )
 
   return (
     <>
@@ -21,7 +24,7 @@ export function Page({ week, teams }: PageProps) {
       } à la date du ${DateTime.fromISO(
         week.date.toString()
       ).toLocaleString()}`}</Heading>
-      <WeekGameSelector week={week} teams={teams} />
+      <AdminGameForm teams={teams} week={week} onSubmitFct={handleCreateGame} />
     </>
   )
 }

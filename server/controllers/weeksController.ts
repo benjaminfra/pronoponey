@@ -40,7 +40,7 @@ async function postWeeksHandler(
 ) {
   try {
     const savedWeek = await createWeek(req.body)
-    reply.status(200).send(savedWeek)
+    reply.status(201).header('Location', savedWeek._id).send(savedWeek)
   } catch (error: any) {
     if (error.code === 11000) {
       reply.status(400).type('text/html').send(error)
