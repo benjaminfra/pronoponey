@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
 import { ServiceContext } from '../../../renderer/provider/ServiceProvider'
-import { IWeek } from '../../../server/db/models/weekModel'
+import { IWeek, UpdateWeek } from '../../../server/db/models/weekModel'
 
 const useAdminWeeks = () => {
   const [weeks, setWeeks] = useState<IWeek[]>([])
@@ -21,7 +21,7 @@ const useAdminWeeks = () => {
 
   const createNewWeek = async (weekNumber: number, date: Date) => {
     try {
-      const savedWeek = await weeksService.createTeam(weekNumber, date)
+      const savedWeek = await weeksService.createWeek(weekNumber, date)
       setWeeks([...weeks, savedWeek])
     } catch (error) {
       toast({
@@ -34,7 +34,38 @@ const useAdminWeeks = () => {
     }
   }
 
-  return { weeks, createNewWeek, isWeeksLoading }
+  const deleteWeek = async (id: string) => {
+    try {
+      await weeksService.deleteWeek(id)
+      window.location.href = '/admin/weeks'
+    } catch (error) {
+      toast({
+        title: 'Une erreur est survenue',
+        description: 'Impossible de supprimer la journée',
+        status: 'error',
+        duration: 3000,
+        isClosable: true
+      })
+    }
+  }
+
+  const updateWeek = async (id: string, week: UpdateWeek) => {
+    try {
+      const updatedWeek = await weeksService.updateWeek(id, week)
+      setWeeks([...weeks, updatedWeek])
+      window.location.href = `/admin/weeks/${id}`
+    } catch (error) {
+      toast({
+        title: 'Une erreur est survenue',
+        description: 'Impossible de mettre à jour la journée',
+        status: 'error',
+        duration: 3000,
+        isClosable: true
+      })
+    }
+  }
+
+  return { weeks, createNewWeek, deleteWeek, updateWeek, isWeeksLoading }
 }
 
 export default useAdminWeeks

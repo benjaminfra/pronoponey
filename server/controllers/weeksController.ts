@@ -3,9 +3,11 @@ import { Types } from 'mongoose'
 import {
   findAllWeeksAndSortByWeekNumber,
   createWeek,
-  getWeek
+  getWeek,
+  deleteWeek,
+  updateWeek
 } from '../db/services/weekService'
-import { IWeek } from '../db/models/weekModel'
+import { IWeek, UpdateWeek } from '../db/models/weekModel'
 
 function getWeeksHandler(_req: FastifyRequest, reply: FastifyReply) {
   findAllWeeksAndSortByWeekNumber()
@@ -52,6 +54,37 @@ async function postWeeksHandler(
   }
 }
 
+async function deleteWeeksHandler(
+  req: FastifyRequest<{ Params: { id: string } }>,
+  reply: FastifyReply
+) {
+  try {
+    await deleteWeek(new Types.ObjectId(req.params.id))
+    reply.status(204).send()
+  } catch (error: any) {
+    reply.status(500).type('text/html').send(error)
+  }
+}
+
+async function putWeeksHandler(
+  req: FastifyRequest<{ Body: UpdateWeek; Params: { id: string } }>,
+  reply: FastifyReply
+) {
+  try {
+    const updatedWeek = await updateWeek(req.params.id, req.body)
+    reply.status(200).send(updatedWeek)
+  } catch (error: any) {
+    if (error.code === 11000) {
+      reply
+        .status(400)
+        .type('text/html')
+        .send(`La journée ${req.body.weekNumber} existe déjà`)
+    } else {
+      reply.status(500).type('text/html').send(error)
+    }
+  }
+}
+
 const registerWeeksController = (app: FastifyInstance) => {
   app.get('/weeks', getWeeksHandler)
   app.post<{ Body: IWeek }>(
@@ -60,6 +93,16 @@ const registerWeeksController = (app: FastifyInstance) => {
     postWeeksHandler
   )
   app.get<{ Params: { id: string } }>('/weeks/:id', getWeekHandler)
+  app.delete<{ Params: { id: string } }>(
+    '/weeks/:id',
+    { preHandler: app.auth([app.asyncVerifyAdminJWT]) },
+    deleteWeeksHandler
+  )
+  app.put<{ Body: UpdateWeek; Params: { id: string } }>(
+    '/weeks/:id',
+    { preHandler: app.auth([app.asyncVerifyAdminJWT]) },
+    putWeeksHandler
+  )
 }
 
 export default registerWeeksController

@@ -16,19 +16,28 @@ import {
   AlertDescription
 } from '@chakra-ui/react'
 import WeeksFormFields, { WeeksFormFieldsType } from '../WeeksFormFields'
+import { IWeek } from '../../../../../server/db/models/weekModel'
 
 type AddWeeksModalProps = {
   isOpen: boolean
   onClose: () => void
   onSubmit: (weekNumber: number, date: Date) => void
+  week?: IWeek
 }
 
-function AddWeeksModal({ isOpen, onClose, onSubmit }: AddWeeksModalProps) {
+function AddWeeksModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  week
+}: AddWeeksModalProps) {
   const [hasError, setHasError] = useState<boolean>()
 
   const [formFields, setFormFields] = useState<WeeksFormFieldsType>({
-    weekNumber: 1,
-    date: DateTime.now().toJSDate()
+    weekNumber: week ? week.weekNumber : 1,
+    date: week
+      ? DateTime.fromISO(week.date.toString()).toJSDate()
+      : DateTime.now().toJSDate()
   })
 
   const isDisable = !formFields.weekNumber || !formFields.date
@@ -47,7 +56,9 @@ function AddWeeksModal({ isOpen, onClose, onSubmit }: AddWeeksModalProps) {
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Ajouter une journée</ModalHeader>
+        <ModalHeader>
+          {week ? 'Modifier une journée' : 'Ajouter une journée'}
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <VStack spacing={4}>
@@ -77,7 +88,7 @@ function AddWeeksModal({ isOpen, onClose, onSubmit }: AddWeeksModalProps) {
             onClick={onCloseModal}
             disabled={isDisable}
           >
-            Ajouter
+            {week ? 'Modifier' : 'Ajouter'}
           </Button>
         </ModalFooter>
       </ModalContent>

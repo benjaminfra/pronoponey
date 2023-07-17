@@ -1,5 +1,5 @@
 import { Types } from 'mongoose'
-import { IWeek, Week } from '../models/weekModel'
+import { IWeek, UpdateWeek, Week } from '../models/weekModel'
 
 export const findAllWeeksAndSortByWeekNumber = async (): Promise<IWeek[]> => {
   try {
@@ -45,6 +45,50 @@ export const getWeek = async (
     )
     throw new Error(
       `Une erreur est survenue lors de la récupération de la journée ${id}`
+    )
+  }
+}
+
+export const deleteWeek = async (id: Types.ObjectId): Promise<void> => {
+  try {
+    await Week.findOneAndDelete(id)
+  } catch (error: any) {
+    console.log(
+      `Une erreur est survenue lors de la suppression de la journée ${id}`
+    )
+    throw new Error(
+      `Une erreur est survenue lors de la suppression de la journée ${id}`
+    )
+  }
+}
+
+export const updateWeek = async (
+  id: string,
+  week: UpdateWeek
+): Promise<IWeek | null> => {
+  try {
+    const updateParams = {
+      ...(week.weekNumber && { weekNumber: week.weekNumber }),
+      ...(week.date && { date: week.date })
+    }
+
+    return await Week.findOneAndUpdate(
+      { _id: new Types.ObjectId(id) },
+      updateParams,
+      {
+        new: true
+      }
+    )
+  } catch (error: any) {
+    if (error.code === 11000) {
+      console.log(`La journée ${week.weekNumber} existe déjà`)
+      throw new Error(error)
+    }
+    console.error(
+      `Une erreur est survenue lors de la mise à jour de la journée ${week.weekNumber} : ${error}`
+    )
+    throw new Error(
+      `Une erreur est survenue lors de la mise à jour de la journée ${week.weekNumber}`
     )
   }
 }

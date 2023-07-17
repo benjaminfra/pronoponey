@@ -6,6 +6,7 @@ import { IWeek } from '../../../../server/db/models/weekModel'
 import useAdminWeekGames from '../../hooks/useAdminWeekGames'
 import AdminGameForm from '../../components/games/AdminGameForm'
 import AdminGamesList from '../../components/games/AdminGamesList'
+import WeekToolBar from '../../components/weeks/WeekToolsBar'
 
 type PageProps = {
   week: IWeek
@@ -20,11 +21,16 @@ export function Page({ week, teams }: PageProps) {
 
   return (
     <>
-      <Heading as="h1">{`Journée n°${
-        week.weekNumber
-      } à la date du ${DateTime.fromISO(
-        week.date.toString()
-      ).toLocaleString()}`}</Heading>
+      <HStack>
+        <Heading as="h1">{`Journée n°${
+          week.weekNumber
+        } à la date du ${DateTime.fromISO(
+          week.date.toString()
+        ).toLocaleString()}`}</Heading>
+        <Box marginLeft={5}>
+          <WeekToolBar week={week} />
+        </Box>
+      </HStack>
       <HStack spacing={15} width="100%" marginTop={5}>
         <Box flex={1}>
           {isWeekGamesLoading && (
