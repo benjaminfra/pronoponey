@@ -1,6 +1,6 @@
 import { Box, Center, HStack, Text } from '@chakra-ui/react'
 import BigText from '../../../../common/components/BigText'
-import FullyScore from '../score/FullyScore'
+import FullyScore from '../../../../common/components/score/FullyScore'
 
 type PronosticScoreProps = {
   homeScore?: number

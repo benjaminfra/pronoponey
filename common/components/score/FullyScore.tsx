@@ -1,5 +1,5 @@
 import { Box, HStack } from '@chakra-ui/react'
-import BigText from '../../../../common/components/BigText'
+import BigText from '../BigText'
 import Score from './Score'
 
 type FullScoreProps = {

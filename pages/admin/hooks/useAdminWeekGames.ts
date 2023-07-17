@@ -2,8 +2,10 @@ import { useContext, useState, useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
 import { ServiceContext } from '../../../renderer/provider/ServiceProvider'
 import { IGame, NewGame } from '../../../server/db/models/gameModel'
+import { ITeam } from '../../../server/db/models/teamModel'
+import { assignTeamsToGames } from '../../../helpers/games.utils'
 
-const useAdminWeekGames = (weekNumber: number) => {
+const useAdminWeekGames = (weekNumber: number, teams: ITeam[]) => {
   const [weekGames, setWeekGames] = useState<IGame[]>([])
   const [isWeekGamesLoading, setIsWeekGamesLoading] = useState<boolean>(true)
   const toast = useToast()
@@ -12,7 +14,8 @@ const useAdminWeekGames = (weekNumber: number) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await gamesService.getGamesByWeekNumber(weekNumber)
+      let data = await gamesService.getGamesByWeekNumber(weekNumber)
+      data = await assignTeamsToGames(data, teams)
       setWeekGames(data)
     }
     fetchData()

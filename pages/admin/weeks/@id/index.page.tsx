@@ -1,11 +1,11 @@
 /* eslint-disable import/prefer-default-export */
-import { Heading } from '@chakra-ui/react'
+import { Box, Center, HStack, Heading, Spinner } from '@chakra-ui/react'
 import { DateTime } from 'luxon'
 import { ITeam } from '../../../../server/db/models/teamModel'
 import { IWeek } from '../../../../server/db/models/weekModel'
-import WeekGameSelector from '../../components/games/WeekGameSelector'
 import useAdminWeekGames from '../../hooks/useAdminWeekGames'
 import AdminGameForm from '../../components/games/AdminGameForm'
+import AdminGamesList from '../../components/games/AdminGamesList'
 
 type PageProps = {
   week: IWeek
@@ -14,7 +14,8 @@ type PageProps = {
 
 export function Page({ week, teams }: PageProps) {
   const { weekGames, handleCreateGame, isWeekGamesLoading } = useAdminWeekGames(
-    week.weekNumber
+    week.weekNumber,
+    teams
   )
 
   return (
@@ -24,7 +25,23 @@ export function Page({ week, teams }: PageProps) {
       } à la date du ${DateTime.fromISO(
         week.date.toString()
       ).toLocaleString()}`}</Heading>
-      <AdminGameForm teams={teams} week={week} onSubmitFct={handleCreateGame} />
+      <HStack spacing={15} width="100%" marginTop={5}>
+        <Box flex={1}>
+          {isWeekGamesLoading && (
+            <Center>
+              <Spinner />
+            </Center>
+          )}
+          {!isWeekGamesLoading && <AdminGamesList games={weekGames} />}
+        </Box>
+        <Box flex={1}>
+          <AdminGameForm
+            onSubmitFct={handleCreateGame}
+            teams={teams}
+            week={week}
+          />
+        </Box>
+      </HStack>
     </>
   )
 }

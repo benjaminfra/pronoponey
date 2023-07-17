@@ -6,7 +6,8 @@ import {
   Alert,
   AlertIcon,
   AlertTitle,
-  AlertDescription
+  AlertDescription,
+  Box
 } from '@chakra-ui/react'
 import { Types } from 'mongoose'
 import { IGame, NewGame } from '../../../../server/db/models/gameModel'
@@ -76,38 +77,47 @@ function AdminGameForm({ teams, game, week, onSubmitFct }: AdminGameFormProps) {
   }
 
   return (
-    <>
+    <Box bg="white" rounded="lg" p={6}>
       {hasError && (
-        <Alert status="error">
+        <Alert status="error" mt={5} mb={5}>
           <AlertIcon />
           <AlertTitle>Attention !</AlertTitle>
           <AlertDescription>Tous les champs sont requis</AlertDescription>
         </Alert>
       )}
-      <Input type="datetime-local" onChange={(e) => setDate(e.target.value)} />
-      <WeekGameSelector
-        teams={teams}
-        awayTeamValue={gameFormFields.awayTeam}
-        homeTeamValue={gameFormFields.homeTeam}
-        homeTeamOnChange={setHomeTeamId}
-        awayTeamOnChange={setAwayTeamId}
-      />
-      <Button
-        bg="blue.400"
-        color="white"
-        _hover={{
-          bg: 'blue.500'
-        }}
-        isDisabled={
-          !gameFormFields.homeTeam ||
-          !gameFormFields.awayTeam ||
-          !gameFormFields.gameDate
-        }
-        onClick={onSubmit}
-      >
-        Ajouter
-      </Button>
-    </>
+      <Box mb={5} mt={5}>
+        <Input
+          type="datetime-local"
+          onChange={(e) => setDate(e.target.value)}
+        />
+      </Box>
+      <Box mb={5} mt={5}>
+        <WeekGameSelector
+          teams={teams}
+          awayTeamValue={gameFormFields.awayTeam}
+          homeTeamValue={gameFormFields.homeTeam}
+          homeTeamOnChange={setHomeTeamId}
+          awayTeamOnChange={setAwayTeamId}
+        />
+      </Box>
+      <Box>
+        <Button
+          bg="blue.400"
+          color="white"
+          _hover={{
+            bg: 'blue.500'
+          }}
+          isDisabled={
+            !gameFormFields.homeTeam ||
+            !gameFormFields.awayTeam ||
+            !gameFormFields.gameDate
+          }
+          onClick={onSubmit}
+        >
+          Ajouter
+        </Button>
+      </Box>
+    </Box>
   )
 }
 

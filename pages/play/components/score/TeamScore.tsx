@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react'
-import Team from '../team/Team'
+import TeamDisplay from '../../../../common/components/team/TeamDisplay'
 import ScoreResult from './ScoreResult'
 import { ITeam } from '../../../../server/db/models/teamModel'
 
@@ -33,11 +33,7 @@ function TeamScore({
 
   const teamBox = (
     <Box width="30%">
-      <Team
-        logoUri={team.logoURI}
-        name={team.name}
-        shortname={team.shortname}
-      />
+      <TeamDisplay team={team} displayImage />
     </Box>
   )
   return (

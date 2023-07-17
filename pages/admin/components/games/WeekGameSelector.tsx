@@ -19,7 +19,7 @@ function WeekGameSelector({
 }: WeekGameSelectorProps) {
   return (
     <HStack bg="white" rounded="md">
-      <Box flex={1} p={5}>
+      <Box flex={1}>
         <TeamSelect
           placeholder="Equipe à domicile"
           teams={teams}
@@ -27,7 +27,7 @@ function WeekGameSelector({
           value={homeTeamValue}
         />
       </Box>
-      <Box flex={1} p={5}>
+      <Box flex={1}>
         <TeamSelect
           placeholder="Equipe à l'extérieur"
           teams={teams}

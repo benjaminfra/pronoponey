@@ -1,10 +1,11 @@
 import { Schema, Types, model } from 'mongoose'
+import { ITeam } from './teamModel'
 
 export type IGame = {
   _id: Types.ObjectId
   date: Date
-  homeTeam: Types.ObjectId
-  awayTeam: Types.ObjectId
+  homeTeam: Types.ObjectId | ITeam
+  awayTeam: Types.ObjectId | ITeam
   homeScore?: number
   awayScore?: number
   weekNumber: number

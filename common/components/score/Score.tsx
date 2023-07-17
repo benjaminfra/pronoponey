@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react'
-import BigText from '../../../../common/components/BigText'
+import BigText from '../BigText'
 
 type ScoreProps = {
   score?: number

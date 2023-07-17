@@ -1,5 +1,5 @@
 import SelectScore from './SelectScore'
-import Score from './Score'
+import Score from '../../../../common/components/score/Score'
 
 type ScoreResultProps = {
   score?: number
