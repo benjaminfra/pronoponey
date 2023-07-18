@@ -35,3 +35,14 @@ export const findGamesByWeeknumber = async (weekNumber: number) => {
     throw new Error('An error occured when trying to get games')
   }
 }
+
+export const updateGamesWeekNumber = async (
+  weekNumber: number,
+  newWeekNumber: number
+) => {
+  try {
+    return await Game.updateMany({ weekNumber }, { weekNumber: newWeekNumber })
+  } catch (error) {
+    throw new Error('Une erreur est survenue lors de la mise à jour des matchs')
+  }
+}

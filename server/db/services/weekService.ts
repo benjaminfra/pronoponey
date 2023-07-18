@@ -1,5 +1,6 @@
 import { Types } from 'mongoose'
 import { IWeek, UpdateWeek, Week } from '../models/weekModel'
+import { updateGamesWeekNumber } from './gameService'
 
 export const findAllWeeksAndSortByWeekNumber = async (): Promise<IWeek[]> => {
   try {
@@ -72,13 +73,21 @@ export const updateWeek = async (
       ...(week.date && { date: week.date })
     }
 
-    return await Week.findOneAndUpdate(
+    const oldWeek = await Week.findOneAndUpdate(
       { _id: new Types.ObjectId(id) },
-      updateParams,
-      {
-        new: true
-      }
+      updateParams
     )
+
+    if (!oldWeek) {
+      throw new Error(`La journée ${id} n'existe pas`)
+    }
+
+    updateGamesWeekNumber(oldWeek.weekNumber, week.weekNumber)
+    return {
+      weekNumber: week.weekNumber,
+      date: week.date,
+      _id: oldWeek._id
+    }
   } catch (error: any) {
     if (error.code === 11000) {
       console.log(`La journée ${week.weekNumber} existe déjà`)
