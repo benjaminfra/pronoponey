@@ -72,6 +72,10 @@ async function putWeeksHandler(
 ) {
   try {
     const updatedWeek = await updateWeek(req.params.id, req.body)
+    if (!updatedWeek) {
+      reply.status(404).send('Journée non trouvée')
+      return
+    }
     reply.status(200).send(updatedWeek)
   } catch (error: any) {
     if (error.code === 11000) {

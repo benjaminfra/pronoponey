@@ -79,7 +79,7 @@ export const updateWeek = async (
     )
 
     if (!oldWeek) {
-      throw new Error(`La journée ${id} n'existe pas`)
+      return null
     }
 
     updateGamesWeekNumber(oldWeek.weekNumber, week.weekNumber)
