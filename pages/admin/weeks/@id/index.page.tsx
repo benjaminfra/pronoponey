@@ -14,10 +14,13 @@ type PageProps = {
 }
 
 export function Page({ week, teams }: PageProps) {
-  const { weekGames, handleCreateGame, isWeekGamesLoading } = useAdminWeekGames(
-    week.weekNumber,
-    teams
-  )
+  const {
+    weekGames,
+    handleCreateGame,
+    isWeekGamesLoading,
+    handleDeleteGame,
+    handleUpdateGame
+  } = useAdminWeekGames(week.weekNumber, teams)
 
   return (
     <>
@@ -38,13 +41,19 @@ export function Page({ week, teams }: PageProps) {
               <Spinner />
             </Center>
           )}
-          {!isWeekGamesLoading && <AdminGamesList games={weekGames} />}
+          {!isWeekGamesLoading && (
+            <AdminGamesList
+              games={weekGames}
+              deleteGameFct={handleDeleteGame}
+              updateGameFct={handleUpdateGame}
+            />
+          )}
         </Box>
         <Box flex={1}>
           <AdminGameForm
             onSubmitFct={handleCreateGame}
             teams={teams}
-            week={week}
+            weekNumber={week.weekNumber}
           />
         </Box>
       </HStack>

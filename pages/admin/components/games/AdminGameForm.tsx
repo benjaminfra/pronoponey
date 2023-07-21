@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { DateTime } from 'luxon'
 import {
-  Input,
   Button,
   Alert,
   AlertIcon,
@@ -10,10 +9,15 @@ import {
   Box
 } from '@chakra-ui/react'
 import { Types } from 'mongoose'
-import { IGame, NewGame } from '../../../../server/db/models/gameModel'
+import {
+  IGame,
+  NewGame,
+  UpdateGame
+} from '../../../../server/db/models/gameModel'
 import { ITeam } from '../../../../server/db/models/teamModel'
-import { IWeek } from '../../../../server/db/models/weekModel'
 import WeekGameSelector from './WeekGameSelector'
+import InputDate from '../../../../common/components/form/InputDate'
+import { ensure } from '../../../../helpers/types.helpers'
 
 export type AdminGameFormFields = {
   homeTeam: string | undefined
@@ -23,16 +27,30 @@ export type AdminGameFormFields = {
 
 type AdminGameFormProps = {
   teams: ITeam[]
-  game?: IGame
-  week: IWeek
-  onSubmitFct: (game: NewGame) => void
-}
+  onSubmitFct: (game: NewGame | UpdateGame) => void
+} & (
+  | {
+      game: IGame
+      weekNumber?: number
+    }
+  | {
+      weekNumber: number
+      game?: IGame
+    }
+)
 
-function AdminGameForm({ teams, game, week, onSubmitFct }: AdminGameFormProps) {
+function AdminGameForm({
+  teams,
+  game,
+  weekNumber,
+  onSubmitFct
+}: AdminGameFormProps) {
   const [gameFormFields, setGameFormFields] = useState<AdminGameFormFields>({
-    homeTeam: game?.homeTeam.toString(),
-    awayTeam: game?.awayTeam.toString(),
-    gameDate: game?.date
+    homeTeam: game?.homeTeam._id.toString(),
+    awayTeam: game?.awayTeam._id.toString(),
+    gameDate: game
+      ? DateTime.fromISO(game.date.toString()).toJSDate()
+      : undefined
   })
 
   const [hasError, setHasError] = useState(false)
@@ -51,10 +69,10 @@ function AdminGameForm({ teams, game, week, onSubmitFct }: AdminGameFormProps) {
     }))
   }
 
-  const setDate = (date: string) => {
+  const setDate = (e: React.ChangeEvent<HTMLInputElement>) => {
     setGameFormFields((prevState) => ({
       ...prevState,
-      gameDate: DateTime.fromISO(date).toJSDate()
+      gameDate: new Date(e.target.value)
     }))
   }
 
@@ -71,7 +89,7 @@ function AdminGameForm({ teams, game, week, onSubmitFct }: AdminGameFormProps) {
       homeTeam: new Types.ObjectId(gameFormFields.homeTeam),
       awayTeam: new Types.ObjectId(gameFormFields.awayTeam),
       date: gameFormFields.gameDate,
-      weekNumber: week.weekNumber
+      weekNumber: game ? game.weekNumber : ensure(weekNumber)
     })
     setHasError(false)
   }
@@ -86,9 +104,13 @@ function AdminGameForm({ teams, game, week, onSubmitFct }: AdminGameFormProps) {
         </Alert>
       )}
       <Box mb={5} mt={5}>
-        <Input
-          type="datetime-local"
-          onChange={(e) => setDate(e.target.value)}
+        <InputDate
+          label="Date du match"
+          onChange={setDate}
+          value={gameFormFields.gameDate}
+          isRequired
+          isDateTime
+          name="gameDate"
         />
       </Box>
       <Box mb={5} mt={5}>
@@ -114,7 +136,7 @@ function AdminGameForm({ teams, game, week, onSubmitFct }: AdminGameFormProps) {
           }
           onClick={onSubmit}
         >
-          Ajouter
+          {game ? 'Modifier' : 'Ajouter'}
         </Button>
       </Box>
     </Box>

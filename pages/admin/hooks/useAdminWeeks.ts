@@ -51,8 +51,7 @@ const useAdminWeeks = () => {
 
   const updateWeek = async (id: string, week: UpdateWeek) => {
     try {
-      const updatedWeek = await weeksService.updateWeek(id, week)
-      setWeeks([...weeks, updatedWeek])
+      await weeksService.updateWeek(id, week)
       window.location.href = `/admin/weeks/${id}`
     } catch (error) {
       toast({

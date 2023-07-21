@@ -12,6 +12,7 @@ type InputDateProps = {
   name: string
   label: string
   isRequired?: boolean
+  isDateTime?: boolean
 }
 
 function InputDate({
@@ -19,7 +20,8 @@ function InputDate({
   onChange,
   name,
   label,
-  isRequired
+  isRequired,
+  isDateTime = false
 }: InputDateProps) {
   const isInvalid: boolean | undefined = isRequired && !value
 
@@ -27,8 +29,14 @@ function InputDate({
     <FormControl id={name} isInvalid={isInvalid}>
       <FormLabel>{label}</FormLabel>
       <Input
-        type="date"
-        value={DateTime.fromJSDate(value).toISODate()?.toString()}
+        type={isDateTime ? 'datetime-local' : 'date'}
+        value={
+          isDateTime
+            ? DateTime.fromJSDate(value)
+                .setZone('Europe/Paris')
+                .toFormat('yyyy-MM-dd HH:mm')
+            : value.toISOString().slice(0, 10)
+        }
         onChange={onChange}
       />
       {isInvalid && (
