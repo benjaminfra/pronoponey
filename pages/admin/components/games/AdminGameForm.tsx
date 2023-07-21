@@ -6,7 +6,9 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
-  Box
+  Box,
+  VStack,
+  Text
 } from '@chakra-ui/react'
 import { Types } from 'mongoose'
 import {
@@ -95,7 +97,12 @@ function AdminGameForm({
   }
 
   return (
-    <Box bg="white" rounded="lg" p={6}>
+    <VStack bg="white" rounded="lg" p={6} align="stretch">
+      <Box textAlign="center">
+        <Text fontSize="2xl">
+          {game ? 'Modifier un match' : 'Ajouter un match'}
+        </Text>
+      </Box>
       {hasError && (
         <Alert status="error" mt={5} mb={5}>
           <AlertIcon />
@@ -139,7 +146,7 @@ function AdminGameForm({
           {game ? 'Modifier' : 'Ajouter'}
         </Button>
       </Box>
-    </Box>
+    </VStack>
   )
 }
 

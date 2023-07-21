@@ -2,7 +2,6 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
   ModalBody,
   ModalCloseButton
 } from '@chakra-ui/react'
@@ -48,9 +47,6 @@ function GameFormModal({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>
-          {game ? 'Modifier un match' : 'Créer un match'}
-        </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <AdminGameForm
