@@ -63,6 +63,7 @@ const useAdminWeekGames = (weekNumber?: number, teams?: ITeam[]) => {
   const handleUpdateGame = async (game: UpdateGame, gameId: string) => {
     try {
       let updatedGame = await gamesService.updateGame(gameId, game)
+      console.log('updateGame   ', updatedGame)
       updatedGame = await assignTeamsToGame(updatedGame, ensure(teams))
       const index = weekGames.findIndex(
         (weekGame) => weekGame._id === updatedGame._id

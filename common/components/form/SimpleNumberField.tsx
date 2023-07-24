@@ -8,7 +8,7 @@ import {
 type SimpleNumberFieldProps = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   name: string
-  label: string
+  label?: string
   value?: number | undefined
   isRequired?: boolean
 }
@@ -24,7 +24,7 @@ function SimpleNumberField({
 
   return (
     <FormControl id={name} isInvalid={isInvalid}>
-      <FormLabel>{label}</FormLabel>
+      {label && <FormLabel>{label}</FormLabel>}
       <Input type="number" onChange={onChange} value={value} />
       {isInvalid && (
         <FormErrorMessage>Ce champ est obligatoire</FormErrorMessage>

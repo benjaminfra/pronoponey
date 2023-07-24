@@ -66,8 +66,8 @@ export const updateGame = async (
       ...(game.date && { date: game.date }),
       ...(game.homeTeam && { homeTeam: game.homeTeam }),
       ...(game.awayTeam && { awayTeam: game.awayTeam }),
-      ...(game.homeScore && { homeTeamScore: game.homeScore }),
-      ...(game.awayScore && { awayTeamScore: game.awayScore })
+      ...(game.homeScore !== undefined && { homeScore: game.homeScore }),
+      ...(game.awayScore !== undefined && { awayScore: game.awayScore })
     }
 
     return await Game.findOneAndUpdate(
