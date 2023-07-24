@@ -31,7 +31,8 @@ const useAdminWeekGames = (weekNumber?: number, teams?: ITeam[]) => {
 
   const handleCreateGame = async (newGame: NewGame) => {
     try {
-      const savedGame = await gamesService.createGame(newGame)
+      let savedGame = await gamesService.createGame(newGame)
+      savedGame = await assignTeamsToGame(savedGame, ensure(teams))
       setWeekGames([...weekGames, savedGame])
     } catch (error: any) {
       toast({

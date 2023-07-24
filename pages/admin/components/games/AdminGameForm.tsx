@@ -52,7 +52,7 @@ function AdminGameForm({
     awayTeam: game?.awayTeam._id.toString(),
     gameDate: game
       ? DateTime.fromISO(game.date.toString()).toJSDate()
-      : undefined
+      : new Date()
   })
 
   const [hasError, setHasError] = useState(false)
