@@ -1,24 +1,29 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Text } from '@chakra-ui/react'
+import { DateTime } from 'luxon'
 import GameScore from '../score/GameScore'
-import { GameProps, SavePronoFunction } from '../../types'
-import PronosticCard from '../pronostic/PronosticCard'
+import { IGame } from '../../../../server/db/models/gameModel'
+import {
+  IPronostic,
+  NewPronostic
+} from '../../../../server/db/models/pronosticModel'
 
 type GameCardProps = {
-  game: GameProps
-  saveProno: SavePronoFunction
+  game: IGame
+  pronostic?: IPronostic
+  saveProno: (pronostic: NewPronostic) => void
 }
 
-function GameCard({ game, saveProno }: GameCardProps) {
+function GameCard({ game, pronostic, saveProno }: GameCardProps) {
   return (
     <Box
-      border="1px"
-      borderColor="gray.400"
-      borderRadius="10px"
-      backgroundColor="white"
+      borderRadius="xl"
+      bgGradient="linear(to-l, #192531, #213242)"
       padding="1em"
     >
-      <GameScore game={game} saveProno={saveProno} />
-      <PronosticCard pronostic={game.pronostic} />
+      <Text fontSize="xl" fontWeight="bold" color="white">
+        {DateTime.fromJSDate(game.date).toISOTime()}
+      </Text>
+      <GameScore game={game} saveProno={saveProno} pronostic={pronostic} />
     </Box>
   )
 }

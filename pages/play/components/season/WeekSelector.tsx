@@ -57,7 +57,12 @@ function WeekSelector({ weeks, getGames, getPronostics }: WeekSelectorProps) {
   return (
     <HStack>
       <Box flex={1}>
-        <Button disabled={!selectedOption} onClick={() => onButtonClick(true)}>
+        <Button
+          disabled={!selectedOption}
+          onClick={() => onButtonClick(true)}
+          bg="charcoal.200"
+          color="yellow.600"
+        >
           <FiArrowLeft />
         </Button>
       </Box>
@@ -66,6 +71,8 @@ function WeekSelector({ weeks, getGames, getPronostics }: WeekSelectorProps) {
           placeholder="Journée"
           onChange={(e) => onSelect(e.target.value)}
           value={selectedOption?.weekNumber}
+          bg="charcoal.200"
+          border="none"
         >
           {weeks.map((week) => (
             <option key={week.weekNumber} value={week.weekNumber}>
@@ -81,6 +88,8 @@ function WeekSelector({ weeks, getGames, getPronostics }: WeekSelectorProps) {
           disabled={!selectedOption}
           onClick={() => onButtonClick(false)}
           float="right"
+          bg="charcoal.200"
+          color="yellow.600"
         >
           <FiArrowRight />
         </Button>

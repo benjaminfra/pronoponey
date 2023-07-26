@@ -4,9 +4,10 @@ const theme = extendTheme({
   styles: {
     global: {
       'html, body': {
-        color: 'gray.600',
+        color: 'white',
         lineHeight: 'tall',
-        bg: '#101820'
+        bgGradient: 'linear(to-l, #080B0F, #213242)',
+        fontFamily: 'Jakarta Plus Sans'
       }
     }
   },

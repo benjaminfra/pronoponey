@@ -10,6 +10,13 @@ export type IPronostic = {
   points?: number
 }
 
+export type NewPronostic = {
+  gameId: Types.ObjectId
+  weekNumber: number
+  homeScore?: number
+  awayScore?: number
+}
+
 const PronosticSchema = new Schema<IPronostic>(
   {
     userId: { type: Schema.Types.ObjectId, ref: 'users', required: true },

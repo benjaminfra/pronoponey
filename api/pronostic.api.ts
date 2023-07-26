@@ -1,13 +1,12 @@
 /* eslint-disable class-methods-use-this */
 import axios from 'axios'
-import { IPronostic } from '../server/db/models/pronosticModel'
-import { PronosticProps } from '../pages/play/types'
+import { IPronostic, NewPronostic } from '../server/db/models/pronosticModel'
 
 class PronosticService {
-  savePronostic(pronostic: PronosticProps): Promise<void> {
+  savePronostic(pronostic: NewPronostic): Promise<IPronostic> {
     return axios
       .post('http://localhost:3000/pronostic', pronostic)
-      .then(() => {})
+      .then((response) => response.data)
       .catch((error) => {
         throw new Error(error.response.data.message)
       })

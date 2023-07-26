@@ -13,7 +13,7 @@ type PageProps = {
 }
 
 export function Page({ weeks, teams }: PageProps) {
-  const { getGames, games, isGamesLoading } = useGames()
+  const { getGames, games, isGamesLoading } = useGames(teams)
   const {
     pronostics,
     saveProno,
@@ -22,8 +22,8 @@ export function Page({ weeks, teams }: PageProps) {
   } = usePronostics()
 
   return (
-    <>
-      <Box marginTop="1em">
+    <Box mx={10}>
+      <Box mb={10} mt={3} width="30%" mx="auto">
         <WeekSelector
           weeks={weeks}
           getGames={getGames}
@@ -32,13 +32,12 @@ export function Page({ weeks, teams }: PageProps) {
       </Box>
       <Box marginTop="1em">
         <GameWeek
-          teams={teams}
           games={games}
           isLoading={isGamesLoading || isPronosticsLoading}
-          pronostics={pronostics}
           saveProno={saveProno}
+          pronostics={pronostics}
         />
       </Box>
-    </>
+    </Box>
   )
 }

@@ -1,9 +1,9 @@
 import { Box } from '@chakra-ui/react'
-import { PronosticProps } from '../../types'
 import PronosticScore from './PronosticScore'
+import { IPronostic } from '../../../../server/db/models/pronosticModel'
 
 type PronosticCardProps = {
-  pronostic?: PronosticProps
+  pronostic?: IPronostic
 }
 
 function PronosticCard({ pronostic }: PronosticCardProps) {

@@ -1,13 +1,12 @@
 import { FastifyRequest, FastifyReply, FastifyInstance } from 'fastify'
-import { PronosticProps } from '../../pages/play/types'
-import { Pronostic } from '../db/models/pronosticModel'
+import { NewPronostic, Pronostic } from '../db/models/pronosticModel'
 import {
   findPronosticByWeekNumber,
   savePronostic
 } from '../db/services/pronosticService'
 
 const postPronosticsHandler = async (
-  req: FastifyRequest<{ Body: PronosticProps }>,
+  req: FastifyRequest<{ Body: NewPronostic }>,
   reply: FastifyReply
 ) => {
   const pronostic = new Pronostic({
@@ -17,13 +16,15 @@ const postPronosticsHandler = async (
     userId: req.user._id,
     weekNumber: req.body.weekNumber
   })
-  savePronostic(pronostic)
-    .then(() => {
-      reply.status(204).send()
-    })
-    .catch((error) => {
-      reply.status(500).type('text/html').send(error)
-    })
+  try {
+    const savedPronostic = await savePronostic(pronostic)
+    reply
+      .status(201)
+      .header('Location', savedPronostic._id)
+      .send(savedPronostic)
+  } catch (error) {
+    reply.status(500).type('text/html').send(error)
+  }
 }
 
 const getPronosticsByWeekNumberHandler = (
@@ -40,7 +41,7 @@ const getPronosticsByWeekNumberHandler = (
 }
 
 const registerPronosticController = (app: FastifyInstance) => {
-  app.post<{ Body: PronosticProps }>(
+  app.post<{ Body: NewPronostic }>(
     '/pronostic',
     { preHandler: app.auth([app.asyncVerifyJWTandLevel]) },
     postPronosticsHandler

@@ -1,24 +1,17 @@
 import { Document, Types } from 'mongoose'
 import { IPronostic, Pronostic } from '../models/pronosticModel'
 
-export const savePronostic = async (pronostic: IPronostic & Document) => {
+export const savePronostic = async (
+  pronostic: IPronostic & Document
+): Promise<IPronostic> => {
   try {
-    const savedProno = await Pronostic.findOneAndUpdate(
-      { gameId: pronostic.gameId, userId: pronostic.userId },
-      {
-        homeScore: pronostic.homeScore,
-        awayScore: pronostic.awayScore,
-        weekNumber: pronostic.weekNumber,
-      },
-      { new: true, upsert: true }
-    )
+    await pronostic.save()
     console.log(
-      `Pronostic pour le match ${savedProno.gameId} enregistré pour l'utilisateur ${savedProno.userId}`
+      `Pronostic pour le match ${pronostic.gameId} enregistré pour l'utilisateur ${pronostic.userId}`
     )
+    return pronostic
   } catch (error) {
-    console.log(
-      `Une erreur est survenue lors de la sauvegarde du pronostic ${error}`
-    )
+    throw Error('Une erreur est survenue lors de la sauvegarde du pronostic')
   }
 }
 
