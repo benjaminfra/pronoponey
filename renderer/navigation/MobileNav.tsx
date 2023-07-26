@@ -43,7 +43,7 @@ function MobileNav({ onOpen, ...rest }: MobileProps) {
         Prono Poney
       </Text>
 
-      <HStack spacing={{ base: '0', md: '6' }}>
+      <HStack spacing={{ base: '0', md: '6' }} mr={10}>
         <Flex alignItems="center">
           {pageContext.loggedUser ? (
             <HeaderMenu user={pageContext.loggedUser} logout={logout} />

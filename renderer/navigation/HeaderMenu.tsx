@@ -25,14 +25,23 @@ function HeaderMenu({ user, logout }: HeaderMenuProps) {
       <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
         <HStack>
           <>
-            <Avatar size="sm" name={user.username} />
+            <Avatar size="md" name={user.username} />
             <VStack
               display={{ base: 'none', md: 'flex' }}
               alignItems="flex-start"
               spacing="1px"
               ml="2"
             >
-              <Text fontSize="sm">{user.username}</Text>
+              <Text
+                fontSize="md"
+                color="yellow.800"
+                fontFamily="Jakarta Plus Sans"
+                fontWeight="bold"
+                letterSpacing={2}
+                textTransform="uppercase"
+              >
+                {user.username}
+              </Text>
             </VStack>
           </>
         </HStack>
