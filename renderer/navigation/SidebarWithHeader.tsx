@@ -11,7 +11,7 @@ function SidebarWithHeader({ children }: SidebarWithHeaderProps) {
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return (
-    <Box minH="100vh" bg="gray.100">
+    <Box minH="100vh">
       <SidebarContent
         onClose={onClose}
         display={{ base: 'none', md: 'block' }}

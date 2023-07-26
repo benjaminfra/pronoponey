@@ -20,9 +20,6 @@ function MobileNav({ onOpen, ...rest }: MobileProps) {
       px={{ base: 4, md: 4 }}
       height="20"
       alignItems="center"
-      bg="white"
-      borderBottomWidth="1px"
-      borderBottomColor="gray.400"
       justifyContent={{ base: 'space-between', md: 'flex-end' }}
       {...rest}
     >
@@ -32,15 +29,18 @@ function MobileNav({ onOpen, ...rest }: MobileProps) {
         variant="outline"
         aria-label="open menu"
         icon={<FiMenu />}
+        color="white"
       />
 
       <Text
         display={{ base: 'flex', md: 'none' }}
         fontSize="2xl"
-        fontFamily="monospace"
+        fontFamily="Plus Jakarta Sans"
         fontWeight="bold"
+        letterSpacing="3px"
+        color="yellow.700"
       >
-        Logo
+        Prono Poney
       </Text>
 
       <HStack spacing={{ base: '0', md: '6' }}>
